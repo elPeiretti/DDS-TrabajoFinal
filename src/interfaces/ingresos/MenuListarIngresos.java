@@ -1,11 +1,13 @@
 package interfaces.ingresos;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class MenuListarIngresos extends JPanel {
 
-	public MenuListarIngresos() {
-
+	private JFrame ventana_contenedora;
+	
+	public MenuListarIngresos(JFrame ventana_contenedora) {
+		this.ventana_contenedora = ventana_contenedora;
 	}
 
 }

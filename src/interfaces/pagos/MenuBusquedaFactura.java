@@ -1,11 +1,13 @@
 package interfaces.pagos;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class MenuBusquedaFactura extends JPanel {
 
-	public MenuBusquedaFactura() {
-
+	private JFrame ventana_contenedora;
+	
+	public MenuBusquedaFactura(JFrame ventana_contenedora) {
+		this.ventana_contenedora = ventana_contenedora;
 	}
 
 }

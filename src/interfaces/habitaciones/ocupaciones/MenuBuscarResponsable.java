@@ -1,11 +1,13 @@
 package interfaces.habitaciones.ocupaciones;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class MenuBuscarResponsable extends JPanel {
 
-	public MenuBuscarResponsable() {
-
+	private JFrame ventana_contenedora;
+	
+	public MenuBuscarResponsable(JFrame ventana_contenedora) {
+		this.ventana_contenedora = ventana_contenedora;
 	}
 
 }

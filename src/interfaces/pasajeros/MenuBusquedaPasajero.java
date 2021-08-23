@@ -1,11 +1,13 @@
 package interfaces.pasajeros;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class MenuBusquedaPasajero extends JPanel {
 
-	public MenuBusquedaPasajero() {
-
+	private JFrame ventana_contenedora;
+	
+	public MenuBusquedaPasajero(JFrame ventana_contenedora) {
+		this.ventana_contenedora = ventana_contenedora;
 	}
 
 }

@@ -1,11 +1,13 @@
 package interfaces;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class MenuAutenticacion extends JPanel {
-
-	public MenuAutenticacion() {
-
+	
+	private JFrame ventana_contenedora;
+	
+	public MenuAutenticacion(JFrame ventana_contenedora) {
+		this.ventana_contenedora = ventana_contenedora;
 	}
 
 }
