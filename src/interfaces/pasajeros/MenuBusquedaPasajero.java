@@ -47,17 +47,20 @@ public class MenuBusquedaPasajero extends JPanel {
 		jtf_apellido = new JTextField();
 		jtf_apellido.setBounds(155, 111, 140, 30);
 		add(jtf_apellido);
-		jtf_apellido.setColumns(10);
+		jtf_apellido.setDocument(new JTextFieldLimit(30));
+		jtf_apellido.setColumns(30);
 		
 		jtf_nombres = new JTextField();
 		jtf_nombres.setBounds(410, 111, 140, 30);
 		add(jtf_nombres);
-		jtf_nombres.setColumns(10);
+		jtf_nombres.setColumns(50);
+		jtf_nombres.setDocument(new JTextFieldLimit(10));
 		
 		jtf_numero_documento = new JTextField();
 		jtf_numero_documento.setBounds(410, 152, 140, 30);
 		add(jtf_numero_documento);
-		jtf_numero_documento.setColumns(10);
+		jtf_numero_documento.setColumns(15);
+		jtf_numero_documento.setDocument(new JTextFieldLimit(15));
 		
 		jcb_tipo_documento = new JComboBox();
 		jcb_tipo_documento.setBounds(180, 152, 115, 30);
