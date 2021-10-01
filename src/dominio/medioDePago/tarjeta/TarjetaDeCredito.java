@@ -1,13 +1,13 @@
 package dominio.medioDePago.tarjeta;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 import dominio.medioDePago.MedioDePago;
 
 public class TarjetaDeCredito extends MedioDePago {
 	private String nroTarjeta;
 	private Integer cvv;
-	private LocalDate fechaVencimiento;
+	private Instant fechaVencimiento;
 	private Integer cuotas;
 	private TipoTarjeta tipo;
 }

@@ -1,12 +1,12 @@
 package dominio;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.Collection;
 
 public class Factura {
 	private TipoFactura tipo;
 	private Double importeTotal;//mal
-	private LocalDate fechaDeEmision;
+	private Instant fechaDeEmision;
 	private String idFactura;
 	private Double totalIVA;
 	private Pago pago;

@@ -1,10 +1,9 @@
 package dominio;
 
-import java.time.LocalDate;
-
+import java.time.Instant;
 public class Servicio {
 	private String idServicio;
-	private LocalDate fechaDeRealizacion;
+	private Instant fechaDeRealizacion;
 	private Double precioUnitario;//mal
 	private Integer cantidad;
 	private String descripcion;
