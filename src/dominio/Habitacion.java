@@ -8,4 +8,5 @@ public class Habitacion {
 	private TipoHabitacion tipo;
 	private String idHabitacion;
 	private List<Reserva> reservas;
+	private List<Servicio> servicios;
 }
