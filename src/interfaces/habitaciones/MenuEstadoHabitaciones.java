@@ -2,6 +2,8 @@ package interfaces.habitaciones;
 
 import javax.swing.*;
 import interfaces.misc.*;
+import java.awt.Color;
+import java.awt.Font;
 
 public class MenuEstadoHabitaciones extends JPanel {
 
@@ -14,8 +16,11 @@ public class MenuEstadoHabitaciones extends JPanel {
 	private JButton btn_siguiente;
 	private JTextField dp_desde;
 	private JTextField dp_hasta;
+	private JLabel lbl_error_fecha_desde;
+	private JLabel lbl_error_fecha_hasta;
 	
 	public MenuEstadoHabitaciones(JFrame ventana_contenedora) {
+		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
 		
@@ -54,5 +59,17 @@ public class MenuEstadoHabitaciones extends JPanel {
 		dp_hasta.setColumns(10);
 		dp_hasta.setBounds(430, 141, 86, 20);
 		add(dp_hasta);
+		
+		lbl_error_fecha_desde = new JLabel("");
+		lbl_error_fecha_desde.setForeground(Color.RED);
+		lbl_error_fecha_desde.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lbl_error_fecha_desde.setBounds(142, 163, 180, 10);
+		add(lbl_error_fecha_desde);
+		
+		lbl_error_fecha_hasta = new JLabel("");
+		lbl_error_fecha_hasta.setForeground(Color.RED);
+		lbl_error_fecha_hasta.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lbl_error_fecha_hasta.setBounds(346, 163, 180, 10);
+		add(lbl_error_fecha_hasta);
 	}
 }
