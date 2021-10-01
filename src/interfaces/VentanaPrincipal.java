@@ -34,7 +34,7 @@ public class VentanaPrincipal extends JFrame {
 	private MenuConsumosPorHabitacion m_consumos_hab;
 	private MenuFacturar m_fact;
 	private MenuEstadoHabitaciones m_estado_hab;
-	private MenuBuscarAcompañantes m_buscar_acomp;
+	private MenuBuscarAcompaniantes m_buscar_acomp;
 	private MenuBuscarResponsable m_buscar_resp;
 	private MenuConfirmarOcupacion m_confirmar_ocup;
 	private MenuConfirmarReserva m_confirmar_reserva;
@@ -79,7 +79,7 @@ public class VentanaPrincipal extends JFrame {
 		m_consumos_hab = new MenuConsumosPorHabitacion(this);
 		m_fact = new MenuFacturar(this);
 		m_estado_hab = new MenuEstadoHabitaciones(this);
-		m_buscar_acomp = new MenuBuscarAcompañantes(this);
+		m_buscar_acomp = new MenuBuscarAcompaniantes(this);
 		m_buscar_resp = new MenuBuscarResponsable(this);
 		m_confirmar_ocup = new MenuConfirmarOcupacion(this);
 		m_confirmar_reserva = new MenuConfirmarReserva(this);
