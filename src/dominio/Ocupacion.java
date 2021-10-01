@@ -8,4 +8,5 @@ public class Ocupacion {
 	private Instant fechaEgreso;
 	private Pasajero responsable;
 	private List<Pasajero> acompaniante;
+	private List<Servicio> servicios;
 }
