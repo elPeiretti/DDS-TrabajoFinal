@@ -8,4 +8,6 @@ public class NotaDeCredito {
 	private String idNota;
 	private Double monto;//mal
 	private Double totalIVA;//mal
+	private Pasajero pasajeroResponsable;
+	private ResponsablePagoTercero terceroResponsable;
 }
