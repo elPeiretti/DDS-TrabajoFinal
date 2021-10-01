@@ -1,5 +1,6 @@
 package test;
 import interfaces.*;
+import interfaces.habitaciones.MenuEstadoHabitaciones;
 import interfaces.habitaciones.ocupaciones.*;
 import interfaces.pasajeros.*;
 
@@ -10,7 +11,7 @@ public class App {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		JFrame ventana = new JFrame();
-		MenuBuscarResponsable ma = new MenuBuscarResponsable(ventana);
+		JPanel ma = new MenuEstadoHabitaciones(ventana);
 		ventana.setBounds(200,200,655,500);
 		ventana.setVisible(true);
 		
