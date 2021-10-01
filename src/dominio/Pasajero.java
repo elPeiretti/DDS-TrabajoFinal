@@ -12,4 +12,5 @@ public class Pasajero {
 	private String email;
 	private String telefono;
 	private String ocupacion;
+	private TipoDocumento tipoDocumento;
 }
