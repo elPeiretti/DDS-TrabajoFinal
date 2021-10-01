@@ -12,7 +12,9 @@ public class App {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		JFrame ventana = new JFrame();
-		JPanel ma = new MenuConfirmarReserva(ventana);
+		
+		JPanel ma = new MenuAltaPasajero(ventana);
+
 		ventana.setBounds(200,200,655,500);
 		ventana.setVisible(true);
 		
