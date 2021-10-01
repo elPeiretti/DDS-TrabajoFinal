@@ -13,5 +13,5 @@ public class Pasajero {
 	private String telefono;
 	private String ocupacion;
 	private TipoDocumento tipoDocumento;
-	
+	private PosicionIVA posicionIVA;
 }
