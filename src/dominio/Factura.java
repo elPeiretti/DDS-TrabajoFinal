@@ -13,5 +13,5 @@ public class Factura {
 	private ResponsablePagoTercero responsableTercero;
 	private Pasajero responsablePasajero;
 	private Collection<ItemFactura> items;
-	
+	private NotaDeCredito notaCredito;
 }
