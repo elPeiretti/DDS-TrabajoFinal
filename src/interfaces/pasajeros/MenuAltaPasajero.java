@@ -6,6 +6,11 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JSpinnerDateEditor;
 
+import dominio.Ciudad;
+import dominio.Pais;
+import dominio.PosicionIVA;
+import dominio.Provincia;
+import dominio.TipoDocumento;
 import interfaces.misc.Encabezado;
 import interfaces.misc.JTextFieldLimit;
 
@@ -29,15 +34,15 @@ public class MenuAltaPasajero extends JPanel {
 	private JTextField jtf_departamento;
 	private JTextField jtf_codigo_postal;
 	private JTextField jtf_email;
-	private JComboBox jcb_pais;
-	private JComboBox jcb_ciudad;
-	private JComboBox jcb_provincia;
-	private JComboBox jcb_tipo_documento;
-	private JComboBox jcb_factura;
+	private JComboBox<Pais> jcb_pais;
+	private JComboBox<Ciudad> jcb_ciudad;
+	private JComboBox<Provincia> jcb_provincia;
+	private JComboBox<TipoDocumento> jcb_tipo_documento;
+	private JComboBox<PosicionIVA> jcb_factura;
 	private JLabel lbl_ocupacion;
 	private JButton jb_cancelar;
 	private JButton jb_siguiente;
-	private JComboBox jcb_nacionalidad;
+	private JComboBox jcb_nacionalidad; //ver comentario en Pasajero
 	private JLabel lbl_nacionalidad;
 	private JLabel lbl_error_ocupacion;
 	private JLabel lbl_numero;
