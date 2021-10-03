@@ -4,6 +4,8 @@ import javax.swing.*;
 import interfaces.misc.*;
 import java.awt.Color;
 import java.awt.Font;
+import javax.swing.border.LineBorder;
+import com.toedter.calendar.JDateChooser;
 
 public class MenuEstadoHabitaciones extends JPanel {
 
@@ -14,10 +16,10 @@ public class MenuEstadoHabitaciones extends JPanel {
 	private JLabel lbl_fecha_hasta;
 	private JButton jb_cancelar;
 	private JButton btn_siguiente;
-	private JTextField dp_desde;
-	private JTextField dp_hasta;
 	private JLabel lbl_error_fecha_desde;
 	private JLabel lbl_error_fecha_hasta;
+	private JDateChooser dc_fecha_desde;
+	private JDateChooser dc_fecha_hasta;
 	
 	public MenuEstadoHabitaciones(JFrame ventana_contenedora) {
 		setBackground(Color.WHITE);
@@ -45,20 +47,9 @@ public class MenuEstadoHabitaciones extends JPanel {
 		add(btn_siguiente);
 		
 		jtable_habitaciones = new JTable();
+		jtable_habitaciones.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		jtable_habitaciones.setBounds(10, 195, 620, 200);
 		add(jtable_habitaciones);
-		
-		dp_desde = new JTextField();
-		dp_desde.setText("DATE PICKER");
-		dp_desde.setBounds(231, 141, 86, 20);
-		add(dp_desde);
-		dp_desde.setColumns(10);
-		
-		dp_hasta = new JTextField();
-		dp_hasta.setText("DATE PICKER");
-		dp_hasta.setColumns(10);
-		dp_hasta.setBounds(430, 141, 86, 20);
-		add(dp_hasta);
 		
 		lbl_error_fecha_desde = new JLabel("");
 		lbl_error_fecha_desde.setForeground(Color.RED);
@@ -71,5 +62,13 @@ public class MenuEstadoHabitaciones extends JPanel {
 		lbl_error_fecha_hasta.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lbl_error_fecha_hasta.setBounds(346, 163, 180, 10);
 		add(lbl_error_fecha_hasta);
+		
+		dc_fecha_desde = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
+		dc_fecha_desde.setBounds(231, 141, 100, 20);
+		add(dc_fecha_desde);
+		
+		dc_fecha_hasta = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
+		dc_fecha_hasta.setBounds(430, 141, 100, 20);
+		add(dc_fecha_hasta);
 	}
 }
