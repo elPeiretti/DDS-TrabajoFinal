@@ -13,7 +13,7 @@ public class App {
 		// TODO Auto-generated method stub
 		JFrame ventana = new JFrame();
 		
-		JPanel ma = new MenuBuscarAcompaniantes(ventana);
+		JPanel ma = new MenuConfirmarOcupacion(ventana);
 
 		ventana.setBounds(200,200,655,500);
 		ventana.setVisible(true);
