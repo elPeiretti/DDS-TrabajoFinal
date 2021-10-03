@@ -31,11 +31,11 @@ public class MenuEstadoHabitaciones extends JPanel {
 		add(encabezado);
 		
 		lbl_fecha_desde = new JLabel("Desde Fecha:");
-		lbl_fecha_desde.setBounds(142, 144, 110, 14);
+		lbl_fecha_desde.setBounds(123, 145, 110, 14);
 		add(lbl_fecha_desde);
 		
 		lbl_fecha_hasta = new JLabel("Hasta Fecha:");
-		lbl_fecha_hasta.setBounds(346, 144, 110, 14);
+		lbl_fecha_hasta.setBounds(327, 145, 110, 14);
 		add(lbl_fecha_hasta);
 		
 		jb_cancelar = new JButton("Cancelar");
@@ -64,11 +64,11 @@ public class MenuEstadoHabitaciones extends JPanel {
 		add(lbl_error_fecha_hasta);
 		
 		dc_fecha_desde = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
-		dc_fecha_desde.setBounds(231, 141, 100, 20);
+		dc_fecha_desde.setBounds(212, 142, 100, 20);
 		add(dc_fecha_desde);
 		
 		dc_fecha_hasta = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
-		dc_fecha_hasta.setBounds(430, 141, 100, 20);
+		dc_fecha_hasta.setBounds(411, 142, 100, 20);
 		add(dc_fecha_hasta);
 	}
 }

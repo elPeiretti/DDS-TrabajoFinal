@@ -77,6 +77,7 @@ public class MenuAltaPasajero extends JPanel {
 	
 	// fijar ventana contenedora a 640x600
 	public MenuAltaPasajero(JFrame ventana_contenedora) {
+		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
 		
