@@ -9,10 +9,11 @@ import java.awt.Color;
 import javax.swing.border.LineBorder;
 
 public class ResultPane extends JPanel {
-	private JTable jtable_resultados;
-	private JLabel lbl_paginas;
-	private JButton btn_prev;
-	private JButton btn_next;
+	
+	public JTable jtable_resultados;
+	public JLabel lbl_paginas;
+	public JButton btn_prev;
+	public JButton btn_next;
 
 	public ResultPane() {
 		setBackground(Color.WHITE);
