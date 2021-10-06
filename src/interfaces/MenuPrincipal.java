@@ -11,6 +11,10 @@ import java.awt.Image;
 
 import javax.swing.border.LineBorder;
 
+import interfaces.misc.Encabezado;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class MenuPrincipal extends JPanel {
 
 	private JFrame ventana_contenedora;
@@ -27,6 +31,7 @@ public class MenuPrincipal extends JPanel {
 	private JButton jb_ingresar_nota_credito;
 	private JButton jb_cancelar_reserva;
 	private JButton jb_salir;
+	private Encabezado encabezado;
 	
 	public MenuPrincipal(JFrame ventana_contenedora) {
 		setBackground(Color.WHITE);
@@ -114,6 +119,22 @@ public class MenuPrincipal extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.agregarActionListeners();
+		
+	}
+	
+	public void setEncabezado(Encabezado encabezado) {
+		this.encabezado = encabezado;
+	}
+	
+	private void agregarActionListeners() {
+		
+		jb_gestionar_pasajero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		
 	}
 

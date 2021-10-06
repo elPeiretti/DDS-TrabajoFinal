@@ -7,10 +7,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import interfaces.misc.Encabezado;
 import interfaces.misc.JTextFieldLimit;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Font;
 
 public class MenuAutenticacion extends JPanel {
@@ -25,6 +28,7 @@ public class MenuAutenticacion extends JPanel {
 	private JLabel lbl_logo;
 	private JLabel lbl_error_codigo;
 	private JLabel lbl_error_contrasena;
+	private Encabezado encabezado;
 	
 	public MenuAutenticacion(JFrame ventana_contenedora) {
 		setBackground(Color.WHITE);
@@ -86,6 +90,33 @@ public class MenuAutenticacion extends JPanel {
 			e.printStackTrace();
 		}
 		
+		this.agregarActionListeners();
 		
 	}
+	public void setEncabezado(Encabezado encabezado) {
+		this.encabezado = encabezado;
+	}
+	
+	private void agregarActionListeners() {
+		
+		jb_iniciar_sesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// validadcion de los datos
+					ventana_contenedora.setContentPane(new MenuPrincipal(ventana_contenedora));
+				}
+				catch(Exception exc) {
+					
+				}
+			}
+		});
+		
+		jb_salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+	}
+	
 }

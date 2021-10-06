@@ -11,14 +11,10 @@ public class App {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		JFrame ventana = new JFrame();
-		
-		JPanel ma = new MenuConfirmarOcupacion(ventana);
+		JFrame ventana = new VentanaPrincipal();
 
-		ventana.setBounds(200,200,655,500);
+		ventana.setBounds(200,200,640,480);
 		ventana.setVisible(true);
-		
-		ventana.add(ma);
 	}
 
 }
