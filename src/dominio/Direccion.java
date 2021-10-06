@@ -1,17 +1,14 @@
 package dominio;
 
 
-/*
- * Hay problemas en el diagrama de clases, algunos campos no coinciden con el diseño de entradas
- */
 public class Direccion {
-	private Integer codigoPostal; //es Integer pero mi codigo postal es S3002ALE?
+	private String codigoPostal;
 	private String calle;
 	private Integer nroCalle;
 	private Integer piso;
-	private Integer nroDepartamento; //es Integer pero yo vivo en el dpto "A"
+	private String nroDepartamento;
 	private Ciudad ciudad;
-	public Integer getCodigoPostal() {
+	public String getCodigoPostal() {
 		return codigoPostal;
 	}
 	public String getCalle() {
@@ -23,7 +20,7 @@ public class Direccion {
 	public Integer getPiso() {
 		return piso;
 	}
-	public Integer getNroDepartamento() {
+	public String getNroDepartamento() {
 		return nroDepartamento;
 	}
 	public Ciudad getCiudad() {
