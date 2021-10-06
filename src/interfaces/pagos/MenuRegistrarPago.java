@@ -36,7 +36,7 @@ public class MenuRegistrarPago extends JPanel {
 	private JComboBox cb_moneda;
 	private JDateChooser dc_fecha_cobro;
 	
-	public MenuRegistrarPago(JFrame ventana_contenedora) {
+	public MenuRegistrarPago(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
@@ -52,7 +52,7 @@ public class MenuRegistrarPago extends JPanel {
 		tf_nro_factura.setDocument(new JTextFieldLimit(30));
 		tf_nro_factura.setColumns(30);
 		
-		encabezado = new Encabezado();
+		this.encabezado = encabezado;
 		encabezado.setSize(640, 110);
 		encabezado.setLocation(0, 0);
 		add(encabezado);

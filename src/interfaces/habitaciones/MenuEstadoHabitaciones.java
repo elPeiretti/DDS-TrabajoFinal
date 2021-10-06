@@ -21,12 +21,12 @@ public class MenuEstadoHabitaciones extends JPanel {
 	private JDateChooser dc_fecha_desde;
 	private JDateChooser dc_fecha_hasta;
 	
-	public MenuEstadoHabitaciones(JFrame ventana_contenedora) {
+	public MenuEstadoHabitaciones(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
 		
-		encabezado = new Encabezado();
+		this.encabezado = encabezado;
 		encabezado.setBounds(0, 0, 640, 110);
 		add(encabezado);
 		

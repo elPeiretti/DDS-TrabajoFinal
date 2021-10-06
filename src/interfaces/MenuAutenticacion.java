@@ -103,7 +103,8 @@ public class MenuAutenticacion extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					// validadcion de los datos
-					ventana_contenedora.setContentPane(new MenuPrincipal(ventana_contenedora));
+					ventana_contenedora.setContentPane(new MenuPrincipal(ventana_contenedora,encabezado));
+					ventana_contenedora.setVisible(true);
 				}
 				catch(Exception exc) {
 					

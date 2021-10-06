@@ -23,7 +23,7 @@ public class MenuFacturar extends JPanel {
 	private JTextField tf_cuit;
 	private JLabel lbl_raz_social;
 	
-	public MenuFacturar(JFrame ventana_contenedora)  {
+	public MenuFacturar(JFrame ventana_contenedora, Encabezado encabezado)  {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
@@ -39,7 +39,7 @@ public class MenuFacturar extends JPanel {
 		jtf_num_hab.setDocument(new JTextFieldLimit(30));
 		jtf_num_hab.setColumns(30);
 		
-		encabezado = new Encabezado();
+		this.encabezado = encabezado;
 		encabezado.setSize(640, 110);
 		encabezado.setLocation(0, 0);
 		add(encabezado);

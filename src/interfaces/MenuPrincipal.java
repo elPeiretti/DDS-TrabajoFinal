@@ -11,7 +11,13 @@ import java.awt.Image;
 
 import javax.swing.border.LineBorder;
 
+import interfaces.facturacion.MenuFacturar;
+import interfaces.habitaciones.MenuEstadoHabitaciones;
+import interfaces.ingresos.MenuListarIngresos;
 import interfaces.misc.Encabezado;
+import interfaces.pagos.MenuRegistrarPago;
+import interfaces.pasajeros.MenuBusquedaPasajero;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -33,9 +39,10 @@ public class MenuPrincipal extends JPanel {
 	private JButton jb_salir;
 	private Encabezado encabezado;
 	
-	public MenuPrincipal(JFrame ventana_contenedora) {
+	public MenuPrincipal(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
+		this.encabezado = encabezado;
 		setLayout(null);
 		
 		
@@ -124,18 +131,45 @@ public class MenuPrincipal extends JPanel {
 		
 	}
 	
-	public void setEncabezado(Encabezado encabezado) {
-		this.encabezado = encabezado;
-	}
 	
 	private void agregarActionListeners() {
 		
 		jb_gestionar_pasajero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				ventana_contenedora.setContentPane(new MenuBusquedaPasajero(ventana_contenedora,encabezado));
+				ventana_contenedora.setVisible(true);
 			}
 		});
-		
+		jb_reservar_habitacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventana_contenedora.setContentPane(new MenuEstadoHabitaciones(ventana_contenedora,encabezado));
+				ventana_contenedora.setVisible(true);
+			}
+		});
+		jb_ocupar_habitacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventana_contenedora.setContentPane(new MenuEstadoHabitaciones(ventana_contenedora,encabezado));
+				ventana_contenedora.setVisible(true);
+			}
+		});
+		jb_facturar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventana_contenedora.setContentPane(new MenuFacturar(ventana_contenedora,encabezado));
+				ventana_contenedora.setVisible(true);
+			}
+		});
+		jb_ingresar_pago.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventana_contenedora.setContentPane(new MenuRegistrarPago(ventana_contenedora,encabezado));
+				ventana_contenedora.setVisible(true);
+			}
+		});
+		jb_listar_ingresos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventana_contenedora.setContentPane(new MenuListarIngresos(ventana_contenedora,encabezado));
+				ventana_contenedora.setVisible(true);
+			}
+		});
 	}
 
 }

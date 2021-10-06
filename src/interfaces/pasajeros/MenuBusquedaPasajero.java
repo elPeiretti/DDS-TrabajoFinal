@@ -23,12 +23,12 @@ public class MenuBusquedaPasajero extends JPanel {
 	private JTextField jtf_nombres;
 	
 	
-	public MenuBusquedaPasajero(JFrame ventana_contenedora) {
+	public MenuBusquedaPasajero(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
 		
-		encabezado = new Encabezado();
+		this.encabezado = encabezado;	
 		encabezado.setSize(640, 110);
 		encabezado.setLocation(0, 0);
 		add(encabezado);
@@ -86,5 +86,12 @@ public class MenuBusquedaPasajero extends JPanel {
 		jtf_nombres.setBounds(410, 110, 140, 20);
 		jtf_nombres.setDocument(new JTextFieldLimit(50));
 		add(jtf_nombres);
+	
+		this.agregarActionListeners();
 	}
+	
+	public void agregarActionListeners() {
+		
+	}
+
 }
