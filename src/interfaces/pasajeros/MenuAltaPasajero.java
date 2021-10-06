@@ -12,13 +12,9 @@ import dominio.PosicionIVA;
 import dominio.Provincia;
 import dominio.TipoDocumento;
 import interfaces.misc.*;
-
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.HashMap;
 
 
 
@@ -83,6 +79,9 @@ public class MenuAltaPasajero extends JPanel {
 	private JLabel lbl_error_email;
 	private JLabel lbl_error_nacionalidad;
 	private MenuBusquedaPasajero menu_anterior;
+	private HashMap<String,Boolean> campos_validos;
+	private JLabel lbl_error_nombres;
+	private JLabel lbl_error_cuit;
 	
 	// fijar ventana contenedora a 640x620
 	public MenuAltaPasajero(JFrame ventana_contenedora, JPanel encabezado, MenuBusquedaPasajero estado_anterior) {
@@ -91,6 +90,9 @@ public class MenuAltaPasajero extends JPanel {
 		this.ventana_contenedora = ventana_contenedora;
 		ventana_contenedora.setSize(660,620);
 		setLayout(null);
+		
+		this.campos_validos = new HashMap<String,Boolean>();
+		inicializarMapa();
 		
 		jcb_pais = new JComboBox();
 		jcb_pais.setBounds(128, 319, 122, 20);
@@ -224,7 +226,7 @@ public class MenuAltaPasajero extends JPanel {
 		jtf_cuit.setDocument(new JTextFieldLimit(11));
 		add(jtf_cuit);
 		
-		JLabel lbl_error_cuit = new JLabel("");
+		lbl_error_cuit = new JLabel("");
 		lbl_error_cuit.setForeground(Color.RED);
 		lbl_error_cuit.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lbl_error_cuit.setBounds(23, 259, 227, 10);
@@ -240,7 +242,7 @@ public class MenuAltaPasajero extends JPanel {
 		jtf_nombres.setDocument(new JTextFieldLimit(50));
 		add(jtf_nombres);
 		
-		JLabel lbl_error_nombres = new JLabel("");
+		lbl_error_nombres = new JLabel("");
 		lbl_error_nombres.setForeground(Color.RED);
 		lbl_error_nombres.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lbl_error_nombres.setBounds(23, 217, 227, 10);
@@ -395,6 +397,7 @@ public class MenuAltaPasajero extends JPanel {
 		add(lbl_error_departamento);
 		
 		this.agregarActionListeners();
+		this.agregarListenersValidacion();
 		this.setCamposDefault();
 	}
 	
@@ -448,5 +451,143 @@ public class MenuAltaPasajero extends JPanel {
 		//jcb_factura.setSelectedItem();
 		//jcb_provincia.setSelectedItem();
 		//jcb_nacionalidad.setSelectedItem();
+	}
+	
+	private void inicializarMapa() {
+		campos_validos.put("apellido", false);
+		campos_validos.put("nombres", false);
+		campos_validos.put("cuit", false);
+		campos_validos.put("calle", false);
+		campos_validos.put("numero", false);
+		campos_validos.put("ocupacion", false);
+		campos_validos.put("numero documento", false);
+		campos_validos.put("codigo postal", false);
+		campos_validos.put("piso", false);
+		campos_validos.put("departamento", false);
+		campos_validos.put("telefono", false);
+		campos_validos.put("email", false);
+	}
+	
+	private void agregarListenersValidacion() {
+		jtf_apellido.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_apellido.getText();
+				if (data.isBlank()){
+					lbl_error_apellido.setText("Este campo no puede estar vacío.");
+					campos_validos.put("apellido", false);
+				}
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*$")) {
+					lbl_error_apellido.setText("El apellido solo puede contener letras.");
+					campos_validos.put("apellido", false);
+				}
+				else {
+					campos_validos.put("apellido", true);
+					lbl_error_apellido.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_nombres.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_nombres.getText();
+				if (data.isBlank()){
+					lbl_error_nombres.setText("Este campo no puede estar vacío.");
+					campos_validos.put("nombres", false);
+				}
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*$")) {
+					lbl_error_nombres.setText("Los nombres solo pueden contener letras.");
+					campos_validos.put("nombres", false);
+				}
+				else {
+					campos_validos.put("nombres", true);
+					lbl_error_nombres.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_cuit.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_cuit.getText();
+				
+				if(!data.matches("[0-9]*")) {
+					lbl_error_cuit.setText("El CUIT solo puede contener números.");
+					campos_validos.put("cuit", false);
+				}
+				else {
+					campos_validos.put("cuit", true);
+					lbl_error_cuit.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_calle.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_calle.getText();
+				if (data.isBlank()){
+					lbl_error_calle.setText("Este campo no puede estar vacío.");
+					campos_validos.put("calle", false);
+				}
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*$")) {
+					lbl_error_calle.setText("La calle solo puede contener letras.");
+					campos_validos.put("calle", false);
+				}
+				else {
+					campos_validos.put("calle", true);
+					lbl_error_nombres.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_numero.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_numero.getText();
+				if (data.isBlank()){
+					lbl_error_numero.setText("Este campo no puede estar vacío.");
+					campos_validos.put("numero", false);
+				}
+				else if(!data.matches("[0-9]+")) {
+					lbl_error_numero.setText("El número de la calle debe ser un número.");
+					campos_validos.put("numero", false);
+				}
+				else {
+					campos_validos.put("numero", true);
+					lbl_error_numero.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_ocupacion.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_ocupacion.getText();
+				if (data.isBlank()){
+					lbl_error_ocupacion.setText("Este campo no puede estar vacío.");
+					campos_validos.put("ocupacion", false);
+				}
+				else {
+					campos_validos.put("ocupacion", true);
+					lbl_error_ocupacion.setText("");
+				}
+				
+			}
+		});
+		
+		
 	}
 }
