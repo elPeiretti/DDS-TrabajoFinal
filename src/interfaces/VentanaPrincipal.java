@@ -1,6 +1,8 @@
 package interfaces;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import interfaces.facturacion.*;
@@ -11,6 +13,8 @@ import interfaces.ingresos.*;
 import interfaces.misc.Encabezado;
 import interfaces.pagos.*;
 import interfaces.pasajeros.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -39,6 +43,7 @@ public class VentanaPrincipal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 660, 500);
 		encabezado = new Encabezado();
+		encabezado.lbl_fecha.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
 		MenuAutenticacion app = new MenuAutenticacion(this);
 		app.setEncabezado(encabezado);
 		setContentPane(app);

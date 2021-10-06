@@ -16,15 +16,17 @@ public class Encabezado extends JPanel {
 
 	private BufferedImage logo;
 	private JLabel lbl_logo;
-	private JLabel lbl_conserje;
+	public JLabel lbl_conserje;
+	public JLabel lbl_fecha;
 	
 	public Encabezado() {
 		setBackground(Color.WHITE);
 		setLayout(null);
 		
 		lbl_conserje = new JLabel("Conserje:");
+		lbl_conserje.setHorizontalAlignment(SwingConstants.TRAILING);
 		lbl_conserje.setForeground(Color.LIGHT_GRAY);
-		lbl_conserje.setBounds(486, 24, 130, 14);
+		lbl_conserje.setBounds(316, 24, 300, 14);
 		add(lbl_conserje);
 		lbl_logo = new JLabel();
 		lbl_logo.setSize(100, 100);
@@ -36,7 +38,7 @@ public class Encabezado extends JPanel {
 			Image dlogo = logo.getScaledInstance(lbl_logo.getWidth(),lbl_logo.getHeight(),Image.SCALE_SMOOTH);
 			lbl_logo.setIcon(new ImageIcon(dlogo));
 			
-			JLabel lbl_fecha = new JLabel("01/01/1000");
+			lbl_fecha = new JLabel("01/01/1000");
 			lbl_fecha.setForeground(Color.LIGHT_GRAY);
 			lbl_fecha.setHorizontalAlignment(SwingConstants.RIGHT);
 			lbl_fecha.setBounds(520, 49, 99, 14);

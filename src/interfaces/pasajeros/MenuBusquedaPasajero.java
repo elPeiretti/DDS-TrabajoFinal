@@ -3,6 +3,7 @@ package interfaces.pasajeros;
 import javax.swing.*;
 
 import dominio.Pasajero;
+import interfaces.MenuPrincipal;
 import interfaces.facturacion.MenuFacturar;
 import interfaces.misc.*;
 import java.awt.Color;
@@ -13,7 +14,7 @@ import java.util.List;
 public class MenuBusquedaPasajero extends JPanel {
 
 	private JFrame ventana_contenedora;
-	private JPanel encabezado;
+	private Encabezado encabezado;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
 	private ResultPane rp_pasajeros;
@@ -111,6 +112,14 @@ public class MenuBusquedaPasajero extends JPanel {
 				}
 				ventana_contenedora.setContentPane(m);
 				ventana_contenedora.setVisible(true);
+			}
+		});
+		
+		jb_cancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventana_contenedora.setContentPane(new MenuPrincipal(ventana_contenedora, encabezado));
+				ventana_contenedora.setVisible(true);
+				
 			}
 		});
 	}

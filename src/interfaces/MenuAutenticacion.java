@@ -102,7 +102,10 @@ public class MenuAutenticacion extends JPanel {
 		jb_iniciar_sesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					// validadcion de los datos
+					// validadcion de los datos TODO
+					// busqueda del nombre del conserje por su codigo
+					String conserje = "Maria Chucena";
+					((Encabezado) encabezado).lbl_conserje.setText("Conserje: "+conserje);
 					ventana_contenedora.setContentPane(new MenuPrincipal(ventana_contenedora,encabezado));
 					ventana_contenedora.setVisible(true);
 				}
