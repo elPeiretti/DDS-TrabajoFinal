@@ -3,6 +3,7 @@ package interfaces;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,6 +16,7 @@ import interfaces.facturacion.MenuFacturar;
 import interfaces.habitaciones.MenuEstadoHabitaciones;
 import interfaces.ingresos.MenuListarIngresos;
 import interfaces.misc.Encabezado;
+import interfaces.misc.TabOrder;
 import interfaces.pagos.MenuRegistrarPago;
 import interfaces.pasajeros.MenuBusquedaPasajero;
 
@@ -128,10 +130,25 @@ public class MenuPrincipal extends JPanel {
 		}
 		
 		this.agregarActionListeners();
-		
+		this.agregarTabOrder();
 	}
 	
-	
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jb_gestionar_pasajero,
+				jb_facturar,
+				jb_ingresar_pago,
+				jb_ocupar_habitacion,
+				jb_reservar_habitacion,
+				jb_gestionar_responsable_pagos,
+				jb_listar_cheques,
+				jb_listar_ingresos,
+				jb_ingresar_nota_credito,
+				jb_cancelar_reserva,
+				jb_salir
+				)));
+		this.setFocusTraversalPolicyProvider(true);
+		}
 	private void agregarActionListeners() {
 		
 		jb_gestionar_pasajero.addActionListener(new ActionListener() {
