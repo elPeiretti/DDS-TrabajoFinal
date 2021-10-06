@@ -11,11 +11,14 @@ import dominio.Pais;
 import dominio.PosicionIVA;
 import dominio.Provincia;
 import dominio.TipoDocumento;
-import interfaces.misc.Encabezado;
-import interfaces.misc.JTextFieldLimit;
+import interfaces.misc.*;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.Color;
+import java.awt.Component;
 
 
 
@@ -79,11 +82,14 @@ public class MenuAltaPasajero extends JPanel {
 	private JLabel lbl_error_telefono;
 	private JLabel lbl_error_email;
 	private JLabel lbl_error_nacionalidad;
+	private MenuBusquedaPasajero menu_anterior;
 	
-	// fijar ventana contenedora a 640x600
-	public MenuAltaPasajero(JFrame ventana_contenedora) {
+	// fijar ventana contenedora a 640x620
+	public MenuAltaPasajero(JFrame ventana_contenedora, JPanel encabezado, MenuBusquedaPasajero estado_anterior) {
 		setBackground(Color.WHITE);
+		this.menu_anterior = estado_anterior;
 		this.ventana_contenedora = ventana_contenedora;
+		ventana_contenedora.setSize(660,620);
 		setLayout(null);
 		
 		jcb_pais = new JComboBox();
@@ -132,7 +138,7 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_nacionalidad.setBounds(334, 489, 110, 14);
 		add(lbl_nacionalidad);
 		
-		encabezado = new Encabezado();
+		this.encabezado = encabezado;
 		encabezado.setBounds(0, 0, 640, 110);
 		add(encabezado);
 		
@@ -388,5 +394,59 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_departamento.setBounds(438, 385, 179, 10);
 		add(lbl_error_departamento);
 		
+		this.agregarActionListeners();
+		this.setCamposDefault();
+	}
+	
+	private void agregarActionListeners() {
+		
+		jb_siguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// subir los datos a la BD
+					int opt = Mensaje.mensajeConfirmacion("¿Desea cargar otro pasajero?");
+					if (opt == 1) 
+						limpiarCampos();
+					else {
+						ventana_contenedora.setContentPane(menu_anterior);
+						ventana_contenedora.setVisible(true);
+					}
+					
+				}
+				catch(Exception exc) { //TODO
+					
+				}
+				
+			}
+		});
+		
+		jb_cancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar el alta del pasajero?");
+				if (opt == 1) { 
+					ventana_contenedora.setContentPane(menu_anterior);
+					ventana_contenedora.setVisible(true);
+				}
+			}
+		});
+	}
+	
+	private void limpiarCampos() {
+		for(Component componente : this.getComponents()) {
+			if (componente instanceof JTextField) {
+				((JTextField) componente).setText("");
+			}
+		}
+		setCamposDefault();
+	}
+	
+	private void setCamposDefault() {
+		jtf_codigo_postal.setText("3000");
+		//jcb_tipo_documento.setSelectedItem();
+		//jcb_pais.setSelectedItem();
+		//jcb_ciudad.setSelectedItem();
+		//jcb_factura.setSelectedItem();
+		//jcb_provincia.setSelectedItem();
+		//jcb_nacionalidad.setSelectedItem();
 	}
 }

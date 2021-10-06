@@ -76,7 +76,7 @@ public class MenuModificarPasajero extends JPanel {
 	private JLabel lbl_error_email;
 	private JLabel lbl_error_nacionalidad;
 	
-	public MenuModificarPasajero(JFrame ventana_contenedora) {
+	public MenuModificarPasajero(JFrame ventana_contenedora, JPanel encabezado) {
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
 		
@@ -239,7 +239,7 @@ public class MenuModificarPasajero extends JPanel {
 		lbl_nacionalidad.setBounds(346, 417, 84, 14);
 		add(lbl_nacionalidad);
 		
-		encabezado = new Encabezado();
+		this.encabezado = encabezado;
 		encabezado.setBounds(0, 0, 640, 80);
 		add(encabezado);
 		

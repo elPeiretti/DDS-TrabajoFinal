@@ -2,8 +2,13 @@ package interfaces.pasajeros;
 
 import javax.swing.*;
 
+import dominio.Pasajero;
+import interfaces.facturacion.MenuFacturar;
 import interfaces.misc.*;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class MenuBusquedaPasajero extends JPanel {
 
@@ -11,7 +16,7 @@ public class MenuBusquedaPasajero extends JPanel {
 	private JPanel encabezado;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
-	private JPanel rp_pasajeros;
+	private ResultPane rp_pasajeros;
 	private JButton jb_buscar;
 	private JTextField jtf_numero_documento;
 	private JLabel lbl_numero_documento;
@@ -21,6 +26,7 @@ public class MenuBusquedaPasajero extends JPanel {
 	private JTextField jtf_apellido;
 	private JLabel lbl_nombres;
 	private JTextField jtf_nombres;
+	private List objetos_en_tabla;
 	
 	
 	public MenuBusquedaPasajero(JFrame ventana_contenedora, Encabezado encabezado) {
@@ -91,7 +97,22 @@ public class MenuBusquedaPasajero extends JPanel {
 	}
 	
 	public void agregarActionListeners() {
-		
+		MenuBusquedaPasajero contexto = this;
+		jb_siguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPanel m;
+				int fila = rp_pasajeros.jtable_resultados.getSelectedRow();
+				if(fila == -1) {
+					m = new MenuAltaPasajero(ventana_contenedora,encabezado,contexto);
+				}
+				else {
+					m = new MenuModificarPasajero(ventana_contenedora,encabezado);
+					//((MenuModificarPasajero) m).cargarPasajero(objetos_en_tabla.get(fila));
+				}
+				ventana_contenedora.setContentPane(m);
+				ventana_contenedora.setVisible(true);
+			}
+		});
 	}
 
 }
