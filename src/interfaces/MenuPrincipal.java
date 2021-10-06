@@ -136,15 +136,15 @@ public class MenuPrincipal extends JPanel {
 	private void agregarTabOrder() {
 		this.setFocusTraversalPolicy(new TabOrder(List.of(
 				jb_gestionar_pasajero,
+				jb_reservar_habitacion,
+				jb_ocupar_habitacion,
 				jb_facturar,
 				jb_ingresar_pago,
-				jb_ocupar_habitacion,
-				jb_reservar_habitacion,
 				jb_gestionar_responsable_pagos,
+				jb_cancelar_reserva,
+				jb_ingresar_nota_credito,
 				jb_listar_cheques,
 				jb_listar_ingresos,
-				jb_ingresar_nota_credito,
-				jb_cancelar_reserva,
 				jb_salir
 				)));
 		this.setFocusTraversalPolicyProvider(true);

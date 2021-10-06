@@ -15,17 +15,15 @@ public class TabOrder extends FocusTraversalPolicy {
 	
 	@Override
 	public Component getComponentAfter(Container aContainer, Component aComponent) {
-		int i;
-		if((i = componentes.indexOf(aComponent)) == componentes.size() - 1) return componentes.get(0);
+		int i = componentes.indexOf(aComponent);
 		if(i == -1) return componentes.get(0);
-		return componentes.get(i+1);
+		return componentes.get((i+1) % componentes.size());
 	}
 	@Override
 	public Component getComponentBefore(Container aContainer, Component aComponent) {
-		int i;
-		if((i = componentes.indexOf(aComponent)) == 0) return componentes.get(componentes.size()-1);
+		int i = componentes.indexOf(aComponent);
 		if(i == -1) return componentes.get(0);
-		return componentes.get(i-1);
+		return componentes.get((i-1 + componentes.size()) % componentes.size());
 	}
 	@Override
 	public Component getFirstComponent(Container aContainer) {
@@ -34,7 +32,7 @@ public class TabOrder extends FocusTraversalPolicy {
 
 	@Override
 	public Component getLastComponent(Container aContainer) {
-		return componentes.get(componentes.size());
+		return componentes.get(componentes.size()-1);
 	}
 
 	@Override
