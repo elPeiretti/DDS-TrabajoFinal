@@ -46,6 +46,7 @@ public class VentanaPrincipal extends JFrame {
 		encabezado.lbl_fecha.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
 		//MenuAutenticacion app = new MenuAutenticacion(this);
 		MenuPrincipal app = new MenuPrincipal(this,encabezado);
+		//MenuRegistrarPago app = new MenuRegistrarPago(this,encabezado);
 		//app.setEncabezado(encabezado);
 		setContentPane(app);
 	}

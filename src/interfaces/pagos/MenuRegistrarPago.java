@@ -1,6 +1,7 @@
 package interfaces.pagos;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -9,6 +10,7 @@ import com.toedter.calendar.JDateChooser;
 import interfaces.misc.Encabezado;
 import interfaces.misc.JTextFieldLimit;
 import interfaces.misc.ResultPane;
+import interfaces.misc.TabOrder;
 
 public class MenuRegistrarPago extends JPanel {
 
@@ -226,5 +228,28 @@ public class MenuRegistrarPago extends JPanel {
 		dc_fecha_cobro.setBounds(530,279,100,20);
 		add(dc_fecha_cobro);
 		
+		this.agregarTabOrder();
 	}
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				cb_medio_pago,
+				cb_moneda,
+				tf_cotiz,
+				tf_monto_recibido,
+				cb_tarj_deb,
+				cb_tarj_cred,
+				tf_nro_tarj,
+				tf_cvv,
+				tf_vencimiento,
+				cb_cuotas,
+				tf_nro_cheque,
+				tf_plaza,
+				cb_banco,
+				dc_fecha_cobro,
+				jb_agregar_pago,
+				jb_siguiente,
+				jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
+		}
 }
