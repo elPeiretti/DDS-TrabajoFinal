@@ -95,6 +95,15 @@ public class MenuBusquedaPasajero extends JPanel {
 		add(jtf_nombres);
 	
 		this.agregarActionListeners();
+		this.agregarTabOrder();
+	}
+	
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jtf_apellido, jtf_nombres, jcb_tipo_documento,
+				jtf_numero_documento, jb_buscar, jb_siguiente, jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
 	}
 	
 	public void agregarActionListeners() {

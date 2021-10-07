@@ -148,7 +148,8 @@ public class MenuPrincipal extends JPanel {
 				jb_salir
 				)));
 		this.setFocusTraversalPolicyProvider(true);
-		}
+	}
+	
 	private void agregarActionListeners() {
 		
 		jb_gestionar_pasajero.addActionListener(new ActionListener() {

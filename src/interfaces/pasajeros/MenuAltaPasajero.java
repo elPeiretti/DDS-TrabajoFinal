@@ -15,6 +15,8 @@ import interfaces.misc.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 
@@ -82,6 +84,7 @@ public class MenuAltaPasajero extends JPanel {
 	private HashMap<String,Boolean> campos_validos;
 	private JLabel lbl_error_nombres;
 	private JLabel lbl_error_cuit;
+	private boolean cuit_obligatorio = false;
 	
 	// fijar ventana contenedora a 640x620
 	public MenuAltaPasajero(JFrame ventana_contenedora, JPanel encabezado, MenuBusquedaPasajero estado_anterior) {
@@ -397,16 +400,35 @@ public class MenuAltaPasajero extends JPanel {
 		add(lbl_error_departamento);
 		
 		this.agregarActionListeners();
+		this.agregarTabOrder();
 		this.agregarListenersValidacion();
 		this.setCamposDefault();
+	}
+	
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jtf_apellido, jcb_tipo_documento, jtf_nombres, jtf_numero_documento,
+				jtf_cuit, jcb_factura, dc_nacimiento.getDateEditor().getUiComponent(),
+				jcb_pais, jcb_provincia,
+				jcb_ciudad, jtf_codigo_postal, jtf_calle, jtf_piso, jtf_departamento,
+				jtf_numero, jtf_telefono, jtf_email, jtf_ocupacion, jcb_nacionalidad,
+				jb_siguiente, jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
 	}
 	
 	private void agregarActionListeners() {
 		
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if (campos_validos.values().stream().filter(t->!t).collect(Collectors.toList()).size() != 0) {
+					indicarCamposIncompletos();
+					return;
+				}
+				
 				try {
-					// subir los datos a la BD
+					// llamar al gestor TODO
 					int opt = Mensaje.mensajeConfirmacion("¿Desea cargar otro pasajero?");
 					if (opt == 1) 
 						limpiarCampos();
@@ -432,6 +454,18 @@ public class MenuAltaPasajero extends JPanel {
 				}
 			}
 		});
+		
+		jcb_factura.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/** TODO
+				if( ((TipoDocumentoDAO)jcb_factura.getSelectedItem()).equals(Responsabe inscripto)
+					cuit_obligatorio = true;
+				else{
+					cuit_obligatorio = false;
+				}
+				**/
+			}
+		});
 	}
 	
 	private void limpiarCampos() {
@@ -453,19 +487,42 @@ public class MenuAltaPasajero extends JPanel {
 		//jcb_nacionalidad.setSelectedItem();
 	}
 	
+	private void indicarCamposIncompletos() {
+		if (jtf_apellido.getText().isBlank())
+			lbl_error_apellido.setText("Este campo no puede estar vacío.");
+		if (jtf_nombres.getText().isBlank())
+			lbl_error_nombres.setText("Este campo no puede estar vacío.");
+		if (jtf_calle.getText().isBlank())
+			lbl_error_calle.setText("Este campo no puede estar vacío.");
+		if (jtf_numero.getText().isBlank())
+			lbl_error_numero.setText("Este campo no puede estar vacío.");
+		if (jtf_ocupacion.getText().isBlank())
+			lbl_error_ocupacion.setText("Este campo no puede estar vacío.");
+		if (jtf_numero_documento.getText().isBlank())
+			lbl_error_numero_documento.setText("Este campo no puede estar vacío.");
+		if (jtf_codigo_postal.getText().isBlank())
+			lbl_error_codigo_postal.setText("Este campo no puede estar vacío.");
+		if (jtf_telefono.getText().isBlank())
+			lbl_error_telefono.setText("Este campo no puede estar vacío.");
+		
+		if(dc_nacimiento.getDate() == null)
+			lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
+	}
+	
 	private void inicializarMapa() {
 		campos_validos.put("apellido", false);
 		campos_validos.put("nombres", false);
-		campos_validos.put("cuit", false);
+		campos_validos.put("cuit", true);
+		campos_validos.put("nacimiento", false);
 		campos_validos.put("calle", false);
 		campos_validos.put("numero", false);
 		campos_validos.put("ocupacion", false);
 		campos_validos.put("numero documento", false);
 		campos_validos.put("codigo postal", false);
-		campos_validos.put("piso", false);
-		campos_validos.put("departamento", false);
+		campos_validos.put("piso", true);
+		//campos_validos.put("departamento", true);
 		campos_validos.put("telefono", false);
-		campos_validos.put("email", false);
+		campos_validos.put("email", true);
 	}
 	
 	private void agregarListenersValidacion() {
@@ -516,14 +573,34 @@ public class MenuAltaPasajero extends JPanel {
 			
 			public void focusLost(FocusEvent e) {
 				String data = jtf_cuit.getText();
-				
-				if(!data.matches("[0-9]*")) {
-					lbl_error_cuit.setText("El CUIT solo puede contener números.");
+				if(cuit_obligatorio && data.isBlank()) {
+					lbl_error_cuit.setText("Este campo no puede estar vacío.");
+					campos_validos.put("cuit", false);
+				}
+				if(!data.matches("([0-9]{11})?")) {
+					lbl_error_cuit.setText("El CUIT ingresado es inválido.");
 					campos_validos.put("cuit", false);
 				}
 				else {
 					campos_validos.put("cuit", true);
 					lbl_error_cuit.setText("");
+				}
+				
+			}
+		});
+		
+		dc_nacimiento.getDateEditor().getUiComponent().addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+
+				if (dc_nacimiento.getDate() == null){
+					lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
+					campos_validos.put("nacimiento", false);
+				}
+				else {
+					campos_validos.put("nacimiento", true);
+					lbl_error_nacimiento.setText("");
 				}
 				
 			}
@@ -588,6 +665,99 @@ public class MenuAltaPasajero extends JPanel {
 			}
 		});
 		
+		jtf_numero_documento.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_numero_documento.getText();
+				if (data.isBlank()){
+					lbl_error_numero_documento.setText("Este campo no puede estar vacío.");
+					campos_validos.put("numero documento", false);
+				}
+				else {
+					campos_validos.put("numero documento", true);
+					lbl_error_nombres.setText("");
+				}
+			}
+		});
+		
+		
+		jtf_codigo_postal.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_codigo_postal.getText();
+				if (data.isBlank()){
+					lbl_error_codigo_postal.setText("Este campo no puede estar vacío.");
+					campos_validos.put("codigo postal", false);
+				}
+				else if(!data.matches("[A-Z]*[0-9]+[A-Z]*")) {
+					lbl_error_codigo_postal.setText("El código postal posee un formato inválido.");
+					campos_validos.put("codigo postal", false);
+				}
+				else {
+					campos_validos.put("codigo postal", true);
+					lbl_error_codigo_postal.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_piso.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_piso.getText();
+				if(!data.matches("([0-9]|[1-9][0-9]|[1-9][0-9][0-9])?")) {
+					lbl_error_piso.setText("El piso posee un formato inválido.");
+					campos_validos.put("piso", false);
+				}
+				else {
+					campos_validos.put("piso", true);
+					lbl_error_piso.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_telefono.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_telefono.getText();
+				if (data.isBlank()){
+					lbl_error_telefono.setText("Este campo no puede estar vacío.");
+					campos_validos.put("telefono", false);
+				}
+				else if(!data.matches("(\\+)?([0-9]){7,15}")) {
+					lbl_error_telefono.setText("El teléfono posee un formato inválido.");
+					campos_validos.put("telefono", false);
+				}
+				else {
+					campos_validos.put("telefono", true);
+					lbl_error_telefono.setText("");
+				}
+				
+			}
+		});
+		
+		jtf_email.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {}
+			
+			public void focusLost(FocusEvent e) {
+				String data = jtf_email.getText();
+				
+				if(!data.matches("(^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$)?")) {
+					lbl_error_email.setText("El email posee un formato inválido.");
+					campos_validos.put("email", false);
+				}
+				else {
+					campos_validos.put("email", true);
+					lbl_error_email.setText("");
+				}
+				
+			}
+		});
 		
 	}
 }
