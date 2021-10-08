@@ -1,12 +1,14 @@
 package com.tp.interfaces.pagos;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.swing.*;
 
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.JTextFieldLimit;
 import com.tp.interfaces.misc.ResultPane;
+import com.tp.interfaces.misc.TabOrder;
 
 public class MenuBusquedaFactura extends JPanel {
 
@@ -55,6 +57,20 @@ public class MenuBusquedaFactura extends JPanel {
 		rp_facturas = new ResultPane();
 		rp_facturas.setBounds(10, 230, 620, 180);
 		add(rp_facturas);
+		
+		this.agregarTabOrder();
+		
 	}
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jtf_num_hab,
+				jb_buscar,
+				jb_siguiente,
+				jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
+		}
+	
+	
 }
 
