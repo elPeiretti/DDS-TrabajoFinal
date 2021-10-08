@@ -20,5 +20,7 @@
         <mapping class="com.tp.dominio.Provincia"></mapping>
         <mapping class="com.tp.dominio.Ciudad"></mapping>
         <mapping class="com.tp.dominio.Direccion"></mapping>
+        <mapping class="com.tp.dominio.Factura"></mapping>
+        <mapping class="com.tp.dominio.Pago"></mapping>
     </session-factory>
 </hibernate-configuration>
