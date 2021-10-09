@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class Habitacion {
 	@Column (name =  "numero")
 	private String numero;
+	@Enumerated(EnumType.STRING)
 	@Column (name =  "estado")
 	private EstadoHabitacion estado;
 	@ManyToOne

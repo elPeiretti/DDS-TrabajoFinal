@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Table(name = "tpdds.factura")
 
 public class Factura {
+	@Enumerated(EnumType.STRING)
 	@Column (name = "tipo_factura")
 	private TipoFactura tipo;
 	@Column (name =  "importe_factura")

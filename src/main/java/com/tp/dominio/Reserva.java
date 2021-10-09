@@ -12,6 +12,7 @@ public class Reserva {
 	private Instant fechaIngreso;
 	@Column (name = "fecha_egreso")
 	private Instant fechaEgreso;
+	@Enumerated(EnumType.STRING)
 	@Column (name = "estado")
 	private EstadoReserva estado;
 	@Id

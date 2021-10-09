@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class NotaDeCredito {
 	@Column (name = "fecha_de_emision")
 	private Instant fechaDeEmision;
+	@Enumerated(EnumType.STRING)
 	@Column (name = "tipo_nota")
 	private TipoNotaDeCredito tipo;
 	@Id

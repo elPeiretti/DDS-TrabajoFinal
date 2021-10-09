@@ -14,6 +14,7 @@ public class Cheque extends MedioDePago {
 	private String plaza;
 	@Column (name =  "fecha_cobro")
 	private Instant fechaCobro;
+	@Enumerated(EnumType.STRING)
 	@Column (name =  "estado")
 	private EstadoCheque estado;
 	@ManyToOne
