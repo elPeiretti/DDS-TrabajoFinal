@@ -19,10 +19,10 @@ public class Reserva {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "id_reserva")
 	private Integer idReserva;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
 	private Habitacion habitacion;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_responsable_reserva", referencedColumnName = "id_responsable_reserva")
 	private ResponsableReserva responsable;
 }

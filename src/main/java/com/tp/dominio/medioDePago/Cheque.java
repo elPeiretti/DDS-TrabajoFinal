@@ -17,7 +17,7 @@ public class Cheque extends MedioDePago {
 	@Enumerated(EnumType.STRING)
 	@Column (name =  "estado")
 	private EstadoCheque estado;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_banco", referencedColumnName = "id_banco")
 	private Banco banco;
 }

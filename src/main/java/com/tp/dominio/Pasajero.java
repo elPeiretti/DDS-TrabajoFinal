@@ -30,13 +30,13 @@ public class Pasajero {
 	private String telefono;
 	@Column (name = "ocupacion")
 	private String ocupacion;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_tipo_documento", referencedColumnName = "id_tipo_documento")
 	private TipoDocumento tipoDocumento;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_posicion_iva", referencedColumnName = "id_posicion_iva")
 	private PosicionIVA posicionIVA;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_direccion", referencedColumnName = "id_direccion")
 	private Direccion direccion;
 	

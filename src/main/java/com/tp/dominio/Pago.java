@@ -22,10 +22,10 @@ public class Pago {
 	private Double vuelto;//mal
 	@Column (name = "fecha_de_realizacion")
 	private Instant fechaDeRealizacion;
-	@OneToOne
+	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_factura", referencedColumnName = "id_factura")
 	private Factura factura;
-	@OneToMany
+	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name =  "id_pago", referencedColumnName = "id_pago")
 	private List<MedioDePago> medio;
 }

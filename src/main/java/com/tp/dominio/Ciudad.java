@@ -14,9 +14,14 @@ public class Ciudad {
 	@Column (name = "id_ciudad")
 	private Integer idCiudad; 
 	
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_provincia", referencedColumnName = "id_provincia")
 	private Provincia provincia;
+	
+	public Ciudad(String nombre, Provincia provincia) {
+		this.nombre = nombre;
+		this.provincia = provincia;
+	}
 	
 	public Provincia getProvincia() {
 		return provincia;

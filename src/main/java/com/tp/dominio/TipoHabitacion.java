@@ -15,7 +15,7 @@ public class TipoHabitacion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id_tipo_habitacion")
 	private Integer idTipoHabitacion;
-	@OneToMany
+	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_tipo_habitacion", referencedColumnName = "id_tipo_habitacion")
 	private Collection<CostoPorNoche> costo;
 }

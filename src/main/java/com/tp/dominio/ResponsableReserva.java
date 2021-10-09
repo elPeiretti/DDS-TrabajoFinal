@@ -18,6 +18,6 @@ public class ResponsableReserva {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "id_responsable_reserva")
 	private Integer idResponsableReserva;
-	@OneToMany (mappedBy = "responsable")
+	@OneToMany (mappedBy = "responsable", cascade = CascadeType.ALL) 
 	private List<Reserva> reservas;
 }

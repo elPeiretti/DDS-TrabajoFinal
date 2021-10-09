@@ -16,7 +16,7 @@ public class TarjetaDeDebito extends MedioDePago {
 	private Instant fechaVencimiento;
 	@Column (name = "cvv")
 	private String cvv;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_tipo_tarjeta", referencedColumnName = "id_tipo_tarjeta")
 	private TipoTarjeta tipo;
 }

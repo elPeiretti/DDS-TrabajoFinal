@@ -2,17 +2,18 @@ package com.tp.dominio.medioDePago;
 
 import javax.persistence.*;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class MedioDePago {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue (strategy = GenerationType.TABLE)
 	@Column (name = "id_medio")
 	private Integer idMedio;
 	
 	@Column (name = "monto")
 	private Double monto;
 	
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_moneda", referencedColumnName = "id_moneda")
 	private Moneda moneda;
 	

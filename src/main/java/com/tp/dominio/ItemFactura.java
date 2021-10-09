@@ -12,7 +12,7 @@ public class ItemFactura {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "id_item_factura")
 	private Integer idItemFactura;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_servicio", referencedColumnName = "id_servicio")
 	private Servicio servicio;
 }

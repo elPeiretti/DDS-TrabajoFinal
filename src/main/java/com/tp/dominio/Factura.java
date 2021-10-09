@@ -23,18 +23,18 @@ public class Factura {
 	private Integer idFactura;
 	@Column (name =  "total_iva")
 	private Double totalIVA;
-	@OneToOne (mappedBy = "factura")
+	@OneToOne (mappedBy = "factura", cascade = CascadeType.ALL)
 	private Pago pago;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name =  "id_responsable_tercero", referencedColumnName = "id_responsable_tercero")
 	private ResponsablePagoTercero responsableTercero;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name =  "id_pasajero", referencedColumnName = "id_pasajero")
 	private Pasajero responsablePasajero;
-	@OneToMany
+	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name =  "id_factura", referencedColumnName = "id_factura")
 	private Collection<ItemFactura> items;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name =  "id_nota", referencedColumnName = "id_nota")
 	private NotaDeCredito notaCredito;
 }

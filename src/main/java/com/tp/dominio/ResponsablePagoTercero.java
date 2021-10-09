@@ -16,7 +16,7 @@ public class ResponsablePagoTercero {
 	private String cuit;
 	@Column (name = "telefono")
 	private String telefono;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_direccion", referencedColumnName = "id_direccion")
 	private Direccion direccion;
 }

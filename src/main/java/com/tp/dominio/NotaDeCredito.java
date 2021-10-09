@@ -21,10 +21,10 @@ public class NotaDeCredito {
 	private Double monto;//mal
 	@Column (name = "total_iva")
 	private Double totalIVA;//mal
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_pasajero", referencedColumnName = "id_pasajero")
 	private Pasajero pasajeroResponsable;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_responsable_tercero", referencedColumnName = "id_responsable_tercero")
 	private ResponsablePagoTercero terceroResponsable;
 }

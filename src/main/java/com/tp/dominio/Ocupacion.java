@@ -17,13 +17,13 @@ public class Ocupacion {
 	private Instant fechaIngreso;
 	@Column (name = "fecha_egreso")
 	private Instant fechaEgreso;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
 	private Habitacion habitacion;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_pasajero_responsable", referencedColumnName = "id_pasajero")
 	private Pasajero responsable;
-	@ManyToMany
+	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "acompaniante",
 			joinColumns =  @JoinColumn(name = "id_ocupacion", referencedColumnName = "id_ocupacion"),

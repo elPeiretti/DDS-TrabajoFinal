@@ -20,7 +20,7 @@ public class Direccion {
 	private Integer piso;
 	@Column(name = "dpto")
 	private String nroDepartamento;
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_ciudad", referencedColumnName = "id_ciudad")
 	private Ciudad ciudad;
 	
