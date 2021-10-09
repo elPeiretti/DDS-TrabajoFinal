@@ -2,8 +2,11 @@ package com.tp.dominio;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.*;
+
+import com.tp.dominio.medioDePago.MedioDePago;
 
 @Entity
 @Table(name = "tpdds.pago")
@@ -22,4 +25,7 @@ public class Pago {
 	@OneToOne
 	@JoinColumn(name = "id_factura", referencedColumnName = "id_factura")
 	private Factura factura;
+	@OneToMany
+	@JoinColumn (name =  "id_pago", referencedColumnName = "id_pago")
+	private List<MedioDePago> medio;
 }

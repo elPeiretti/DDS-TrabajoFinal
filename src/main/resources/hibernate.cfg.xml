@@ -32,6 +32,11 @@
         <mapping class="com.tp.dominio.PosicionIVA"></mapping>
         <mapping class="com.tp.dominio.medioDePago.tarjeta.TipoTarjeta"></mapping>
         <mapping class="com.tp.dominio.medioDePago.Banco"></mapping>
-        
+        <mapping class="com.tp.dominio.medioDePago.Moneda"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.MedioDePago"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.Cheque"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.Efectivo"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.tarjeta.TarjetaDeCredito"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.tarjeta.TarjetaDeDebito"></mapping>
     </session-factory>
 </hibernate-configuration>
