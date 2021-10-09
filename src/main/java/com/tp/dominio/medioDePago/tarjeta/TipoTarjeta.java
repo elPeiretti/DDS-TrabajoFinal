@@ -1,6 +1,15 @@
 package com.tp.dominio.medioDePago.tarjeta;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "tpdds.tipo_tarjeta")
+
 public class TipoTarjeta {
+	@Column (name = "tipo")
 	private String tipo;
-	private String idTipoTarjeta;
+	@Id
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column (name = "id_tipo_tarjeta")
+	private Integer idTipoTarjeta;
 }

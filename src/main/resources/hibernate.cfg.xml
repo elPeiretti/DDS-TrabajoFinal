@@ -22,5 +22,16 @@
         <mapping class="com.tp.dominio.Direccion"></mapping>
         <mapping class="com.tp.dominio.Factura"></mapping>
         <mapping class="com.tp.dominio.Pago"></mapping>
+        <mapping class="com.tp.dominio.Habitacion"></mapping>
+        <mapping class="com.tp.dominio.Reserva"></mapping>
+        <mapping class="com.tp.dominio.ResponsableReserva"></mapping>
+        <mapping class="com.tp.dominio.NotaDeCredito"></mapping>
+        <mapping class="com.tp.dominio.ResponsablePagoTercero"></mapping>
+        <mapping class="com.tp.dominio.Ocupacion"></mapping>
+        <mapping class="com.tp.dominio.Pasajero"></mapping>
+        <mapping class="com.tp.dominio.PosicionIVA"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.tarjeta.TipoTarjeta"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.Banco"></mapping>
+        
     </session-factory>
 </hibernate-configuration>
