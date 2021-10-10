@@ -5,6 +5,7 @@ import javax.swing.*;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.List;
 
 public class MenuConfirmarReserva extends JPanel {
 
@@ -102,6 +103,19 @@ public class MenuConfirmarReserva extends JPanel {
 		lbl_error_telefono.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lbl_error_telefono.setBounds(68, 200, 225, 10);
 		add(lbl_error_telefono);
+		
+		this.agregarTabOrder();
 	}
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jtf_apellido,
+				jtf_nombres,
+				jtf_telefono,
+				btn_aceptar,
+				btn_rechazar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
+		}
+	
 
 }

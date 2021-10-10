@@ -3,6 +3,7 @@ package com.tp.interfaces.habitaciones.ocupaciones;
 import javax.swing.*;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
+import java.util.List;
 
 public class MenuBuscarAcompaniantes extends JPanel {
 
@@ -88,5 +89,19 @@ public class MenuBuscarAcompaniantes extends JPanel {
 		jb_cancelar = new JButton("Cancelar");
 		jb_cancelar.setBounds(83, 640, 100, 30);
 		add(jb_cancelar);
+		
+		this.agregarTabOrder();
 	}	
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jtf_apellido,
+				jtf_nombres,
+				jcb_tipo_documento,
+				jtf_numero_documento,
+				jb_buscar,
+				jb_siguiente,
+				jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
+		}
 }

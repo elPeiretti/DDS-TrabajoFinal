@@ -1,12 +1,14 @@
 package com.tp.interfaces.facturacion;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.swing.*;
 
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.JTextFieldLimit;
 import com.tp.interfaces.misc.ResultPane;
+import com.tp.interfaces.misc.TabOrder;
 
 public class MenuFacturar extends JPanel {
 
@@ -93,5 +95,19 @@ public class MenuFacturar extends JPanel {
 		lbl_raz_social.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_raz_social.setBounds(420, 456, 130, 14);
 		add(lbl_raz_social);
+		
+		this.agregarTabOrder();
 	}
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jtf_num_hab,
+				tf_salida,
+				jb_buscar,
+				chbx_tercero,
+				tf_cuit,
+				jb_siguiente,
+				jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
+		}
 }
