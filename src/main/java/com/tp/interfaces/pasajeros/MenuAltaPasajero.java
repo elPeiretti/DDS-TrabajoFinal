@@ -1,6 +1,8 @@
 package com.tp.interfaces.pasajeros;
 
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.MaskFormatter;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
@@ -14,6 +16,13 @@ import com.tp.dominio.TipoDocumento;
 import com.tp.interfaces.misc.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,71 +31,71 @@ import java.util.stream.Collectors;
 
 public class MenuAltaPasajero extends JPanel {
 
-	private JFrame ventana_contenedora;
-	private JTextField jtf_ocupacion;
-	private JPanel encabezado;
-	private JDateChooser dc_nacimiento;
-	private JTextField jtf_numero;
-	private JTextField jtf_cuit;
-	private JTextField jtf_nombres;
-	private JTextField jtf_apellido;
-	private JTextField jtf_telefono;
-	private JTextField jtf_piso;
-	private JTextField jtf_departamento;
-	private JTextField jtf_codigo_postal;
-	private JTextField jtf_email;
-	private JComboBox<Pais> jcb_pais;
-	private JComboBox<Ciudad> jcb_ciudad;
-	private JComboBox<Provincia> jcb_provincia;
-	private JComboBox<TipoDocumento> jcb_tipo_documento;
-	private JComboBox<PosicionIVA> jcb_factura;
-	private JLabel lbl_ocupacion;
-	private JButton jb_cancelar;
-	private JButton jb_siguiente;
-	private JComboBox jcb_nacionalidad; //ver comentario en Pasajero
-	private JLabel lbl_nacionalidad;
-	private JLabel lbl_error_ocupacion;
-	private JLabel lbl_numero;
-	private JLabel lbl_error_numero;
-	private JLabel lbl_calle;
-	private JTextField jtf_calle;
-	private JLabel lbl_error_calle;
-	private JLabel lbl_ciudad;
-	private JLabel lbl_error_ciudad;
-	private JLabel lbl_pais;
-	private JLabel lbl_error_pais;
-	private JLabel lbl_nacimiento;
-	private JLabel lbl_error_nacimiento;
-	private JLabel lbl_cuit;
-	private JLabel lbl_apellido;
-	private JLabel lbl_error_apellido;
-	private JLabel lbl_telefono;
-	private JLabel lbl_piso;
-	private JLabel lbl_departamento;
-	private JLabel lbl_factura;
-	private JLabel lbl_numero_documento;
-	private JTextField jtf_numero_documento;
-	private JLabel lbl_tipo_documento;
-	private JLabel lbl_email;
-	private JLabel lbl_codigo_postal;
-	private JLabel lbl_provincia;
-	private JLabel lbl_error_tipo_documento;
-	private JLabel lbl_error_numero_documento;
-	private JLabel lbl_error_factura;
-	private JLabel lbl_error_provincia;
-	private JLabel lbl_error_codigo_postal;
-	private JLabel lbl_error_piso;
-	private JLabel lbl_error_telefono;
-	private JLabel lbl_error_email;
-	private JLabel lbl_error_nacionalidad;
-	private MenuBusquedaPasajero menu_anterior;
-	private HashMap<String,Boolean> campos_validos;
-	private JLabel lbl_error_nombres;
-	private JLabel lbl_error_cuit;
-	private boolean cuit_obligatorio = false;
+	protected JFrame ventana_contenedora;
+	protected JTextField jtf_ocupacion;
+	protected Encabezado encabezado;
+	protected JDateChooser dc_nacimiento;
+	protected JTextField jtf_numero;
+	protected JFormattedTextField jftf_cuit;
+	protected JTextField jtf_nombres;
+	protected JTextField jtf_apellido;
+	protected JTextField jtf_telefono;
+	protected JTextField jtf_piso;
+	protected JTextField jtf_departamento;
+	protected JTextField jtf_codigo_postal;
+	protected JTextField jtf_email;
+	protected JComboBox<Pais> jcb_pais;
+	protected JComboBox<Ciudad> jcb_ciudad;
+	protected JComboBox<Provincia> jcb_provincia;
+	protected JComboBox<TipoDocumento> jcb_tipo_documento;
+	protected JComboBox<PosicionIVA> jcb_factura;
+	protected JLabel lbl_ocupacion;
+	protected JButton jb_cancelar;
+	protected JButton jb_siguiente;
+	protected JComboBox jcb_nacionalidad; //ver comentario en Pasajero
+	protected JLabel lbl_nacionalidad;
+	protected JLabel lbl_error_ocupacion;
+	protected JLabel lbl_numero;
+	protected JLabel lbl_error_numero;
+	protected JLabel lbl_calle;
+	protected JTextField jtf_calle;
+	protected JLabel lbl_error_calle;
+	protected JLabel lbl_ciudad;
+	protected JLabel lbl_error_ciudad;
+	protected JLabel lbl_pais;
+	protected JLabel lbl_error_pais;
+	protected JLabel lbl_nacimiento;
+	protected JLabel lbl_error_nacimiento;
+	protected JLabel lbl_cuit;
+	protected JLabel lbl_apellido;
+	protected JLabel lbl_error_apellido;
+	protected JLabel lbl_telefono;
+	protected JLabel lbl_piso;
+	protected JLabel lbl_departamento;
+	protected JLabel lbl_factura;
+	protected JLabel lbl_numero_documento;
+	protected JTextField jtf_numero_documento;
+	protected JLabel lbl_tipo_documento;
+	protected JLabel lbl_email;
+	protected JLabel lbl_codigo_postal;
+	protected JLabel lbl_provincia;
+	protected JLabel lbl_error_tipo_documento;
+	protected JLabel lbl_error_numero_documento;
+	protected JLabel lbl_error_factura;
+	protected JLabel lbl_error_provincia;
+	protected JLabel lbl_error_codigo_postal;
+	protected JLabel lbl_error_piso;
+	protected JLabel lbl_error_telefono;
+	protected JLabel lbl_error_email;
+	protected JLabel lbl_error_nacionalidad;
+	protected MenuBusquedaPasajero menu_anterior;
+	protected HashMap<String,Boolean> campos_validos;
+	protected JLabel lbl_error_nombres;
+	protected JLabel lbl_error_cuit;
+	protected boolean cuit_obligatorio = false;
 	
 	// fijar ventana contenedora a 640x620
-	public MenuAltaPasajero(JFrame ventana_contenedora, JPanel encabezado, MenuBusquedaPasajero estado_anterior) {
+	public MenuAltaPasajero(JFrame ventana_contenedora, Encabezado encabezado, MenuBusquedaPasajero estado_anterior) {
 		setBackground(Color.WHITE);
 		this.menu_anterior = estado_anterior;
 		this.ventana_contenedora = ventana_contenedora;
@@ -148,6 +157,7 @@ public class MenuAltaPasajero extends JPanel {
 		
 		dc_nacimiento = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		dc_nacimiento.setBounds(128,277,122,20);
+		dc_nacimiento.setMaxSelectableDate(new Date());
 		add(dc_nacimiento);
 		
 		lbl_error_ocupacion = new JLabel("");
@@ -222,11 +232,19 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_cuit.setBounds(23, 238, 84, 14);
 		add(lbl_cuit);
 		
-		jtf_cuit = new JTextField();
-		jtf_cuit.setColumns(10);
-		jtf_cuit.setBounds(128, 235, 122, 20);
-		jtf_cuit.setDocument(new JTextFieldLimit(11));
-		add(jtf_cuit);
+		jftf_cuit = new JFormattedTextField();
+		jftf_cuit.setColumns(10);
+		jftf_cuit.setBounds(128, 235, 122, 20);
+		add(jftf_cuit);
+		try {
+			MaskFormatter mf = new MaskFormatter("##-########-#");
+			mf.setPlaceholderCharacter('_');
+			mf.install(jftf_cuit);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		lbl_error_cuit = new JLabel("");
 		lbl_error_cuit.setForeground(Color.RED);
@@ -401,7 +419,7 @@ public class MenuAltaPasajero extends JPanel {
 	private void agregarTabOrder() {
 		this.setFocusTraversalPolicy(new TabOrder(List.of(
 				jtf_apellido, jcb_tipo_documento, jtf_nombres, jtf_numero_documento,
-				jtf_cuit, jcb_factura, dc_nacimiento.getDateEditor().getUiComponent(),
+				jftf_cuit, jcb_factura, dc_nacimiento.getDateEditor().getUiComponent(),
 				jcb_pais, jcb_provincia,
 				jcb_ciudad, jtf_codigo_postal, jtf_calle, jtf_piso, jtf_departamento,
 				jtf_numero, jtf_telefono, jtf_email, jtf_ocupacion, jcb_nacionalidad,
@@ -480,7 +498,7 @@ public class MenuAltaPasajero extends JPanel {
 		//jcb_nacionalidad.setSelectedItem();
 	}
 	
-	private void indicarCamposIncompletos() {
+	protected void indicarCamposIncompletos() {
 		if (jtf_apellido.getText().isBlank())
 			lbl_error_apellido.setText("Este campo no puede estar vacío.");
 		if (jtf_nombres.getText().isBlank())
@@ -511,7 +529,7 @@ public class MenuAltaPasajero extends JPanel {
 		campos_validos.put("numero", false);
 		campos_validos.put("ocupacion", false);
 		campos_validos.put("numero documento", false);
-		campos_validos.put("codigo postal", false);
+		campos_validos.put("codigo postal", true);
 		campos_validos.put("piso", true);
 		//campos_validos.put("departamento", true);
 		campos_validos.put("telefono", false);
@@ -561,16 +579,16 @@ public class MenuAltaPasajero extends JPanel {
 			}
 		});
 		
-		jtf_cuit.addFocusListener(new FocusListener() {
+		jftf_cuit.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {}
 			
 			public void focusLost(FocusEvent e) {
-				String data = jtf_cuit.getText();
-				if(cuit_obligatorio && data.isBlank()) {
+				String data = jftf_cuit.getText();
+				if(cuit_obligatorio && data.equals("__-________-_")) {
 					lbl_error_cuit.setText("Este campo no puede estar vacío.");
 					campos_validos.put("cuit", false);
 				}
-				if(!data.matches("([0-9]{11})?")) {
+				else if(!data.matches("__-________-_|[0-9][0-9]-[0-9]{8}-[0-9]")) {
 					lbl_error_cuit.setText("El CUIT ingresado es invalido.");
 					campos_validos.put("cuit", false);
 				}
@@ -596,6 +614,15 @@ public class MenuAltaPasajero extends JPanel {
 					lbl_error_nacimiento.setText("");
 				}
 				
+			}
+		});
+		
+		dc_nacimiento.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent e) {
+				if("date".equals(e.getPropertyName())) {
+					campos_validos.put("nacimiento", true);
+					lbl_error_nacimiento.setText("");
+				}
 			}
 		});
 		

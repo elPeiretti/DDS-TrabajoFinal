@@ -116,7 +116,7 @@ public class MenuBusquedaPasajero extends JPanel {
 					m = new MenuAltaPasajero(ventana_contenedora,encabezado,contexto);
 				}
 				else {
-					m = new MenuModificarPasajero(ventana_contenedora,encabezado);
+					m = new MenuModificarPasajero(ventana_contenedora,encabezado,contexto);
 					//((MenuModificarPasajero) m).cargarPasajero(objetos_en_tabla.get(fila));
 				}
 				ventana_contenedora.setContentPane(m);
