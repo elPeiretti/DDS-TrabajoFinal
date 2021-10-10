@@ -76,7 +76,6 @@ public class MenuAltaPasajero extends JPanel {
 	private JLabel lbl_error_provincia;
 	private JLabel lbl_error_codigo_postal;
 	private JLabel lbl_error_piso;
-	private JLabel lbl_error_departamento;
 	private JLabel lbl_error_telefono;
 	private JLabel lbl_error_email;
 	private JLabel lbl_error_nacionalidad;
@@ -117,7 +116,7 @@ public class MenuAltaPasajero extends JPanel {
 		jcb_factura.setBounds(495, 235, 122, 20);
 		add(jcb_factura);
 		
-		lbl_ocupacion = new JLabel("<html>Ocupacion <font color='red'>(*)</font>:</html>");
+		lbl_ocupacion = new JLabel("<html>Ocupación <font color='red'>(*)</font>:</html>");
 		lbl_ocupacion.setBounds(23, 489, 84, 14);
 		add(lbl_ocupacion);
 		
@@ -360,7 +359,7 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_piso = new JLabel("");
 		lbl_error_piso.setForeground(Color.RED);
 		lbl_error_piso.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_piso.setBounds(334, 385, 91, 10);
+		lbl_error_piso.setBounds(334, 385, 157, 10);
 		add(lbl_error_piso);
 		
 		lbl_error_codigo_postal = new JLabel("");
@@ -393,12 +392,6 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_tipo_documento.setBounds(334, 175, 283, 10);
 		add(lbl_error_tipo_documento);
 		
-		lbl_error_departamento = new JLabel("");
-		lbl_error_departamento.setForeground(Color.RED);
-		lbl_error_departamento.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_departamento.setBounds(438, 385, 179, 10);
-		add(lbl_error_departamento);
-		
 		this.agregarActionListeners();
 		this.agregarTabOrder();
 		this.agregarListenersValidacion();
@@ -429,7 +422,7 @@ public class MenuAltaPasajero extends JPanel {
 				
 				try {
 					// llamar al gestor TODO
-					int opt = Mensaje.mensajeConfirmacion("�Desea cargar otro pasajero?");
+					int opt = Mensaje.mensajeConfirmacion("¿Desea cargar otro pasajero?");
 					if (opt == 1) 
 						limpiarCampos();
 					else {
@@ -447,7 +440,7 @@ public class MenuAltaPasajero extends JPanel {
 		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int opt = Mensaje.mensajeConfirmacion("�Desea cancelar el alta del pasajero?");
+				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar el alta del pasajero?");
 				if (opt == 1) { 
 					ventana_contenedora.setContentPane(menu_anterior);
 					ventana_contenedora.setVisible(true);
@@ -489,24 +482,24 @@ public class MenuAltaPasajero extends JPanel {
 	
 	private void indicarCamposIncompletos() {
 		if (jtf_apellido.getText().isBlank())
-			lbl_error_apellido.setText("Este campo no puede estar vac�o.");
+			lbl_error_apellido.setText("Este campo no puede estar vacío.");
 		if (jtf_nombres.getText().isBlank())
-			lbl_error_nombres.setText("Este campo no puede estar vac�o.");
+			lbl_error_nombres.setText("Este campo no puede estar vacío.");
 		if (jtf_calle.getText().isBlank())
-			lbl_error_calle.setText("Este campo no puede estar vac�o.");
+			lbl_error_calle.setText("Este campo no puede estar vacío.");
 		if (jtf_numero.getText().isBlank())
-			lbl_error_numero.setText("Este campo no puede estar vac�o.");
+			lbl_error_numero.setText("Este campo no puede estar vacío.");
 		if (jtf_ocupacion.getText().isBlank())
-			lbl_error_ocupacion.setText("Este campo no puede estar vac�o.");
+			lbl_error_ocupacion.setText("Este campo no puede estar vacío.");
 		if (jtf_numero_documento.getText().isBlank())
-			lbl_error_numero_documento.setText("Este campo no puede estar vac�o.");
+			lbl_error_numero_documento.setText("Este campo no puede estar vacío.");
 		if (jtf_codigo_postal.getText().isBlank())
-			lbl_error_codigo_postal.setText("Este campo no puede estar vac�o.");
+			lbl_error_codigo_postal.setText("Este campo no puede estar vacío.");
 		if (jtf_telefono.getText().isBlank())
-			lbl_error_telefono.setText("Este campo no puede estar vac�o.");
+			lbl_error_telefono.setText("Este campo no puede estar vacío.");
 		
 		if(dc_nacimiento.getDate() == null)
-			lbl_error_nacimiento.setText("Este campo no puede estar vac�o.");
+			lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
 	}
 	
 	private void inicializarMapa() {
@@ -532,10 +525,10 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_apellido.getText();
 				if (data.isBlank()){
-					lbl_error_apellido.setText("Este campo no puede estar vac�o.");
+					lbl_error_apellido.setText("Este campo no puede estar vacío.");
 					campos_validos.put("apellido", false);
 				}
-				else if(!data.matches("^[a-zA-Z�-�\\u00f1\\u00d1]+(\\s*[a-zA-Z�-�\\u00f1\\u00d1]*)*[a-zA-Z�-�\\u00f1\\u00d1]*$")) {
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) {
 					lbl_error_apellido.setText("El apellido solo puede contener letras.");
 					campos_validos.put("apellido", false);
 				}
@@ -553,10 +546,10 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_nombres.getText();
 				if (data.isBlank()){
-					lbl_error_nombres.setText("Este campo no puede estar vac�o.");
+					lbl_error_nombres.setText("Este campo no puede estar vacío.");
 					campos_validos.put("nombres", false);
 				}
-				else if(!data.matches("^[a-zA-Z�-�\\u00f1\\u00d1]+(\\s*[a-zA-Z�-�\\u00f1\\u00d1]*)*[a-zA-Z�-�\\u00f1\\u00d1]*$")) {
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) {
 					lbl_error_nombres.setText("Los nombres solo pueden contener letras.");
 					campos_validos.put("nombres", false);
 				}
@@ -574,11 +567,11 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_cuit.getText();
 				if(cuit_obligatorio && data.isBlank()) {
-					lbl_error_cuit.setText("Este campo no puede estar vac�o.");
+					lbl_error_cuit.setText("Este campo no puede estar vacío.");
 					campos_validos.put("cuit", false);
 				}
 				if(!data.matches("([0-9]{11})?")) {
-					lbl_error_cuit.setText("El CUIT ingresado es inv�lido.");
+					lbl_error_cuit.setText("El CUIT ingresado es invalido.");
 					campos_validos.put("cuit", false);
 				}
 				else {
@@ -595,7 +588,7 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 
 				if (dc_nacimiento.getDate() == null){
-					lbl_error_nacimiento.setText("Este campo no puede estar vac�o.");
+					lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
 					campos_validos.put("nacimiento", false);
 				}
 				else {
@@ -612,16 +605,16 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_calle.getText();
 				if (data.isBlank()){
-					lbl_error_calle.setText("Este campo no puede estar vac�o.");
+					lbl_error_calle.setText("Este campo no puede estar vacío.");
 					campos_validos.put("calle", false);
 				}
-				else if(!data.matches("^[a-zA-Z�-�\\u00f1\\u00d1]+(\\s*[a-zA-Z�-�\\u00f1\\u00d1]*)*[a-zA-Z�-�\\u00f1\\u00d1]*$")) {
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) {
 					lbl_error_calle.setText("La calle solo puede contener letras.");
 					campos_validos.put("calle", false);
 				}
 				else {
 					campos_validos.put("calle", true);
-					lbl_error_nombres.setText("");
+					lbl_error_calle.setText("");
 				}
 				
 			}
@@ -633,11 +626,11 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_numero.getText();
 				if (data.isBlank()){
-					lbl_error_numero.setText("Este campo no puede estar vac�o.");
+					lbl_error_numero.setText("Este campo no puede estar vacío.");
 					campos_validos.put("numero", false);
 				}
 				else if(!data.matches("[0-9]+")) {
-					lbl_error_numero.setText("El n�mero de la calle debe ser un n�mero.");
+					lbl_error_numero.setText("El número de la calle debe ser un número.");
 					campos_validos.put("numero", false);
 				}
 				else {
@@ -654,7 +647,7 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_ocupacion.getText();
 				if (data.isBlank()){
-					lbl_error_ocupacion.setText("Este campo no puede estar vac�o.");
+					lbl_error_ocupacion.setText("Este campo no puede estar vacío.");
 					campos_validos.put("ocupacion", false);
 				}
 				else {
@@ -671,7 +664,7 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_numero_documento.getText();
 				if (data.isBlank()){
-					lbl_error_numero_documento.setText("Este campo no puede estar vac�o.");
+					lbl_error_numero_documento.setText("Este campo no puede estar vacío.");
 					campos_validos.put("numero documento", false);
 				}
 				else {
@@ -688,11 +681,11 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_codigo_postal.getText();
 				if (data.isBlank()){
-					lbl_error_codigo_postal.setText("Este campo no puede estar vac�o.");
+					lbl_error_codigo_postal.setText("Este campo no puede estar vacío.");
 					campos_validos.put("codigo postal", false);
 				}
 				else if(!data.matches("[A-Z]*[0-9]+[A-Z]*")) {
-					lbl_error_codigo_postal.setText("El c�digo postal posee un formato inv�lido.");
+					lbl_error_codigo_postal.setText("El código postal posee un formato invalido.");
 					campos_validos.put("codigo postal", false);
 				}
 				else {
@@ -709,7 +702,7 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_piso.getText();
 				if(!data.matches("([0-9]|[1-9][0-9]|[1-9][0-9][0-9])?")) {
-					lbl_error_piso.setText("El piso posee un formato inv�lido.");
+					lbl_error_piso.setText("El piso posee un formato invalido.");
 					campos_validos.put("piso", false);
 				}
 				else {
@@ -726,11 +719,11 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_telefono.getText();
 				if (data.isBlank()){
-					lbl_error_telefono.setText("Este campo no puede estar vac�o.");
+					lbl_error_telefono.setText("Este campo no puede estar vacío.");
 					campos_validos.put("telefono", false);
 				}
 				else if(!data.matches("(\\+)?([0-9]){7,15}")) {
-					lbl_error_telefono.setText("El tel�fono posee un formato inv�lido.");
+					lbl_error_telefono.setText("El teléfono posee un formato invalido.");
 					campos_validos.put("telefono", false);
 				}
 				else {
@@ -747,8 +740,8 @@ public class MenuAltaPasajero extends JPanel {
 			public void focusLost(FocusEvent e) {
 				String data = jtf_email.getText();
 				
-				if(!data.matches("(^[\\w!#$%&�*+/=?`{|}~^-]+(?:\\.[\\w!#$%&�*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$)?")) {
-					lbl_error_email.setText("El email posee un formato inv�lido.");
+				if(!data.matches("(^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?!-)(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6})?")) {
+					lbl_error_email.setText("El email posee un formato invalido.");
 					campos_validos.put("email", false);
 				}
 				else {
