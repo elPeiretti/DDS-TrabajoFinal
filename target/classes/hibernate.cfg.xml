@@ -12,5 +12,31 @@
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="show_sql">true</property>
         <mapping class="com.tp.dominio.Pais"></mapping>
+        <mapping class="com.tp.dominio.TipoDocumento"></mapping>
+        <mapping class="com.tp.dominio.TipoHabitacion"></mapping>
+        <mapping class="com.tp.dominio.CostoPorNoche"></mapping>
+        <mapping class="com.tp.dominio.Servicio"></mapping>
+        <mapping class="com.tp.dominio.ItemFactura"></mapping>
+        <mapping class="com.tp.dominio.Provincia"></mapping>
+        <mapping class="com.tp.dominio.Ciudad"></mapping>
+        <mapping class="com.tp.dominio.Direccion"></mapping>
+        <mapping class="com.tp.dominio.Factura"></mapping>
+        <mapping class="com.tp.dominio.Pago"></mapping>
+        <mapping class="com.tp.dominio.Habitacion"></mapping>
+        <mapping class="com.tp.dominio.Reserva"></mapping>
+        <mapping class="com.tp.dominio.ResponsableReserva"></mapping>
+        <mapping class="com.tp.dominio.NotaDeCredito"></mapping>
+        <mapping class="com.tp.dominio.ResponsablePagoTercero"></mapping>
+        <mapping class="com.tp.dominio.Ocupacion"></mapping>
+        <mapping class="com.tp.dominio.Pasajero"></mapping>
+        <mapping class="com.tp.dominio.PosicionIVA"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.tarjeta.TipoTarjeta"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.Banco"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.Moneda"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.MedioDePago"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.Cheque"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.Efectivo"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.tarjeta.TarjetaDeCredito"></mapping>
+        <mapping class="com.tp.dominio.medioDePago.tarjeta.TarjetaDeDebito"></mapping>
     </session-factory>
 </hibernate-configuration>
