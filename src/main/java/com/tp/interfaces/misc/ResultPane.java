@@ -6,14 +6,17 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.util.List;
+
 import javax.swing.border.LineBorder;
 
-public class ResultPane extends JPanel {
+public class ResultPane<E> extends JPanel {
 	
-	public JTable jtable_resultados;
-	public JLabel lbl_paginas;
-	public JButton btn_prev;
-	public JButton btn_next;
+	private JTable jtable_resultados;
+	private JLabel lbl_paginas;
+	private JButton btn_prev;
+	private JButton btn_next;
+	private List<E> objetos_en_tabla;
 
 	public ResultPane() {
 		setBackground(Color.WHITE);
@@ -38,5 +41,27 @@ public class ResultPane extends JPanel {
 		add(btn_next);
 		
 	}
+
+	public JTable getTable() {
+		return jtable_resultados;
+	}
+
+	public JLabel getPageNumbers() {
+		return lbl_paginas;
+	}
+
+	public JButton getPrevBtn() {
+		return btn_prev;
+	}
+
+	public JButton getNextBtn() {
+		return btn_next;
+	}
+
+	public List<E> getRowObjects() {
+		return objetos_en_tabla;
+	}
+	
+	
 
 }

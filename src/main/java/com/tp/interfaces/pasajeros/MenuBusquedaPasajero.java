@@ -111,7 +111,7 @@ public class MenuBusquedaPasajero extends JPanel {
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPanel m;
-				int fila = rp_pasajeros.jtable_resultados.getSelectedRow();
+				int fila = rp_pasajeros.getTable().getSelectedRow();
 				if(fila == -1) {
 					m = new MenuAltaPasajero(ventana_contenedora,encabezado,contexto);
 				}
