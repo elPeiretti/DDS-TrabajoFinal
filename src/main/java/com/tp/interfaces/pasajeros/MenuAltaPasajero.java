@@ -5,12 +5,11 @@ import javax.swing.*;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JSpinnerDateEditor;
-
-import com.tp.dominio.Ciudad;
-import com.tp.dominio.Pais;
-import com.tp.dominio.PosicionIVA;
-import com.tp.dominio.Provincia;
-import com.tp.dominio.TipoDocumento;
+import com.tp.dominio.geo.Ciudad;
+import com.tp.dominio.geo.Pais;
+import com.tp.dominio.geo.Provincia;
+import com.tp.dominio.pasajero.PosicionIVA;
+import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.interfaces.misc.*;
 import java.awt.*;
 import java.awt.event.*;

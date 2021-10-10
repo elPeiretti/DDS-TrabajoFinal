@@ -1,9 +1,12 @@
-package com.tp.dominio;
+package com.tp.dominio.ocupacion;
 
 import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.*;
+
+import com.tp.dominio.habitacion.Habitacion;
+import com.tp.dominio.pasajero.Pasajero;
 
 @Entity
 @Table(name = "tpdds.ocupacion")

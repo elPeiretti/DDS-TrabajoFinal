@@ -1,10 +1,15 @@
-package com.tp.dominio;
+package com.tp.dominio.factura;
 
 import java.time.Instant;
 
 import java.util.Collection;
 
 import javax.persistence.*;
+
+import com.tp.dominio.factura.cancelacion.NotaDeCredito;
+import com.tp.dominio.factura.cancelacion.Pago;
+import com.tp.dominio.factura.items.ItemFactura;
+import com.tp.dominio.pasajero.Pasajero;
 
 @Entity
 @Table(name = "tpdds.factura")

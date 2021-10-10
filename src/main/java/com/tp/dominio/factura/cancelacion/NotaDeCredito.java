@@ -1,8 +1,11 @@
-package com.tp.dominio;
+package com.tp.dominio.factura.cancelacion;
 
 import java.time.Instant;
 
 import javax.persistence.*;
+
+import com.tp.dominio.factura.ResponsablePagoTercero;
+import com.tp.dominio.pasajero.Pasajero;
 
 @Entity
 @Table(name = "tpdds.nota_de_credito")

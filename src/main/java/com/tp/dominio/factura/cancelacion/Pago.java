@@ -1,4 +1,4 @@
-package com.tp.dominio;
+package com.tp.dominio.factura.cancelacion;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.tp.dominio.factura.Factura;
 import com.tp.dominio.medioDePago.MedioDePago;
 
 @Entity

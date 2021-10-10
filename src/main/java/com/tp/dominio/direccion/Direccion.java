@@ -1,6 +1,10 @@
-package com.tp.dominio;
+package com.tp.dominio.direccion;
 
 import javax.persistence.*;
+
+import com.tp.dominio.geo.Ciudad;
+import com.tp.dominio.geo.Pais;
+import com.tp.dominio.geo.Provincia;
 
 @Entity
 @Table(name = "tpdds.direccion")

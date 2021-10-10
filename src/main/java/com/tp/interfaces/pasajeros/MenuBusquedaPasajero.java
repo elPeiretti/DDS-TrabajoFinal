@@ -2,7 +2,7 @@ package com.tp.interfaces.pasajeros;
 
 import javax.swing.*;
 
-import com.tp.dominio.Pasajero;
+import com.tp.dominio.pasajero.Pasajero;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.facturacion.MenuFacturar;
 import com.tp.interfaces.misc.*;

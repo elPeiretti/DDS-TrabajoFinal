@@ -1,4 +1,4 @@
-package com.tp.dominio;
+package com.tp.dominio.habitacion;
 
 import java.util.Collection;
 

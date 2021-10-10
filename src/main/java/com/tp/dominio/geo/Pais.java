@@ -1,4 +1,4 @@
-package com.tp.dominio;
+package com.tp.dominio.geo;
 
 import javax.persistence.*;
 

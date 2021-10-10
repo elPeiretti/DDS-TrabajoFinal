@@ -1,8 +1,11 @@
-package com.tp.dominio;
+package com.tp.dominio.habitacion;
 
 import java.util.List;
 
 import javax.persistence.*;
+
+import com.tp.dominio.factura.items.Servicio;
+import com.tp.dominio.reserva.Reserva;
 
 
 @Entity

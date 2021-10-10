@@ -1,8 +1,10 @@
-package com.tp.dominio;
+package com.tp.dominio.reserva;
 
 import java.time.Instant;
 
 import javax.persistence.*;
+
+import com.tp.dominio.habitacion.Habitacion;
 
 @Entity
 @Table(name = "tpdds.reserva")

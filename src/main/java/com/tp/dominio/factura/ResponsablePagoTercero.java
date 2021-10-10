@@ -1,6 +1,8 @@
-package com.tp.dominio;
+package com.tp.dominio.factura;
 
 import javax.persistence.*;
+
+import com.tp.dominio.direccion.Direccion;
 
 @Entity
 @Table(name = "tpdds.responsable_pago_tercero")

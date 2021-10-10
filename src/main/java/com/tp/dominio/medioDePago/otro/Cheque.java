@@ -1,8 +1,11 @@
-package com.tp.dominio.medioDePago;
+package com.tp.dominio.medioDePago.otro;
 
 import java.time.Instant;
 
 import javax.persistence.*;
+
+import com.tp.dominio.medioDePago.Banco;
+import com.tp.dominio.medioDePago.MedioDePago;
 
 @Entity
 @Table(name = "tpdds.cheque")

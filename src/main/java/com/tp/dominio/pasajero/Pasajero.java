@@ -1,8 +1,10 @@
-package com.tp.dominio;
+package com.tp.dominio.pasajero;
 
 import java.time.Instant;
 
 import javax.persistence.*;
+
+import com.tp.dominio.direccion.Direccion;
 
 @Entity
 @Table(name = "tpdds.pasajero")
