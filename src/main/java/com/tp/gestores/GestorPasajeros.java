@@ -31,7 +31,7 @@ public class GestorPasajeros {
 		
 	}
 	
-	public static List<PasajeroDTO> getPasajerosBy(Map<String,String>criterios, Integer li, Integer cant) {
+	public static List<PasajeroDTO> getPasajerosBy(Map<String,Object>criterios, Integer li, Integer cant) {
 		
 		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
 		
@@ -50,7 +50,7 @@ public class GestorPasajeros {
 		return resultado;
 	}
 	
-	public static Long getCountPasajerosBy(Map<String,String>criterios) {
+	public static Long getCountPasajerosBy(Map<String,Object>criterios) {
 		
 		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
 		return pasajeroDAO.getCountPasajerosByCriteria(criterios);

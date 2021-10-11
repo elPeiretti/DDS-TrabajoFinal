@@ -5,8 +5,8 @@ import java.util.Map;
 
 public interface PasajeroDAO {
 
-	public List<Pasajero> getPasajerosByCriteria(Map<String,String> criterios, Integer li, Integer cant);
+	public List<Pasajero> getPasajerosByCriteria(Map<String,Object> criterios, Integer li, Integer cant);
 	
-	public Long getCountPasajerosByCriteria(Map<String,String> criterios);
+	public Long getCountPasajerosByCriteria(Map<String,Object> criterios);
 	
 }

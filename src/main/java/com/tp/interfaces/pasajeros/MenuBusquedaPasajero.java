@@ -33,7 +33,7 @@ public class MenuBusquedaPasajero extends JPanel {
 	private JTextField jtf_apellido;
 	private JLabel lbl_nombres;
 	private JTextField jtf_nombres;
-	private Map<String,String> criterios_actuales;
+	private Map<String,Object> criterios_actuales;
 			
 	
 	public MenuBusquedaPasajero(JFrame ventana_contenedora, Encabezado encabezado) {
@@ -157,7 +157,7 @@ public class MenuBusquedaPasajero extends JPanel {
 		
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				criterios_actuales = new HashMap<String,String>();
+				criterios_actuales = new HashMap<String,Object>();
 				if(!jtf_nombres.getText().isEmpty()) {
 					criterios_actuales.put("nombres", jtf_nombres.getText());
 				}
@@ -165,7 +165,7 @@ public class MenuBusquedaPasajero extends JPanel {
 					criterios_actuales.put("apellido", jtf_apellido.getText());
 				}
 				if(!jtf_numero_documento.getText().isEmpty()) {
-					criterios_actuales.put("tipo_documento", jcb_tipo_documento.getSelectedItem().toString());
+					criterios_actuales.put("tipo_documento", ((TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem()).getIdTipoDocumento());
 					criterios_actuales.put("documento", jtf_numero_documento.getText());
 				}
 				rp_pasajeros.setPaginaActual(1);

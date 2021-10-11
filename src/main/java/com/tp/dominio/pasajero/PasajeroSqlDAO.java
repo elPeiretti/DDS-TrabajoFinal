@@ -12,13 +12,13 @@ import com.tp.hibernate.HibernateUtil;
 public class PasajeroSqlDAO implements PasajeroDAO {
 
 	@Override
-	public List<Pasajero> getPasajerosByCriteria(Map<String, String> criterios, Integer li, Integer cant) {
+	public List<Pasajero> getPasajerosByCriteria(Map<String, Object> criterios, Integer li, Integer cant) {
 		
 		List<Pasajero> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		String sqlStatement = "SELECT p FROM Pasajero p WHERE true = true ";
+		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE true = true ";
 		
 		if(criterios.containsKey("nombres")) {
 			sqlStatement += "AND p.nombres LIKE :nombres ";
@@ -29,7 +29,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		} 
 		
 		if(criterios.containsKey("documento")) {
-			sqlStatement += "AND p.id_tipo_documento = :id_tipo AND p.nro_documento = :documento ";
+			sqlStatement += "AND td.idTipoDocumento = :id_tipo AND p.nroDocumento = :documento ";
 		} 
 		
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
@@ -58,13 +58,13 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 	}
 
 	@Override
-	public Long getCountPasajerosByCriteria(Map<String, String> criterios) {
+	public Long getCountPasajerosByCriteria(Map<String, Object> criterios) {
 		
 		Long resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		String sqlStatement = "SELECT count(p) FROM Pasajero p WHERE true = true ";
+		String sqlStatement = "SELECT count(p) FROM Pasajero p JOIN p.tipoDocumento td WHERE true = true ";
 		
 		if(criterios.containsKey("nombres")) {
 			sqlStatement += "AND p.nombres LIKE :nombres ";
@@ -75,7 +75,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		} 
 		
 		if(criterios.containsKey("documento")) {
-			sqlStatement += "AND p.id_tipo_documento = :id_tipo AND p.nro_documento = :documento ";
+			sqlStatement += "AND td.idTipoDocumento = :id_tipo AND p.nroDocumento = :documento ";
 		} 
 		
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
