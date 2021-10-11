@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import org.hibernate.Session;
+
+import com.tp.hibernate.HibernateUtil;
 import com.tp.interfaces.facturacion.*;
 import com.tp.interfaces.habitaciones.*;
 import com.tp.interfaces.habitaciones.ocupaciones.*;
@@ -27,6 +31,8 @@ public class VentanaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Session session = HibernateUtil.getSessionFactory().openSession();
+					session.close();
 					VentanaPrincipal frame = new VentanaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {

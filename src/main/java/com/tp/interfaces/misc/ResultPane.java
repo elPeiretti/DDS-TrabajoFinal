@@ -1,14 +1,17 @@
 package com.tp.interfaces.misc;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class ResultPane<E> extends JPanel {
 	
@@ -17,17 +20,23 @@ public class ResultPane<E> extends JPanel {
 	private JButton btn_prev;
 	private JButton btn_next;
 	private List<E> objetos_en_tabla;
+	private DefaultTableModel jtable_contenido;
+	private JScrollPane jsp_tabla;
+	private Integer pagina_actual = 1;
+	private Long cant_paginas = 1L;
 
 	public ResultPane() {
 		setBackground(Color.WHITE);
 		setLayout(null);
 		
 		jtable_resultados = new JTable();
-		jtable_resultados.setBorder(new LineBorder(new Color(0, 0, 0)));
-		jtable_resultados.setBounds(0, 0, 620, 150);
-		add(jtable_resultados);
 		
-		lbl_paginas = new JLabel("0/0");
+		jsp_tabla = new JScrollPane(jtable_resultados);
+		jsp_tabla.setBorder(new LineBorder(new Color(0, 0, 0)));
+		jsp_tabla.setBounds(0, 0, 620, 150);
+		add(jsp_tabla);
+				
+		lbl_paginas = new JLabel("1/1");
 		lbl_paginas.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_paginas.setBounds(272, 158, 76, 14);
 		add(lbl_paginas);
@@ -40,8 +49,40 @@ public class ResultPane<E> extends JPanel {
 		btn_next.setBounds(358, 154, 50, 20);
 		add(btn_next);
 		
+		jtable_contenido = new DefaultTableModel();
+		jtable_resultados.setModel(jtable_contenido);
+		
+		objetos_en_tabla = new ArrayList<E>();
+		
+	}
+	
+	
+	public Integer getPaginaActual() {
+		return pagina_actual;
 	}
 
+	public void setPaginaActual(Integer pagina_actual) {
+		this.pagina_actual = pagina_actual;
+		lbl_paginas.setText(pagina_actual.toString()+"/"+cant_paginas.toString());
+	}
+
+	public Long getCantPaginas() {
+		return cant_paginas;
+	}
+
+	public void setCantPaginas(Long cant_paginas) {
+		this.cant_paginas = cant_paginas == 0? 1 : cant_paginas;
+		lbl_paginas.setText(pagina_actual.toString()+"/"+this.cant_paginas.toString());
+	}
+
+	public DefaultTableModel getContenido() {
+		return jtable_contenido;
+	}
+
+	public void setContenido(DefaultTableModel jtable_contenido) {
+		this.jtable_contenido = jtable_contenido;
+	}
+	
 	public JTable getTable() {
 		return jtable_resultados;
 	}
@@ -61,7 +102,6 @@ public class ResultPane<E> extends JPanel {
 	public List<E> getRowObjects() {
 		return objetos_en_tabla;
 	}
-	
-	
+		
 
 }

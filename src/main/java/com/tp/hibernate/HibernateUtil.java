@@ -1,4 +1,4 @@
-package com.hibernate;
+package com.tp.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

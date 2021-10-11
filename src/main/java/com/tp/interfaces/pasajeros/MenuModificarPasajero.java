@@ -15,6 +15,7 @@ import com.tp.dominio.geo.Provincia;
 import com.tp.dominio.pasajero.Pasajero;
 import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
+import com.tp.dto.PasajeroDTO;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.Mensaje;
 
@@ -22,9 +23,12 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 	
 	
 	private JButton jb_borrar;
+	private PasajeroDTO pasajero;
 	
-	public MenuModificarPasajero(JFrame ventana_contenedora, Encabezado encabezado, MenuBusquedaPasajero estado_anterior) {
+	public MenuModificarPasajero(JFrame ventana_contenedora, Encabezado encabezado, MenuBusquedaPasajero estado_anterior, PasajeroDTO pasajero) {
 		super(ventana_contenedora,encabezado,estado_anterior);
+		
+		this.pasajero = pasajero;
 		
 		for(ActionListener a: jb_siguiente.getActionListeners()) {
 			jb_siguiente.removeActionListener(a);
@@ -39,8 +43,14 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 		
 		this.agregarActionListeners();
 		
+		this.inicializarCampos();
 	}
 	
+	private void inicializarCampos() {
+		
+		
+	}
+
 	private void agregarActionListeners() {
 		
 		jb_siguiente.addActionListener(new ActionListener() {
@@ -102,7 +112,7 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 		Direccion dir = psjr.getDireccion();
 		
 		jtf_apellido.setText(psjr.getApellido());
-		jtf_nombres.setText(psjr.getNombre());
+		jtf_nombres.setText(psjr.getNombres());
 		jftf_cuit.setText(psjr.getCuit());
 		jtf_numero_documento.setText(psjr.getNroDocumento());
 		jtf_calle.setText(dir.getCalle());

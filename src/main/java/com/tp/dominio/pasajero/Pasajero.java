@@ -14,8 +14,8 @@ public class Pasajero {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "id_pasajero")
 	private Integer idPasajero;
-	@Column (name = "nombre")
-	private String nombre;
+	@Column (name = "nombres")
+	private String nombres;
 	@Column (name = "apellido")
 	private String apellido;
 	@Column (name = "cuit")
@@ -42,8 +42,12 @@ public class Pasajero {
 	@JoinColumn (name = "id_direccion", referencedColumnName = "id_direccion")
 	private Direccion direccion;
 	
-	public String getNombre() {
-		return nombre;
+	
+	public Integer getIdPasajero() {
+		return idPasajero;
+	}
+	public String getNombres() {
+		return nombres;
 	}
 	public String getApellido() {
 		return apellido;

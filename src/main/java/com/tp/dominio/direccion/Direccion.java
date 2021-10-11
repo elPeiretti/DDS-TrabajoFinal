@@ -52,4 +52,7 @@ public class Direccion {
 	public Provincia getProvincia() {
 		return ciudad.getProvincia();
 	}
+	public Integer getIdDireccion() {
+		return idDireccion;
+	}
 }

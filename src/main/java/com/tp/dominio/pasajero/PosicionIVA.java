@@ -12,4 +12,20 @@ public class PosicionIVA {
 	private Integer idPosicionIVA;
 	@Column (name = "posicion")
 	private String posicion;
+	
+	
+	public Integer getIdPosicionIVA() {
+		return idPosicionIVA;
+	}
+	public void setIdPosicionIVA(Integer idPosicionIVA) {
+		this.idPosicionIVA = idPosicionIVA;
+	}
+	public String getPosicion() {
+		return posicion;
+	}
+	public void setPosicion(String posicion) {
+		this.posicion = posicion;
+	}
+	
+	
 }

@@ -9,12 +9,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
 
-import com.hibernate.HibernateUtil;
 import com.tp.dominio.*;
 import com.tp.dominio.geo.Ciudad;
 import com.tp.dominio.geo.Pais;
 import com.tp.dominio.geo.Provincia;
 import com.tp.dominio.habitacion.CostoPorNoche;
+import com.tp.hibernate.HibernateUtil;
 
 /**
  * Unit test for simple App.

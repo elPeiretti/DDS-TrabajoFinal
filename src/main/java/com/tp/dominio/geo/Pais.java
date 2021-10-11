@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 public class Pais {
 	
+	public Pais() {}
+	
 	public Pais(String nombre) {
 		this.nombre = nombre;
 	}
@@ -18,4 +20,8 @@ public class Pais {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_pais")
 	private Integer idPais;
+	
+	public Integer getIdPais() {
+		return idPais;
+	}	
 }

@@ -18,10 +18,17 @@ public class Ciudad {
 	@JoinColumn (name = "id_provincia", referencedColumnName = "id_provincia")
 	private Provincia provincia;
 	
+	
+	public Ciudad() {}
+	
 	public Ciudad(String nombre, Provincia provincia) {
 		this.nombre = nombre;
 		this.provincia = provincia;
 	}
+	
+	public Integer getIdCiudad() {
+		return idCiudad;
+	}	
 	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;

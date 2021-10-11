@@ -11,7 +11,7 @@ CREATE SCHEMA tpdds;
 
 CREATE TABLE tpdds.pasajero
 (id_pasajero SERIAL PRIMARY KEY,
-nombre VARCHAR(100),
+nombres VARCHAR(100),
 apellido VARCHAR(100),
 nro_documento VARCHAR(100),
 ocupacion VARCHAR(100),
@@ -392,3 +392,25 @@ ADD CONSTRAINT fk_id_pasajero_responsable FOREIGN KEY (id_pasajero_responsable) 
 ALTER TABLE tpdds.nota_de_credito
 ADD CONSTRAINT fk_id_responsable_tercero FOREIGN KEY (id_responsable_tercero) REFERENCES tpdds.responsable_pago_tercero(id_responsable_tercero),
 ADD CONSTRAINT fk_id_pasajero FOREIGN KEY (id_pasajero) REFERENCES tpdds.pasajero(id_pasajero);
+
+--INSERT INTO tpdds.tipo_documento (tipo) VALUES 
+--('DNI'),('LC'),('LE'),('Pasaporte'),('Otro');
+
+INSERT INTO tpdds.pais(id_pais,nombre) VALUES (1,'qsy');
+
+INSERT INTO tpdds.provincia(id_provincia,nombre,id_pais) VALUES (1,'prov',1);
+
+INSERT INTO tpdds.ciudad(id_ciudad,nombre,id_provincia) VALUES (1,'kkk',1);
+
+INSERT INTO tpdds.tipo_documento(id_tipo_documento,tipo) VALUES
+(1,'DNI'),(2,'LC'),(3,'LE'),(4,'Pasaporte'),(5,'Otro');
+
+INSERT INTO tpdds.posicion_iva(id_posicion_iva,posicion) VALUES
+(1,'C.F.'),(2,'R.I.'),(3,'Monotributo');
+
+INSERT INTO tpdds.direccion(id_direccion,piso,calle,dpto,nro_calle,codigo_postal,id_ciudad) VALUES
+(1,1,'callesita linda','A24',225,'SF252',1);
+
+INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,nacionalidad,telefono,fecha_nacimiento,id_posicion_iva,id_direccion,id_tipo_documento) VALUES 
+('Pepito Pica','Piedra','52522525','Técnico especialista en refrigeración de materiales de construcción',
+ 'ppp@gmail.com','22-52522525-6','Argentino','222','2001-05-04',1,1,1); 
