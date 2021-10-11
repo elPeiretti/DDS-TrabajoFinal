@@ -8,14 +8,13 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import com.toedter.calendar.JDateChooser;
-
-import com.tp.dominio.Ciudad;
-import com.tp.dominio.Direccion;
-import com.tp.dominio.Pais;
-import com.tp.dominio.Pasajero;
-import com.tp.dominio.PosicionIVA;
-import com.tp.dominio.Provincia;
-import com.tp.dominio.TipoDocumento;
+import com.tp.dominio.direccion.Direccion;
+import com.tp.dominio.geo.Ciudad;
+import com.tp.dominio.geo.Pais;
+import com.tp.dominio.geo.Provincia;
+import com.tp.dominio.pasajero.Pasajero;
+import com.tp.dominio.pasajero.PosicionIVA;
+import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.Mensaje;
 
