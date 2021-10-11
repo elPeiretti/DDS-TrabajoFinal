@@ -159,7 +159,7 @@ public class MenuBusquedaPasajero extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				criterios_actuales = new HashMap<String,String>();
 				if(!jtf_nombres.getText().isEmpty()) {
-					criterios_actuales.put("nombre", jtf_nombres.getText());
+					criterios_actuales.put("nombres", jtf_nombres.getText());
 				}
 				if(!jtf_apellido.getText().isEmpty()) {
 					criterios_actuales.put("apellido", jtf_apellido.getText());

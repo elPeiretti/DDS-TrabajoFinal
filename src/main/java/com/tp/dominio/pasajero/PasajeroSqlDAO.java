@@ -39,7 +39,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		} 
 		
 		if(criterios.containsKey("apellido")) {
-			hqlQuery.setParameter("apellido", criterios.get("apellidos")+"%");
+			hqlQuery.setParameter("apellido", criterios.get("apellido")+"%");
 		} 
 		
 		if(criterios.containsKey("documento")) {
@@ -85,7 +85,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		} 
 		
 		if(criterios.containsKey("apellido")) {
-			hqlQuery.setParameter("apellido", criterios.get("apellidos")+"%");
+			hqlQuery.setParameter("apellido", criterios.get("apellido")+"%");
 		} 
 		
 		if(criterios.containsKey("documento")) {
