@@ -32,6 +32,8 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 			sqlStatement += "AND td.idTipoDocumento = :id_tipo AND p.nroDocumento = :documento ";
 		} 
 		
+		sqlStatement += "ORDER BY p.apellido, p.nombres";
+		
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
 		if(criterios.containsKey("nombres")) {
