@@ -442,9 +442,11 @@ public class MenuAltaPasajero extends JPanel {
 			if(p.getNombre().equals("Argentina")) jcb_pais.setSelectedItem(p);
 		}
 		
-		cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), true);
+		if(jcb_pais.getSelectedItem() != null)
+			cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), true);
 		
-		cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), true);
+		if(jcb_provincia.getSelectedItem() != null)
+			cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), true);
 		
 	}
 	
