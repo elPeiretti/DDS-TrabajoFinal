@@ -396,20 +396,20 @@ ADD CONSTRAINT fk_id_pasajero FOREIGN KEY (id_pasajero) REFERENCES tpdds.pasajer
 --INSERT INTO tpdds.tipo_documento (tipo) VALUES 
 --('DNI'),('LC'),('LE'),('Pasaporte'),('Otro');
 
-INSERT INTO tpdds.pais(id_pais,nombre) VALUES (1,'qsy');
+INSERT INTO tpdds.pais(nombre) VALUES ('qsy');
 
-INSERT INTO tpdds.provincia(id_provincia,nombre,id_pais) VALUES (1,'prov',1);
+INSERT INTO tpdds.provincia(nombre,id_pais) VALUES ('prov',1);
 
-INSERT INTO tpdds.ciudad(id_ciudad,nombre,id_provincia) VALUES (1,'kkk',1);
+INSERT INTO tpdds.ciudad(nombre,id_provincia) VALUES ('kkk',1);
 
-INSERT INTO tpdds.tipo_documento(id_tipo_documento,tipo) VALUES
-(1,'DNI'),(2,'LC'),(3,'LE'),(4,'Pasaporte'),(5,'Otro');
+INSERT INTO tpdds.tipo_documento(tipo) VALUES
+('DNI'),('LC'),('LE'),('Pasaporte'),('Otro');
 
-INSERT INTO tpdds.posicion_iva(id_posicion_iva,posicion) VALUES
-(1,'C.F.'),(2,'R.I.'),(3,'Monotributo');
+INSERT INTO tpdds.posicion_iva(posicion) VALUES
+('C.F.'),('R.I.'),('Monotributo');
 
-INSERT INTO tpdds.direccion(id_direccion,piso,calle,dpto,nro_calle,codigo_postal,id_ciudad) VALUES
-(1,1,'callesita linda','A24',225,'SF252',1);
+INSERT INTO tpdds.direccion(piso,calle,dpto,nro_calle,codigo_postal,id_ciudad) VALUES
+(1,'callesita linda','A24',225,'SF252',1);
 
 INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,nacionalidad,telefono,fecha_nacimiento,id_posicion_iva,id_direccion,id_tipo_documento) VALUES 
 ('Pepito Pica','Piedra','52522525','Técnico especialista en refrigeración de materiales de construcción',
