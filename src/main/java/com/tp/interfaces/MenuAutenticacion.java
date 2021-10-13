@@ -5,15 +5,15 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.persistence.NoResultException;
 import javax.swing.*;
-
+import javax.swing.text.*;
+import java.awt.event.*;
+import com.tp.dto.ConserjeDTO;
+import com.tp.gestores.GestorLogin;
 import com.tp.interfaces.misc.*;
-
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Font;
+import java.awt.*;
+import java.text.ParseException;
 
 public class MenuAutenticacion extends JPanel {
 	
@@ -29,9 +29,10 @@ public class MenuAutenticacion extends JPanel {
 	private JLabel lbl_error_contrasena;
 	private Encabezado encabezado;
 	
-	public MenuAutenticacion(JFrame ventana_contenedora) {
+	public MenuAutenticacion(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
+		this.encabezado = encabezado;
 		setLayout(null);
 		
 		jtf_codigo_conserje = new JTextField();
@@ -92,24 +93,43 @@ public class MenuAutenticacion extends JPanel {
 		this.agregarActionListeners();
 		
 	}
-	public void setEncabezado(Encabezado encabezado) {
-		this.encabezado = encabezado;
-	}
 	
 	private void agregarActionListeners() {
 		
 		jb_iniciar_sesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				String cod = jtf_codigo_conserje.getText();
+				boolean ok = true;
+				if (cod.isBlank()){
+					lbl_error_codigo.setText("Este campo no puede estar vacío.");
+					ok = false;
+				}
+				else{
+					lbl_error_codigo.setText("");
+				}
+
+				String p = new String(jpf_contrasena.getPassword());
+				if (p.isBlank()){
+					lbl_error_contrasena.setText("Este campo no puede estar vacío.");
+					ok = false;
+				}
+				else{
+					lbl_error_contrasena.setText("");
+				}		
+
+				if (!ok) return;
+
 				try {
-					// validadcion de los datos TODO
 					// busqueda del nombre del conserje por su codigo
-					String conserje = "Maria Chucena";
-					((Encabezado) encabezado).lbl_conserje.setText("Conserje: "+conserje);
+					ConserjeDTO conserje = GestorLogin.getUser(cod,p);
+					encabezado.lbl_conserje.setText("Conserje: "+conserje.getNombre()+" "+conserje.getApellido());
 					ventana_contenedora.setContentPane(new MenuPrincipal(ventana_contenedora,encabezado));
 					ventana_contenedora.setVisible(true);
 				}
-				catch(Exception exc) {
-					
+				catch(NoResultException exc){
+					lbl_error_codigo.setText("El usuario o contraseña son incorrectos.");
+					lbl_error_contrasena.setText("El usuario o contraseña son incorrectos.");
 				}
 			}
 		});

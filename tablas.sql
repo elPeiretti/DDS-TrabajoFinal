@@ -414,3 +414,6 @@ INSERT INTO tpdds.direccion(id_direccion,piso,calle,dpto,nro_calle,codigo_postal
 INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,nacionalidad,telefono,fecha_nacimiento,id_posicion_iva,id_direccion,id_tipo_documento) VALUES 
 ('Pepito Pica','Piedra','52522525','Técnico especialista en refrigeración de materiales de construcción',
  'ppp@gmail.com','22-52522525-6','Argentino','222','2001-05-04',1,1,1); 
+ 
+ INSERT INTO tpdds.conserje(nombre,apellido,usuario,contrasenia) VALUES
+ ('Maria','Chucena','MCHUC1','PASSWORD');

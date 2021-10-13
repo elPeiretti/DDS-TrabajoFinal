@@ -38,5 +38,6 @@
         <mapping class="com.tp.dominio.medioDePago.otro.Efectivo"></mapping>
         <mapping class="com.tp.dominio.medioDePago.tarjeta.TarjetaDeCredito"></mapping>
         <mapping class="com.tp.dominio.medioDePago.tarjeta.TarjetaDeDebito"></mapping>
+        <mapping class="com.tp.dominio.conserje.Conserje"></mapping>
     </session-factory>
 </hibernate-configuration>
