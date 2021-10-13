@@ -51,6 +51,7 @@ public class ResultPane<E> extends JPanel {
 		
 		jtable_contenido = new DefaultTableModel();
 		jtable_resultados.setModel(jtable_contenido);
+		jtable_resultados.setAutoCreateRowSorter(true);
 		
 		objetos_en_tabla = new ArrayList<E>();
 		

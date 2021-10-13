@@ -124,8 +124,7 @@ public class MenuAutenticacion extends JPanel {
 					// busqueda del nombre del conserje por su codigo
 					ConserjeDTO conserje = GestorLogin.getUser(cod,p);
 					encabezado.lbl_conserje.setText("Conserje: "+conserje.getNombre()+" "+conserje.getApellido());
-					ventana_contenedora.setContentPane(new MenuPrincipal(ventana_contenedora,encabezado));
-					ventana_contenedora.setVisible(true);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),660,500,"Menú Principal");
 				}
 				catch(NoResultException exc){
 					lbl_error_codigo.setText("El usuario o contraseña son incorrectos.");

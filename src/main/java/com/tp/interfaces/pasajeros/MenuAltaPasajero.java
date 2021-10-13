@@ -13,6 +13,7 @@ import com.tp.dominio.geo.Provincia;
 import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.interfaces.misc.*;
+import com.tp.interfaces.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -443,8 +444,7 @@ public class MenuAltaPasajero extends JPanel {
 					if (opt == 1) 
 						limpiarCampos();
 					else {
-						ventana_contenedora.setContentPane(menu_anterior);
-						ventana_contenedora.setVisible(true);
+						((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,660,500,"Gestionar Pasajero");
 					}
 					
 				}
@@ -459,8 +459,7 @@ public class MenuAltaPasajero extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar el alta del pasajero?");
 				if (opt == 1) { 
-					ventana_contenedora.setContentPane(menu_anterior);
-					ventana_contenedora.setVisible(true);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,660,500,"Gestionar Pasajero");
 				}
 			}
 		});

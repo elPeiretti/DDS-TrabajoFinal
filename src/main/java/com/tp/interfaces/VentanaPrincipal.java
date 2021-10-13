@@ -50,9 +50,16 @@ public class VentanaPrincipal extends JFrame {
 		setBounds(100, 100, 660, 500);
 		encabezado = new Encabezado();
 		encabezado.lbl_fecha.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
-		//MenuPrincipal app = new MenuPrincipal(this,encabezado);
-		MenuAutenticacion app = new MenuAutenticacion(this,encabezado);
-		setContentPane(app);
+		
+		//cambiarPanel(new MenuAutenticacion(this,encabezado), 660, 500, "Autenticación");
+		cambiarPanel(new MenuPrincipal(this,encabezado), 660, 500, "Menú Principal");
+	}
+
+	public void cambiarPanel(JPanel panel, int x, int y, String title){
+		setContentPane(panel);
+		setSize(x, y); 
+		setTitle(title);
+		setVisible(true);
 	}
 
 }

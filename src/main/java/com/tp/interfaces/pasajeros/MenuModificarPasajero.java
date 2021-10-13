@@ -16,6 +16,7 @@ import com.tp.dominio.pasajero.Pasajero;
 import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.dto.PasajeroDTO;
+import com.tp.interfaces.VentanaPrincipal;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.Mensaje;
 
@@ -64,8 +65,7 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 				try {
 					// llamar al gestor TODO
 					int opt = Mensaje.mensajeInformacion("La operación ha culminado con éxito.");
-						ventana_contenedora.setContentPane(new MenuBusquedaPasajero(ventana_contenedora,encabezado)); 
-						ventana_contenedora.setVisible(true);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),660,500,"Gestionar Pasajero");
 				}
 				catch(Exception exc) { //TODO
 					
@@ -83,8 +83,7 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 					
 					try {
 						// llamar al gestor TODO
-						ventana_contenedora.setContentPane(menu_anterior);
-						ventana_contenedora.setVisible(true);
+						((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),660,500,"Gestionar Pasajero");
 					}
 					catch(Exception exc) { //TODO
 						
@@ -98,8 +97,7 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar la modificación del pasajero?");
 				if (opt == 1) { 
-					ventana_contenedora.setContentPane(menu_anterior);
-					ventana_contenedora.setVisible(true);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,660,500,"Gestionar Pasajero");
 				}
 			}
 		});

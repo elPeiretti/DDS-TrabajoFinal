@@ -154,38 +154,32 @@ public class MenuPrincipal extends JPanel {
 		
 		jb_gestionar_pasajero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventana_contenedora.setContentPane(new MenuBusquedaPasajero(ventana_contenedora,encabezado));
-				ventana_contenedora.setVisible(true);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),660,500,"Gestionar Pasajero");
 			}
 		});
 		jb_reservar_habitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventana_contenedora.setContentPane(new MenuEstadoHabitaciones(ventana_contenedora,encabezado));
-				ventana_contenedora.setVisible(true);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),660,500,"Estado Habitaciones");
 			}
 		});
 		jb_ocupar_habitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventana_contenedora.setContentPane(new MenuEstadoHabitaciones(ventana_contenedora,encabezado));
-				ventana_contenedora.setVisible(true);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),660,500,"Estado Habitaciones");
 			}
 		});
 		jb_facturar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventana_contenedora.setContentPane(new MenuFacturar(ventana_contenedora,encabezado));
-				ventana_contenedora.setVisible(true);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuFacturar(ventana_contenedora,encabezado),660,500,"Facturar");
 			}
 		});
 		jb_ingresar_pago.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventana_contenedora.setContentPane(new MenuRegistrarPago(ventana_contenedora,encabezado));
-				ventana_contenedora.setVisible(true);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuRegistrarPago(ventana_contenedora,encabezado),660,500,"Registrar Pago");
 			}
 		});
 		jb_listar_ingresos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ventana_contenedora.setContentPane(new MenuListarIngresos(ventana_contenedora,encabezado));
-				ventana_contenedora.setVisible(true);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuListarIngresos(ventana_contenedora,encabezado),660,500, "Listar Ingresos");
 			}
 		});
 	}
