@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 
 public class MenuAltaPasajero extends JPanel {
 
+	protected MenuAltaPasajero contexto;
 	protected JFrame ventana_contenedora;
 	protected JTextField jtf_ocupacion;
 	protected Encabezado encabezado;
@@ -105,6 +106,7 @@ public class MenuAltaPasajero extends JPanel {
 		setBackground(Color.WHITE);
 		this.menu_anterior = estado_anterior;
 		this.ventana_contenedora = ventana_contenedora;
+		this.contexto = this;
 		ventana_contenedora.setSize(660,620);
 		setLayout(null);
 		
@@ -449,24 +451,28 @@ public class MenuAltaPasajero extends JPanel {
 	private void cargarListaProvincia(Integer idPais, Boolean inicializando) {
 		
 		List<ProvinciaDTO> lProvincia = GestorGeografico.getAllProvinciaByPais(idPais);
-		
+		jcb_provincia.removeAllItems();
 		for(ProvinciaDTO p : lProvincia) {
 			jcb_provincia.addItem(p);
 			if(inicializando && p.getNombre().equals("Santa Fe")) {
 				jcb_provincia.setSelectedItem(p);
 			}
 		}
+		
+		//if(!inicializando) jcb_provincia.setSelectedItem(lProvincia.get(0));
 	} 
 	
 	private void cargarListaCiudad(Integer idProvincia, Boolean inicializando) {
 		List<CiudadDTO> lCiudad = GestorGeografico.getAllCiudadByProvincia(idProvincia);
-		
+		jcb_ciudad.removeAllItems();
 		for(CiudadDTO p : lCiudad) {
 			jcb_ciudad.addItem(p);
 			if(inicializando && p.getNombre().equals("Santa Fe")) {
 				jcb_ciudad.setSelectedItem(p);
 			}
 		}
+		
+		//if(!inicializando) jcb_ciudad.setSelectedItem(lCiudad.get(0));
 	} 
 
 	private void agregarTabOrder() {
@@ -482,6 +488,20 @@ public class MenuAltaPasajero extends JPanel {
 	}
 	
 	private void agregarActionListeners() {
+		
+		jcb_pais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//contexto.cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), false);
+			}
+			
+		});
+		
+		jcb_provincia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contexto.cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), false);
+			}
+			
+		});
 		
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
