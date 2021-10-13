@@ -60,7 +60,7 @@ public class MenuAltaPasajero extends JPanel {
 	protected JLabel lbl_ocupacion;
 	protected JButton jb_cancelar;
 	protected JButton jb_siguiente;
-	protected JComboBox jcb_nacionalidad; //ver comentario en Pasajero
+	protected JComboBox<PaisDTO> jcb_nacionalidad; //ver comentario en Pasajero
 	protected JLabel lbl_nacionalidad;
 	protected JLabel lbl_error_ocupacion;
 	protected JLabel lbl_numero;
@@ -430,7 +430,7 @@ public class MenuAltaPasajero extends JPanel {
 		jtf_codigo_postal.setText("3000");
 		
 		List<PosicionIVADTO> lpi = GestorPasajeros.getAllPosicionIVA();
-		jcb_tipo_documento.removeAllItems();
+		jcb_factura.removeAllItems();
 		for(PosicionIVADTO t : lpi) {
 			jcb_factura.addItem(t);
 			if(t.getPosicion().equals("C.F.")) jcb_factura.setSelectedItem(t);
@@ -446,8 +446,12 @@ public class MenuAltaPasajero extends JPanel {
 		List<PaisDTO> lPais = GestorGeografico.getAllPais();
 		jcb_pais.removeAllItems();
 		for(PaisDTO p : lPais) {
+			jcb_nacionalidad.addItem(p);
 			jcb_pais.addItem(p);
-			if(p.getNombre().equals("Argentina")) jcb_pais.setSelectedItem(p);
+			if(p.getNombre().equals("Argentina")) {
+				jcb_nacionalidad.setSelectedItem(p);
+				jcb_pais.setSelectedItem(p);
+			}
 		}
 		
 		if(jcb_pais.getSelectedItem() != null)
