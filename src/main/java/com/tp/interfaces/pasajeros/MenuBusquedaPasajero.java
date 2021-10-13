@@ -107,7 +107,7 @@ public class MenuBusquedaPasajero extends JPanel {
 		rp_pasajeros.getContenido().addColumn("Tipo Documento");
 		rp_pasajeros.getContenido().addColumn("Numero de Documento");
 	
-		inicializarCampos();
+		this.inicializarCampos();
 		
 		this.agregarActionListeners();
 		this.agregarTabOrder();

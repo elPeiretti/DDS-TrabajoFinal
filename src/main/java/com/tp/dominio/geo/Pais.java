@@ -7,12 +7,6 @@ import javax.persistence.*;
 
 public class Pais {
 	
-	public Pais() {}
-	
-	public Pais(String nombre) {
-		this.nombre = nombre;
-	}
-	
 	@Column(name = "nombre")
 	private String nombre;
 	
@@ -20,6 +14,16 @@ public class Pais {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_pais")
 	private Integer idPais;
+	
+	public Pais() {}
+	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 	
 	public Integer getIdPais() {
 		return idPais;

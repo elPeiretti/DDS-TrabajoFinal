@@ -27,6 +27,10 @@ public class Provincia {
 		return idProvincia;
 	}	
 	
+	public String getNombre() {
+		return nombre;
+	}
+	
 	public Pais getPais() {
 		return pais;
 	}

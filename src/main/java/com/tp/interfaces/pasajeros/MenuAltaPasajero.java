@@ -12,6 +12,12 @@ import com.tp.dominio.geo.Pais;
 import com.tp.dominio.geo.Provincia;
 import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
+import com.tp.dto.CiudadDTO;
+import com.tp.dto.PaisDTO;
+import com.tp.dto.ProvinciaDTO;
+import com.tp.dto.TipoDocumentoDTO;
+import com.tp.gestores.GestorGeografico;
+import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.misc.*;
 import com.tp.interfaces.*;
 import java.awt.*;
@@ -44,10 +50,10 @@ public class MenuAltaPasajero extends JPanel {
 	protected JTextField jtf_departamento;
 	protected JTextField jtf_codigo_postal;
 	protected JTextField jtf_email;
-	protected JComboBox<Pais> jcb_pais;
-	protected JComboBox<Ciudad> jcb_ciudad;
-	protected JComboBox<Provincia> jcb_provincia;
-	protected JComboBox<TipoDocumento> jcb_tipo_documento;
+	protected JComboBox<PaisDTO> jcb_pais;
+	protected JComboBox<CiudadDTO> jcb_ciudad;
+	protected JComboBox<ProvinciaDTO> jcb_provincia;
+	protected JComboBox<TipoDocumentoDTO> jcb_tipo_documento;
 	protected JComboBox<PosicionIVA> jcb_factura;
 	protected JLabel lbl_ocupacion;
 	protected JButton jb_cancelar;
@@ -410,12 +416,59 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_tipo_documento.setBounds(334, 175, 283, 10);
 		add(lbl_error_tipo_documento);
 		
+		this.inicializarCampos();
 		this.agregarActionListeners();
 		this.agregarTabOrder();
 		this.agregarListenersValidacion();
-		this.setCamposDefault();
 	}
 	
+	private void inicializarCampos() {
+		
+		jtf_codigo_postal.setText("3000");
+		
+		List<TipoDocumentoDTO> ltd = GestorPasajeros.getAllTipoDocumento();
+		
+		for(TipoDocumentoDTO t : ltd) {
+			jcb_tipo_documento.addItem(t);
+			if(t.getTipo().equals("DNI")) jcb_tipo_documento.setSelectedItem(t);
+		}
+		
+		List<PaisDTO> lPais = GestorGeografico.getAllPais();
+		
+		for(PaisDTO p : lPais) {
+			jcb_pais.addItem(p);
+			if(p.getNombre().equals("Argentina")) jcb_pais.setSelectedItem(p);
+		}
+		
+		cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), true);
+		
+		cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), true);
+		
+	}
+	
+	private void cargarListaProvincia(Integer idPais, Boolean inicializando) {
+		
+		List<ProvinciaDTO> lProvincia = GestorGeografico.getAllProvinciaByPais(idPais);
+		
+		for(ProvinciaDTO p : lProvincia) {
+			jcb_provincia.addItem(p);
+			if(inicializando && p.getNombre().equals("Santa Fe")) {
+				jcb_provincia.setSelectedItem(p);
+			}
+		}
+	} 
+	
+	private void cargarListaCiudad(Integer idProvincia, Boolean inicializando) {
+		List<CiudadDTO> lCiudad = GestorGeografico.getAllCiudadByProvincia(idProvincia);
+		
+		for(CiudadDTO p : lCiudad) {
+			jcb_ciudad.addItem(p);
+			if(inicializando && p.getNombre().equals("Santa Fe")) {
+				jcb_ciudad.setSelectedItem(p);
+			}
+		}
+	} 
+
 	private void agregarTabOrder() {
 		this.setFocusTraversalPolicy(new TabOrder(List.of(
 				jtf_apellido, jcb_tipo_documento, jtf_nombres, jtf_numero_documento,
@@ -483,17 +536,7 @@ public class MenuAltaPasajero extends JPanel {
 				((JTextField) componente).setText("");
 			}
 		}
-		setCamposDefault();
-	}
-	
-	private void setCamposDefault() {
-		jtf_codigo_postal.setText("3000");
-		//jcb_tipo_documento.setSelectedItem();
-		//jcb_pais.setSelectedItem();
-		//jcb_ciudad.setSelectedItem();
-		//jcb_factura.setSelectedItem();
-		//jcb_provincia.setSelectedItem();
-		//jcb_nacionalidad.setSelectedItem();
+		this.inicializarCampos();
 	}
 	
 	protected void indicarCamposIncompletos() {
