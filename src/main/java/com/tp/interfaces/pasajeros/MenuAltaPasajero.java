@@ -14,6 +14,7 @@ import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.dto.CiudadDTO;
 import com.tp.dto.PaisDTO;
+import com.tp.dto.PosicionIVADTO;
 import com.tp.dto.ProvinciaDTO;
 import com.tp.dto.TipoDocumentoDTO;
 import com.tp.gestores.GestorGeografico;
@@ -55,7 +56,7 @@ public class MenuAltaPasajero extends JPanel {
 	protected JComboBox<CiudadDTO> jcb_ciudad;
 	protected JComboBox<ProvinciaDTO> jcb_provincia;
 	protected JComboBox<TipoDocumentoDTO> jcb_tipo_documento;
-	protected JComboBox<PosicionIVA> jcb_factura;
+	protected JComboBox<PosicionIVADTO> jcb_factura;
 	protected JLabel lbl_ocupacion;
 	protected JButton jb_cancelar;
 	protected JButton jb_siguiente;
@@ -427,6 +428,13 @@ public class MenuAltaPasajero extends JPanel {
 	private void inicializarCampos() {
 		
 		jtf_codigo_postal.setText("3000");
+		
+		List<PosicionIVADTO> lpi = GestorPasajeros.getAllPosicionIVA();
+		jcb_tipo_documento.removeAllItems();
+		for(PosicionIVADTO t : lpi) {
+			jcb_factura.addItem(t);
+			if(t.getPosicion().equals("C.F.")) jcb_factura.setSelectedItem(t);
+		}
 		
 		List<TipoDocumentoDTO> ltd = GestorPasajeros.getAllTipoDocumento();
 		jcb_tipo_documento.removeAllItems();

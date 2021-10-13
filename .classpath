@@ -23,7 +23,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="jcalendar-1.4.jar" sourcepath="C:/Users/juanv/.m2/repository/com/toedter/jcalendar/1.4/jcalendar-1.4-sources.jar"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

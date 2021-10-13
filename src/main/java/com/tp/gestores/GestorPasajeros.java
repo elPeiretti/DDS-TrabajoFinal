@@ -8,6 +8,7 @@ import com.tp.dominio.direccion.Direccion;
 import com.tp.dominio.pasajero.*;
 import com.tp.dto.DireccionDTO;
 import com.tp.dto.PasajeroDTO;
+import com.tp.dto.PosicionIVADTO;
 import com.tp.dto.TipoDocumentoDTO;
 
 public class GestorPasajeros {
@@ -55,6 +56,21 @@ public class GestorPasajeros {
 		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
 		return pasajeroDAO.getCountPasajerosByCriteria(criterios);
 		
+	}
+
+	public static List<PosicionIVADTO> getAllPosicionIVA() {
+		PosicionIVADAO tipoDocumentoDao = new PosicionIVASqlDAO();
+		
+		List<PosicionIVA> posicionesIVA = tipoDocumentoDao.getAll();
+		
+		List<PosicionIVADTO> resultado = new ArrayList<PosicionIVADTO>();
+		
+		for(PosicionIVA t : posicionesIVA) {
+			resultado.add(new PosicionIVADTO(t.getIdPosicionIVA(),t.getPosicion()));
+			
+		}
+		
+		return resultado; 
 	}
 	
 }
