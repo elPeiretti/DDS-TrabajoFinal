@@ -436,7 +436,7 @@ public class MenuAltaPasajero extends JPanel {
 		}
 		
 		List<PaisDTO> lPais = GestorGeografico.getAllPais();
-		
+		jcb_pais.removeAllItems();
 		for(PaisDTO p : lPais) {
 			jcb_pais.addItem(p);
 			if(p.getNombre().equals("Argentina")) jcb_pais.setSelectedItem(p);
@@ -459,7 +459,6 @@ public class MenuAltaPasajero extends JPanel {
 			}
 		}
 		
-		//if(!inicializando) jcb_provincia.setSelectedItem(lProvincia.get(0));
 	} 
 	
 	private void cargarListaCiudad(Integer idProvincia, Boolean inicializando) {
@@ -472,7 +471,6 @@ public class MenuAltaPasajero extends JPanel {
 			}
 		}
 		
-		//if(!inicializando) jcb_ciudad.setSelectedItem(lCiudad.get(0));
 	} 
 
 	private void agregarTabOrder() {
@@ -491,15 +489,15 @@ public class MenuAltaPasajero extends JPanel {
 		
 		jcb_pais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contexto.cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), false);
+				if(jcb_pais.getSelectedItem() != null)
+					contexto.cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), false);
 			}
 		});
 		
 		jcb_provincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(jcb_provincia.getSelectedItem() != null) {
+				if(jcb_provincia.getSelectedItem() != null) 
 					contexto.cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), false);
-				}	
 			}
 			
 		});
