@@ -429,7 +429,7 @@ public class MenuAltaPasajero extends JPanel {
 		jtf_codigo_postal.setText("3000");
 		
 		List<TipoDocumentoDTO> ltd = GestorPasajeros.getAllTipoDocumento();
-		
+		jcb_tipo_documento.removeAllItems();
 		for(TipoDocumentoDTO t : ltd) {
 			jcb_tipo_documento.addItem(t);
 			if(t.getTipo().equals("DNI")) jcb_tipo_documento.setSelectedItem(t);
@@ -491,14 +491,15 @@ public class MenuAltaPasajero extends JPanel {
 		
 		jcb_pais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//contexto.cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), false);
+				contexto.cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), false);
 			}
-			
 		});
 		
 		jcb_provincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contexto.cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), false);
+				if(jcb_provincia.getSelectedItem() != null) {
+					contexto.cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), false);
+				}	
 			}
 			
 		});
