@@ -545,7 +545,7 @@ public class MenuAltaPasajero extends JPanel {
 
 				try {				
 					GestorPasajeros.darAltaPasajero(p,true);
-					int opt = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+" "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
+					int opt = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
 					if (opt == 1) {
 						limpiarCampos();
 						inicializarMapa();
@@ -559,7 +559,7 @@ public class MenuAltaPasajero extends JPanel {
 					if(opt == 1) {
 						try{GestorPasajeros.darAltaPasajero(p,false);}
 						catch(DocumentoExistenteException exc2){} // nunca va a ser lanzada
-						int opt2 = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+" "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
+						int opt2 = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
 						if (opt2 == 1) {
 							limpiarCampos();
 							inicializarMapa();
