@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.tp.dto.PosicionIVADTO;
 
 
 
@@ -527,8 +528,10 @@ public class MenuAltaPasajero extends JPanel {
 				try {
 					// llamar al gestor TODO
 					int opt = Mensaje.mensajeConfirmacion("¿Desea cargar otro pasajero?");
-					if (opt == 1) 
+					if (opt == 1) {
 						limpiarCampos();
+						inicializarMapa();
+					}
 					else {
 						((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,660,500,"Gestionar Pasajero");
 					}
@@ -552,13 +555,17 @@ public class MenuAltaPasajero extends JPanel {
 		
 		jcb_factura.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/** TODO
-				if( ((TipoDocumentoDAO)jcb_factura.getSelectedItem()).equals(Responsabe inscripto)
+				
+				if(jcb_factura.getSelectedItem() == null) return;
+
+				if (((PosicionIVADTO)jcb_factura.getSelectedItem()).getPosicion().equals("R.I."))
 					cuit_obligatorio = true;
 				else{
 					cuit_obligatorio = false;
+					if (lbl_error_cuit.getText().equals("Este campo no puede estar vacío"))
+						lbl_error_cuit.setText("");
 				}
-				**/
+				
 			}
 		});
 	}
@@ -592,6 +599,9 @@ public class MenuAltaPasajero extends JPanel {
 		
 		if(dc_nacimiento.getDate() == null)
 			lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
+
+		if(cuit_obligatorio && jftf_cuit.getText().equals("__-________-_"))
+			lbl_error_cuit.setText("Este campo no puede estar vacío");
 	}
 	
 	private void inicializarMapa() {
