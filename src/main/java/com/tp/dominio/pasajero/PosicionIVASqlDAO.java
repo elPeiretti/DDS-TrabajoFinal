@@ -26,4 +26,14 @@ public class PosicionIVASqlDAO implements PosicionIVADAO {
 		return resultado;
 	}
 
+    public PosicionIVA getById(Integer idPosicionIVA) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+		TypedQuery<PosicionIVA> hqlQuery = session.createQuery("SELECT p FROM PosicionIVA p WHERE p.idPosicionIVA = :id");
+
+		hqlQuery.setParameter("id", idPosicionIVA);
+		PosicionIVA resultado = hqlQuery.getSingleResult();
+		session.close();
+		return resultado;
+    }
+
 }

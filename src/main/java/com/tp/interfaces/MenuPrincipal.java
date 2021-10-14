@@ -182,6 +182,11 @@ public class MenuPrincipal extends JPanel {
 				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuListarIngresos(ventana_contenedora,encabezado),660,500, "Listar Ingresos");
 			}
 		});
+		jb_salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuAutenticacion(ventana_contenedora,encabezado),660,500, "Autenticación");
+			}
+		});
 	}
 
 }

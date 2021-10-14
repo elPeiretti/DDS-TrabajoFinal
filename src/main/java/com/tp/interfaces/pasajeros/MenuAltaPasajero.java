@@ -13,10 +13,13 @@ import com.tp.dominio.geo.Provincia;
 import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.dto.CiudadDTO;
+import com.tp.dto.DireccionDTO;
 import com.tp.dto.PaisDTO;
+import com.tp.dto.PasajeroDTO;
 import com.tp.dto.PosicionIVADTO;
 import com.tp.dto.ProvinciaDTO;
 import com.tp.dto.TipoDocumentoDTO;
+import com.tp.excepciones.DocumentoExistenteException;
 import com.tp.gestores.GestorGeografico;
 import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.misc.*;
@@ -525,20 +528,49 @@ public class MenuAltaPasajero extends JPanel {
 					return;
 				}
 				
-				try {
-					// llamar al gestor TODO
-					int opt = Mensaje.mensajeConfirmacion("¿Desea cargar otro pasajero?");
+				DireccionDTO direc = new DireccionDTO(null, jtf_codigo_postal.getText(), jtf_calle.getText(),
+														  jtf_numero.getText().isBlank()? null:Integer.valueOf(jtf_numero.getText()), 
+														  jtf_piso.getText().isBlank()? null:Integer.valueOf(jtf_piso.getText()), 
+														  jtf_departamento.getText(),
+														  ((CiudadDTO)jcb_ciudad.getSelectedItem()).getIdCiudad(),
+														  ((ProvinciaDTO)jcb_provincia.getSelectedItem()).getIdProvincia(),
+														  ((PaisDTO)jcb_pais.getSelectedItem()).getIdPais());
+														  
+				PasajeroDTO p = new PasajeroDTO(null,jtf_nombres.getText(), jtf_apellido.getText(), jftf_cuit.getText().equals("__-________-_")? null :jftf_cuit.getText(),
+												jtf_numero_documento.getText(), dc_nacimiento.getDate().toInstant(),
+												((PaisDTO) jcb_nacionalidad.getSelectedItem()).getIdPais(),
+												jtf_email.getText(), jtf_telefono.getText(), jtf_ocupacion.getText(),
+												(TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem(), ((PosicionIVADTO)jcb_factura.getSelectedItem()).getIdPosicionIVA(),
+												direc);
+
+				try {				
+					GestorPasajeros.darAltaPasajero(p,true);
+					int opt = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+" "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
 					if (opt == 1) {
 						limpiarCampos();
 						inicializarMapa();
 					}
 					else {
-						((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,660,500,"Gestionar Pasajero");
+						((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora, encabezado),660,500,"Gestionar Pasajero");
 					}
-					
 				}
-				catch(Exception exc) { //TODO
-					
+				catch(DocumentoExistenteException exc) {
+					int opt = Mensaje.warningDocumentoExistente();
+					if(opt == 1) {
+						try{GestorPasajeros.darAltaPasajero(p,false);}
+						catch(DocumentoExistenteException exc2){} // nunca va a ser lanzada
+						int opt2 = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+" "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
+						if (opt2 == 1) {
+							limpiarCampos();
+							inicializarMapa();
+						}
+						else {
+							((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora, encabezado),660,500,"Gestionar Pasajero");
+						}
+					}
+					else{
+						jcb_tipo_documento.requestFocus();
+					}
 				}
 				
 			}
@@ -576,6 +608,7 @@ public class MenuAltaPasajero extends JPanel {
 				((JTextField) componente).setText("");
 			}
 		}
+		dc_nacimiento.setDate(null);
 		this.inicializarCampos();
 	}
 	

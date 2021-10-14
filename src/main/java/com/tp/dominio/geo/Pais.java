@@ -31,5 +31,10 @@ public class Pais {
 	
 	public Integer getIdPais() {
 		return idPais;
-	}	
+	}
+
+	@Override
+	public boolean equals(Object p){
+		return this.idPais.equals(((Pais) p).getIdPais());
+	}
 }

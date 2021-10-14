@@ -5,6 +5,8 @@ import java.time.Instant;
 import javax.persistence.*;
 
 import com.tp.dominio.direccion.Direccion;
+import com.tp.dominio.geo.Pais;
+import com.tp.dto.PasajeroDTO;
 
 @Entity
 @Table(name = "tpdds.pasajero")
@@ -14,36 +16,62 @@ public class Pasajero {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "id_pasajero")
 	private Integer idPasajero;
+
 	@Column (name = "nombres")
 	private String nombres;
+
 	@Column (name = "apellido")
 	private String apellido;
+
 	@Column (name = "cuit")
 	private String cuit;
+
 	@Column (name = "nro_documento")
 	private String nroDocumento;
+
 	@Column (name = "fecha_nacimiento")
 	private Instant fechaDeNacimiento;
-	@Column (name = "nacionalidad")
-	private String nacionalidad; //es String en diagrama de clases pero la interfaz esta hecha con ComboBox. Podria usarse Pais pero en el diseño de entradas el ejemplo es "Argentino/a"
+
+	@ManyToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "nacionalidad", referencedColumnName = "id_pais")
+	private Pais nacionalidad; //es String en diagrama de clases pero la interfaz esta hecha con ComboBox. Podria usarse Pais pero en el diseño de entradas el ejemplo es "Argentino/a"
+	
 	@Column (name = "email")
 	private String email;
+
 	@Column (name = "telefono")
 	private String telefono;
+
 	@Column (name = "ocupacion")
 	private String ocupacion;
+
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_tipo_documento", referencedColumnName = "id_tipo_documento")
 	private TipoDocumento tipoDocumento;
+
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_posicion_iva", referencedColumnName = "id_posicion_iva")
 	private PosicionIVA posicionIVA;
+
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_direccion", referencedColumnName = "id_direccion")
 	private Direccion direccion;
 	
-	
-	public Integer getIdPasajero() {
+	public Pasajero(){}
+
+	public Pasajero(PasajeroDTO p) {
+		this.apellido = p.getApellido();
+		this.nombres = p.getNombres();
+		this.cuit = p.getCuit();
+		this.email = p.getEmail();
+		this.fechaDeNacimiento = p.getFechaDeNacimiento();
+		this.idPasajero = p.getIdPasajero();
+		this.nroDocumento = p.getNroDocumento();
+		this.telefono = p.getTelefono();
+		this.ocupacion = p.getOcupacion();
+    }
+
+    public Integer getIdPasajero() {
 		return idPasajero;
 	}
 	public String getNombres() {
@@ -61,7 +89,7 @@ public class Pasajero {
 	public Instant getNacimiento() {
 		return fechaDeNacimiento;
 	}
-	public String getNacionalidad() {
+	public Pais getNacionalidad() {
 		return nacionalidad;
 	}
 	public String getEmail() {
@@ -82,4 +110,17 @@ public class Pasajero {
 	public Direccion getDireccion() {
 		return direccion;
 	}
+
+    public void setNacionalidad(Pais nacionalidad) {
+		this.nacionalidad = nacionalidad;
+    }
+	public void setTipoDocumento(TipoDocumento td) {
+		this.tipoDocumento = td;
+	}
+	public void setDireccion(Direccion direc) {
+		this.direccion = direc;
+	}
+    public void setPosicionIVA(PosicionIVA pIva) {
+		this.posicionIVA = pIva;
+    }
 }

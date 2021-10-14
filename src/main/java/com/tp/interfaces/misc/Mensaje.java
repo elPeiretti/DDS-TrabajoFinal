@@ -13,5 +13,10 @@ public class Mensaje {
 		String[] opt = {"Continuar"};
 		return JOptionPane.showOptionDialog(null, msg, "Mensaje Informativo", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[0]);
 	}
+
+	public static int warningDocumentoExistente(){
+		String[] opt = {"Corregir", "Aceptar Igualmente"};
+		return JOptionPane.showOptionDialog(null, "¡CUIDADO! El tipo y número de documento ya existen en el sistema", "Alerta: Documento ya existente", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[1]);
+	}
 	
 }

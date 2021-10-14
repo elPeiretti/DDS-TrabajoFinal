@@ -27,4 +27,15 @@ public class PaisSqlDAO implements PaisDAO {
 		
 	}
 
+	@Override
+	public Pais getById(Integer nacionalidad) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		TypedQuery<Pais> hqlQuery = session.createQuery("SELECT p FROM Pais p WHERE p.idPais = :id");
+
+		hqlQuery.setParameter("id", nacionalidad);
+		Pais resultado = hqlQuery.getSingleResult();
+		session.close();
+		return resultado;
+	}
+
 }

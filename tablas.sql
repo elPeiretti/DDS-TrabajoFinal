@@ -17,7 +17,7 @@ nro_documento VARCHAR(100),
 ocupacion VARCHAR(100),
 email VARCHAR(100),
 cuit VARCHAR(100),
-nacionalidad VARCHAR(100), 
+nacionalidad INTEGER, 
 telefono VARCHAR(100),
 fecha_nacimiento DATE,
 id_posicion_iva INTEGER,
@@ -287,8 +287,8 @@ ADD CONSTRAINT fk_factura FOREIGN KEY (id_factura) REFERENCES tpdds.factura(id_f
 ALTER TABLE tpdds.pasajero
 ADD CONSTRAINT fk_posicion_iva FOREIGN KEY (id_posicion_iva) REFERENCES tpdds.posicion_iva (id_posicion_iva),
 ADD CONSTRAINT fk_direccion FOREIGN KEY (id_direccion) REFERENCES tpdds.direccion (id_direccion),
-ADD CONSTRAINT fk_tipo_documento FOREIGN KEY (id_tipo_documento) REFERENCES tpdds.tipo_documento (id_tipo_documento);
-
+ADD CONSTRAINT fk_tipo_documento FOREIGN KEY (id_tipo_documento) REFERENCES tpdds.tipo_documento (id_tipo_documento),
+ADD CONSTRAINT fk_nacionalidad FOREIGN KEY (nacionalidad) REFERENCES tpdds.pais (id_pais);
 
 -- Tabla Direccion
 
@@ -413,7 +413,7 @@ INSERT INTO tpdds.direccion(piso,calle,dpto,nro_calle,codigo_postal,id_ciudad) V
 
 INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,nacionalidad,telefono,fecha_nacimiento,id_posicion_iva,id_direccion,id_tipo_documento) VALUES 
 ('Pepito Pica','Piedra','52522525','Técnico especialista en refrigeración de materiales de construcción',
- 'ppp@gmail.com','22-52522525-6','Argentino','3425151789','2001-05-04',1,1,1); 
+ 'ppp@gmail.com','22-52522525-6',1,'3425151789','2001-05-04',1,1,1); 
  
 INSERT INTO tpdds.conserje(nombre,apellido,usuario,contrasenia) VALUES
 ('Maria','Chucena','MCHUC1','PASSWORD');

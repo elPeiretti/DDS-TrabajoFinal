@@ -26,4 +26,15 @@ public class CiudadSqlDAO implements CiudadDAO {
 		return resultado;
 	}
 
+	@Override
+	public Ciudad getById(Integer idCiudad) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		TypedQuery<Ciudad> hqlQuery = session.createQuery("SELECT c FROM Ciudad c WHERE c.idCiudad = :id");
+		
+		hqlQuery.setParameter("id", idCiudad);
+		Ciudad resultado = hqlQuery.getSingleResult();
+		session.close();
+		return resultado;
+	}
+
 }

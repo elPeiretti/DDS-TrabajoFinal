@@ -18,7 +18,7 @@ public class PasajeroDTO {
 	private String cuit;
 	private String nroDocumento;
 	private Instant fechaDeNacimiento;
-	private String nacionalidad; 
+	private Integer nacionalidad; 
 	private String email;
 	private String telefono;
 	private String ocupacion;
@@ -27,7 +27,7 @@ public class PasajeroDTO {
 	private DireccionDTO direccionDTO; 
 	
 	public PasajeroDTO(Integer idPasajero, String nombre, String apellido, String cuit, String nroDocumento,
-			Instant fechaDeNacimiento, String nacionalidad, String email, String telefono, String ocupacion,
+			Instant fechaDeNacimiento, Integer nacionalidad, String email, String telefono, String ocupacion,
 			TipoDocumentoDTO tipoDocumentoDTO, Integer idPosicionIVA, DireccionDTO direccionDTO) {
 		super();
 		this.idPasajero = idPasajero;
@@ -82,10 +82,10 @@ public class PasajeroDTO {
 	public void setFechaDeNacimiento(Instant fechaDeNacimiento) {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
-	public String getNacionalidad() {
+	public Integer getNacionalidad() {
 		return nacionalidad;
 	}
-	public void setNacionalidad(String nacionalidad) {
+	public void setNacionalidad(Integer nacionalidad) {
 		this.nacionalidad = nacionalidad;
 	}
 	public String getEmail() {

@@ -5,5 +5,6 @@ import java.util.List;
 public interface CiudadDAO {
 
 	List<Ciudad> getByProvincia(Integer idProvincia);
+	public Ciudad getById(Integer idCiudad);
 
 }

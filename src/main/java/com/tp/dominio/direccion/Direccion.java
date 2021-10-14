@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.tp.dominio.geo.Ciudad;
 import com.tp.dominio.geo.Pais;
 import com.tp.dominio.geo.Provincia;
+import com.tp.dto.DireccionDTO;
 
 @Entity
 @Table(name = "tpdds.direccion")
@@ -28,7 +29,17 @@ public class Direccion {
 	@JoinColumn (name = "id_ciudad", referencedColumnName = "id_ciudad")
 	private Ciudad ciudad;
 	
-	public String getCodigoPostal() {
+	public Direccion(){}
+
+	public Direccion(DireccionDTO ddto) {
+		this.idDireccion = ddto.getIdCiudad();
+		this.codigoPostal = ddto.getCodigoPostal();
+		this.calle = ddto.getCalle();
+		this.nroCalle = ddto.getNroCalle();
+		this.piso = ddto.getPiso();
+		this.nroDepartamento = ddto.getNroDepartamento();
+    }
+    public String getCodigoPostal() {
 		return codigoPostal;
 	}
 	public String getCalle() {
@@ -55,4 +66,8 @@ public class Direccion {
 	public Integer getIdDireccion() {
 		return idDireccion;
 	}
+
+    public void setCiudad(Ciudad ciudad) {
+		this.ciudad = ciudad;
+    }
 }
