@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import java.util.List;
 import javax.persistence.NoResultException;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -95,7 +96,15 @@ public class MenuAutenticacion extends JPanel {
 		}
 		
 		this.agregarActionListeners();
-		
+		this.agregarTabOrder();
+	}
+
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				jtf_codigo_conserje, jpf_contrasena,
+				jb_iniciar_sesion, jb_salir
+				)));
+		this.setFocusTraversalPolicyProvider(true);
 	}
 	
 	private void agregarActionListeners() {
