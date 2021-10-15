@@ -1,17 +1,8 @@
 package com.tp.interfaces.pasajeros;
 
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
 import javax.swing.text.MaskFormatter;
-
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JSpinnerDateEditor;
-import com.tp.dominio.geo.Ciudad;
-import com.tp.dominio.geo.Pais;
-import com.tp.dominio.geo.Provincia;
-import com.tp.dominio.pasajero.PosicionIVA;
-import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.dto.CiudadDTO;
 import com.tp.dto.DireccionDTO;
 import com.tp.dto.PaisDTO;
@@ -29,14 +20,10 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.tp.dto.PosicionIVADTO;
 
 
 
@@ -121,23 +108,23 @@ public class MenuAltaPasajero extends JPanel {
 		this.campos_validos = new HashMap<String,Boolean>();
 		inicializarMapa();
 		
-		jcb_pais = new JComboBox();
+		jcb_pais = new JComboBox<PaisDTO>();
 		jcb_pais.setBounds(128, 319, 122, 20);
 		add(jcb_pais);
 		
-		jcb_ciudad = new JComboBox();
+		jcb_ciudad = new JComboBox<CiudadDTO>();
 		jcb_ciudad.setBounds(128, 361, 122, 20);
 		add(jcb_ciudad);
 		
-		jcb_provincia = new JComboBox();
+		jcb_provincia = new JComboBox<ProvinciaDTO>();
 		jcb_provincia.setBounds(495, 319, 122, 20);
 		add(jcb_provincia);
 		
-		jcb_tipo_documento = new JComboBox();
+		jcb_tipo_documento = new JComboBox<TipoDocumentoDTO>();
 		jcb_tipo_documento.setBounds(495, 151, 122, 20);
 		add(jcb_tipo_documento);
 		
-		jcb_factura = new JComboBox();
+		jcb_factura = new JComboBox<PosicionIVADTO>();
 		jcb_factura.setBounds(495, 235, 122, 20);
 		add(jcb_factura);
 		
@@ -159,7 +146,7 @@ public class MenuAltaPasajero extends JPanel {
 		jb_siguiente.setBounds(526, 569, 91, 30);
 		add(jb_siguiente);
 		
-		jcb_nacionalidad = new JComboBox();
+		jcb_nacionalidad = new JComboBox<PaisDTO>();
 		jcb_nacionalidad.setBounds(495, 528, 122, 20);
 		add(jcb_nacionalidad);
 		

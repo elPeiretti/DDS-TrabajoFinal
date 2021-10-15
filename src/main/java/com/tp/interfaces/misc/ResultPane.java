@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class ResultPane<E> extends JPanel {
 	private JScrollPane jsp_tabla;
 	private Integer pagina_actual = 1;
 	private Long cant_paginas = 1L;
+	private Integer cant_filas = 8;
 
 	public ResultPane() {
 		setBackground(Color.WHITE);
@@ -60,7 +62,31 @@ public class ResultPane<E> extends JPanel {
 		objetos_en_tabla = new ArrayList<E>();
 		
 	}
-	
+
+	public ResultPane(Runnable tableFillerMethod){
+		this();
+
+		btn_next.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(pagina_actual >= cant_paginas) return;
+				
+				pagina_actual++;
+				tableFillerMethod.run();
+				
+			}
+		});
+		
+		btn_prev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(pagina_actual.equals(1)) return;
+				
+				pagina_actual--;
+				tableFillerMethod.run();
+			}
+		});
+	}
 	
 	public Integer getPaginaActual() {
 		return pagina_actual;
@@ -106,6 +132,10 @@ public class ResultPane<E> extends JPanel {
 
 	public List<E> getRowObjects() {
 		return objetos_en_tabla;
+	}
+
+	public Integer getCantidadFilas(){
+		return cant_filas;
 	}
 		
 

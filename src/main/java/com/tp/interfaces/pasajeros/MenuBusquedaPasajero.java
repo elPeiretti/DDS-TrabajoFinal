@@ -60,7 +60,7 @@ public class MenuBusquedaPasajero extends JPanel {
 		jb_cancelar.setBounds(81, 420, 100, 30);
 		add(jb_cancelar);
 		
-		rp_pasajeros = new ResultPane<PasajeroDTO>();
+		rp_pasajeros = new ResultPane<PasajeroDTO>(this::llenarTabla);
 		rp_pasajeros.setBounds(10, 230, 620, 180);
 		add(rp_pasajeros);
 				
@@ -182,30 +182,6 @@ public class MenuBusquedaPasajero extends JPanel {
 			}
 		});
 		
-		rp_pasajeros.getNextBtn().addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				
-				if(rp_pasajeros.getPaginaActual() >= rp_pasajeros.getCantPaginas()) return;
-				
-				rp_pasajeros.setPaginaActual(rp_pasajeros.getPaginaActual()+1);
-				llenarTabla();
-				
-			}
-			
-		});
-		
-		rp_pasajeros.getPrevBtn().addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				
-				if(rp_pasajeros.getPaginaActual().equals(1)) return;
-				
-				rp_pasajeros.setPaginaActual(rp_pasajeros.getPaginaActual()-1);
-				llenarTabla();
-			}
-			
-		});
 	}
 	
 	private void llenarTabla() {
