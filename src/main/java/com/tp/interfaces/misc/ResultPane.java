@@ -49,7 +49,11 @@ public class ResultPane<E> extends JPanel {
 		btn_next.setBounds(358, 154, 50, 20);
 		add(btn_next);
 		
-		jtable_contenido = new DefaultTableModel();
+		jtable_contenido = new DefaultTableModel(){
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		};
 		jtable_resultados.setModel(jtable_contenido);
 		jtable_resultados.setAutoCreateRowSorter(true);
 		
