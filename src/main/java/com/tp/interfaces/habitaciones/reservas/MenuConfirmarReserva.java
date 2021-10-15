@@ -9,6 +9,10 @@ import java.util.List;
 
 public class MenuConfirmarReserva extends JPanel {
 
+	public static String titulo = "Confirmar Reserva";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JPanel encabezado;
 	private JLabel lbl_reserva_nombre;

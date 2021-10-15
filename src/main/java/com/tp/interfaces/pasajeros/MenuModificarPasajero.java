@@ -22,7 +22,8 @@ import com.tp.interfaces.misc.Mensaje;
 
 public class MenuModificarPasajero extends MenuAltaPasajero {
 	
-	
+	public static String titulo = "Modificar Pasajero";
+
 	private JButton jb_borrar;
 	private PasajeroDTO pasajero;
 	
@@ -65,7 +66,8 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 				try {
 					// llamar al gestor TODO
 					int opt = Mensaje.mensajeInformacion("La operación ha culminado con éxito.");
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),660,500,"Gestionar Pasajero");
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),
+																		MenuBusquedaPasajero.x_bound,MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 				}
 				catch(Exception exc) { //TODO
 					
@@ -83,7 +85,8 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 					
 					try {
 						// llamar al gestor TODO
-						((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),660,500,"Gestionar Pasajero");
+						((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),
+																			MenuBusquedaPasajero.x_bound,MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 					}
 					catch(Exception exc) { //TODO
 						
@@ -97,7 +100,8 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar la modificación del pasajero?");
 				if (opt == 1) { 
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,660,500,"Gestionar Pasajero");
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,MenuBusquedaPasajero.x_bound,
+																		MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 				}
 			}
 		});

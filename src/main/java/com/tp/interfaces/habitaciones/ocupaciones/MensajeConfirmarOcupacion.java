@@ -4,7 +4,7 @@ import javax.swing.*;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 
-public class MenuConfirmarOcupacion extends JPanel {
+public class MensajeConfirmarOcupacion extends JPanel {
 
 	private JFrame ventana_contenedora;
 	private JPanel encabezado;
@@ -15,7 +15,7 @@ public class MenuConfirmarOcupacion extends JPanel {
 	private JLabel lbl_nombre_responsable_datos;
 	private JButton jb_continuar;
 	
-	public MenuConfirmarOcupacion(JFrame ventana_contenedora) {
+	public MensajeConfirmarOcupacion(JFrame ventana_contenedora) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);

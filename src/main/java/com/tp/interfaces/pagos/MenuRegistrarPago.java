@@ -14,6 +14,10 @@ import com.tp.interfaces.misc.TabOrder;
 
 public class MenuRegistrarPago extends JPanel {
 
+	public static String titulo = "Registrar Pago";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JTextField tf_nro_factura;
 	private JPanel encabezado;

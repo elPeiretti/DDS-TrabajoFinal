@@ -9,6 +9,10 @@ import com.tp.interfaces.misc.ResultPane;
 
 public class MenuConsumosPorHabitacion extends JPanel {
 
+	public static String titulo = "Facturar";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JPanel encabezado;
 	private JButton jb_siguiente;

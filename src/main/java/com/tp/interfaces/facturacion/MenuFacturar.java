@@ -12,6 +12,10 @@ import com.tp.interfaces.misc.TabOrder;
 
 public class MenuFacturar extends JPanel {
 
+	public static String titulo = "Facturar";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JTextField jtf_num_hab;
 	private JLabel lbl_num_hab;

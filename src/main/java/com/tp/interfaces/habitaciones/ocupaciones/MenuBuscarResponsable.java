@@ -10,6 +10,10 @@ import com.tp.interfaces.misc.ResultPane;
 
 public class MenuBuscarResponsable extends JPanel {
 
+	public static String titulo = "Buscar Pasajero";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JTextField jtf_apellido;
 	private JTextField jtf_nombres;

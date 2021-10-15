@@ -20,6 +20,10 @@ import java.util.Vector;
 
 public class MenuBusquedaPasajero extends JPanel {
 
+	public static String titulo = "Gestionar Pasajero";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private Encabezado encabezado;
 	private JButton jb_siguiente;
@@ -39,7 +43,7 @@ public class MenuBusquedaPasajero extends JPanel {
 	
 	public MenuBusquedaPasajero(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
-		setSize(660, 500);
+		setSize(x_bound, y_bound);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
 		
@@ -141,11 +145,11 @@ public class MenuBusquedaPasajero extends JPanel {
 				int fila = rp_pasajeros.getTable().getSelectedRow();
 				if(fila == -1) {
 					m = new MenuAltaPasajero(ventana_contenedora,encabezado,contexto);
-					nom = "Alta de Pasajero";
+					nom = MenuAltaPasajero.titulo;
 				}
 				else {
 					m = new MenuModificarPasajero(ventana_contenedora,encabezado,contexto,rp_pasajeros.getRowObjects().get(fila));
-					nom = "Modificar Pasajero";
+					nom = MenuModificarPasajero.titulo;
 				}
 				((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuAltaPasajero.x_bound,MenuAltaPasajero.y_bound,nom);
 			}
@@ -153,7 +157,8 @@ public class MenuBusquedaPasajero extends JPanel {
 		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),660,500,"Menú Principal");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),
+																	 MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);
 			}
 		});
 		

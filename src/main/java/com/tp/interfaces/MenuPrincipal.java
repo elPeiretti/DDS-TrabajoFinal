@@ -25,6 +25,10 @@ import java.awt.event.ActionEvent;
 
 public class MenuPrincipal extends JPanel {
 
+	public static String titulo = "Menú Principal";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private BufferedImage logo;
 	private JLabel lbl_logo;
@@ -154,37 +158,44 @@ public class MenuPrincipal extends JPanel {
 		
 		jb_gestionar_pasajero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),660,500,"Gestionar Pasajero");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),
+																	MenuBusquedaPasajero.x_bound,MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 			}
 		});
 		jb_reservar_habitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),660,500,"Estado Habitaciones");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
+																	MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
 			}
 		});
 		jb_ocupar_habitacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),660,500,"Estado Habitaciones");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
+																	MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
 			}
 		});
 		jb_facturar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuFacturar(ventana_contenedora,encabezado),660,500,"Facturar");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuFacturar(ventana_contenedora,encabezado),
+																	MenuFacturar.x_bound,MenuFacturar.y_bound,MenuFacturar.titulo);
 			}
 		});
 		jb_ingresar_pago.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuRegistrarPago(ventana_contenedora,encabezado),660,500,"Registrar Pago");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuRegistrarPago(ventana_contenedora,encabezado),
+																	MenuRegistrarPago.x_bound,MenuRegistrarPago.y_bound,MenuRegistrarPago.titulo);
 			}
 		});
 		jb_listar_ingresos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuListarIngresos(ventana_contenedora,encabezado),660,500, "Listar Ingresos");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuListarIngresos(ventana_contenedora,encabezado),
+																	MenuListarIngresos.x_bound,MenuListarIngresos.y_bound,MenuListarIngresos.titulo);
 			}
 		});
 		jb_salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuAutenticacion(ventana_contenedora,encabezado),660,500, "Autenticación");
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuAutenticacion(ventana_contenedora,encabezado),
+																	MenuAutenticacion.x_bound,MenuAutenticacion.y_bound,MenuAutenticacion.titulo);
 			}
 		});
 	}

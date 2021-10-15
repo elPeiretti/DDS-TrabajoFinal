@@ -17,6 +17,10 @@ import java.text.ParseException;
 
 public class MenuAutenticacion extends JPanel {
 	
+	public static String titulo = "Autenticación";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JTextField jtf_codigo_conserje;
 	private JPasswordField jpf_contrasena;

@@ -42,6 +42,7 @@ import com.tp.dto.PosicionIVADTO;
 
 public class MenuAltaPasajero extends JPanel {
 	
+	public static String titulo = "Alta Pasajero";
 	public static int x_bound = 660;
 	public static int y_bound = 650;
 	
@@ -553,7 +554,8 @@ public class MenuAltaPasajero extends JPanel {
 						inicializarMapa();
 					}
 					else {
-						((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora, encabezado),660,500,"Gestionar Pasajero");
+						((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora, encabezado),
+																			MenuBusquedaPasajero.x_bound,MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 					}
 				}
 				catch(DocumentoExistenteException exc) {
@@ -567,7 +569,8 @@ public class MenuAltaPasajero extends JPanel {
 							inicializarMapa();
 						}
 						else {
-							((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora, encabezado),660,500,"Gestionar Pasajero");
+							((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora, encabezado),
+																											MenuBusquedaPasajero.x_bound,MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 						}
 					}
 					else{
@@ -582,7 +585,8 @@ public class MenuAltaPasajero extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar el alta del pasajero?");
 				if (opt == 1) { 
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,660,500,"Gestionar Pasajero");
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,MenuBusquedaPasajero.x_bound,
+																		MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 				}
 			}
 		});

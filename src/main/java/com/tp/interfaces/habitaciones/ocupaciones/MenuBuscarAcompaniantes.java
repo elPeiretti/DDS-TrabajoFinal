@@ -7,6 +7,10 @@ import java.util.List;
 
 public class MenuBuscarAcompaniantes extends JPanel {
 
+	public static String titulo = "Buscar Acompañantes";
+	public static int x_bound = 660;
+	public static int y_bound = 700;
+
 	private JFrame ventana_contenedora;
 	private JPanel encabezado;
 	private JTextField jtf_numero_documento;

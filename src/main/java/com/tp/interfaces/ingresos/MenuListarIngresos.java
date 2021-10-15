@@ -12,6 +12,10 @@ import com.tp.interfaces.misc.TabOrder;
 
 public class MenuListarIngresos extends JPanel {
 
+	public static String titulo = "Listar Ingresos";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JPanel encabezado;
 	private JLabel lbl_desde;

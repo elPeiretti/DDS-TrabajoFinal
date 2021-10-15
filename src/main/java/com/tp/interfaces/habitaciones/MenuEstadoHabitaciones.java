@@ -10,6 +10,10 @@ import javax.swing.border.LineBorder;
 
 public class MenuEstadoHabitaciones extends JPanel {
 
+	public static String titulo = "Estado Habitaciones";
+	public static int x_bound = 660;
+	public static int y_bound = 500;
+
 	private JFrame ventana_contenedora;
 	private JPanel encabezado;
 	private JTable jtable_habitaciones;
