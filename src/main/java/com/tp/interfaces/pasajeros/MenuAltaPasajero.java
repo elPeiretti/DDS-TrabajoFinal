@@ -41,7 +41,10 @@ import com.tp.dto.PosicionIVADTO;
 
 
 public class MenuAltaPasajero extends JPanel {
-
+	
+	public static int x_bound = 660;
+	public static int y_bound = 650;
+	
 	protected MenuAltaPasajero contexto;
 	protected JFrame ventana_contenedora;
 	protected JTextField jtf_ocupacion;
@@ -106,13 +109,12 @@ public class MenuAltaPasajero extends JPanel {
 	protected JLabel lbl_error_cuit;
 	protected boolean cuit_obligatorio = false;
 	
-	// fijar ventana contenedora a 640x620
 	public MenuAltaPasajero(JFrame ventana_contenedora, Encabezado encabezado, MenuBusquedaPasajero estado_anterior) {
 		setBackground(Color.WHITE);
 		this.menu_anterior = estado_anterior;
 		this.ventana_contenedora = ventana_contenedora;
 		this.contexto = this;
-		ventana_contenedora.setSize(660,620);
+		ventana_contenedora.setSize(x_bound,y_bound);
 		setLayout(null);
 		
 		this.campos_validos = new HashMap<String,Boolean>();
@@ -127,7 +129,7 @@ public class MenuAltaPasajero extends JPanel {
 		add(jcb_ciudad);
 		
 		jcb_provincia = new JComboBox();
-		jcb_provincia.setBounds(495, 277, 122, 20);
+		jcb_provincia.setBounds(495, 319, 122, 20);
 		add(jcb_provincia);
 		
 		jcb_tipo_documento = new JComboBox();
@@ -139,29 +141,29 @@ public class MenuAltaPasajero extends JPanel {
 		add(jcb_factura);
 		
 		lbl_ocupacion = new JLabel("<html>Ocupación <font color='red'>(*)</font>:</html>");
-		lbl_ocupacion.setBounds(23, 489, 84, 14);
+		lbl_ocupacion.setBounds(23, 531, 84, 14);
 		add(lbl_ocupacion);
 		
 		jtf_ocupacion = new JTextField();
 		jtf_ocupacion.setColumns(10);
-		jtf_ocupacion.setBounds(128, 486, 122, 20);
+		jtf_ocupacion.setBounds(128, 528, 122, 20);
 		jtf_ocupacion.setDocument(new JTextFieldLimit(30));
 		add(jtf_ocupacion);
 		
 		jb_cancelar = new JButton("Cancelar");
-		jb_cancelar.setBounds(400, 539, 91, 30);
+		jb_cancelar.setBounds(400, 569, 91, 30);
 		add(jb_cancelar);
 		
 		jb_siguiente = new JButton("Siguiente");
-		jb_siguiente.setBounds(526, 539, 91, 30);
+		jb_siguiente.setBounds(526, 569, 91, 30);
 		add(jb_siguiente);
 		
 		jcb_nacionalidad = new JComboBox();
-		jcb_nacionalidad.setBounds(495, 486, 122, 20);
+		jcb_nacionalidad.setBounds(495, 528, 122, 20);
 		add(jcb_nacionalidad);
 		
 		lbl_nacionalidad = new JLabel("<html>Nacionalidad <font color='red'>(*)</font>:</html>");
-		lbl_nacionalidad.setBounds(334, 489, 110, 14);
+		lbl_nacionalidad.setBounds(334, 531, 110, 14);
 		add(lbl_nacionalidad);
 		
 		this.encabezado = encabezado;
@@ -176,7 +178,7 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_ocupacion = new JLabel("");
 		lbl_error_ocupacion.setForeground(Color.RED);
 		lbl_error_ocupacion.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_ocupacion.setBounds(23, 510, 227, 10);
+		lbl_error_ocupacion.setBounds(23, 552, 227, 10);
 		add(lbl_error_ocupacion);
 		
 		lbl_numero = new JLabel("<html>N\u00FAmero <font color='red'>(*)</font>:</html>");
@@ -298,47 +300,47 @@ public class MenuAltaPasajero extends JPanel {
 		add(lbl_error_apellido);
 		
 		lbl_telefono = new JLabel("<html>Tel\u00E9fono <font color='red'>(*)</font>:</html>");
-		lbl_telefono.setBounds(334, 405, 84, 14);
+		lbl_telefono.setBounds(334, 447, 84, 14);
 		add(lbl_telefono);
 		
 		jtf_telefono = new JTextField();
 		jtf_telefono.setColumns(10);
-		jtf_telefono.setBounds(495, 402, 122, 20);
+		jtf_telefono.setBounds(495, 444, 122, 20);
 		jtf_telefono.setDocument(new JTextFieldLimit(15));
 		add(jtf_telefono);
 		
 		lbl_piso = new JLabel("Piso:");
-		lbl_piso.setBounds(334, 363, 62, 14);
+		lbl_piso.setBounds(334, 405, 62, 14);
 		add(lbl_piso);
 		
 		jtf_piso = new JTextField();
 		jtf_piso.setColumns(10);
-		jtf_piso.setBounds(374, 360, 30, 20);
+		jtf_piso.setBounds(374, 402, 30, 20);
 		jtf_piso.setDocument(new JTextFieldLimit(3));
 		add(jtf_piso);
 		
 		lbl_departamento = new JLabel("Departamento:");
-		lbl_departamento.setBounds(438, 364, 85, 14);
+		lbl_departamento.setBounds(438, 406, 85, 14);
 		add(lbl_departamento);
 		
 		jtf_departamento = new JTextField();
 		jtf_departamento.setColumns(10);
-		jtf_departamento.setBounds(533, 361, 84, 20);
+		jtf_departamento.setBounds(533, 403, 84, 20);
 		jtf_departamento.setDocument(new JTextFieldLimit(5));
 		add(jtf_departamento);
 		
 		lbl_codigo_postal = new JLabel("<html>C\u00F3digo Postal <font color='red'>(*)</font>:</html>");
-		lbl_codigo_postal.setBounds(334, 322, 110, 14);
+		lbl_codigo_postal.setBounds(334, 364, 110, 14);
 		add(lbl_codigo_postal);
 		
 		jtf_codigo_postal = new JTextField();
 		jtf_codigo_postal.setColumns(10);
-		jtf_codigo_postal.setBounds(495, 319, 122, 20);
+		jtf_codigo_postal.setBounds(495, 361, 122, 20);
 		jtf_codigo_postal.setDocument(new JTextFieldLimit(10));
 		add(jtf_codigo_postal);
 		
 		lbl_provincia = new JLabel("<html>Provincia <font color='red'>(*)</font>:</html>");
-		lbl_provincia.setBounds(334, 280, 84, 14);
+		lbl_provincia.setBounds(334, 322, 84, 14);
 		add(lbl_provincia);
 		
 		lbl_factura = new JLabel("<html>Factura <font color='red'>(*)</font>:</html>");
@@ -360,25 +362,25 @@ public class MenuAltaPasajero extends JPanel {
 		add(lbl_tipo_documento);
 		
 		lbl_email = new JLabel("E-mail:");
-		lbl_email.setBounds(334, 447, 84, 14);
+		lbl_email.setBounds(334, 489, 84, 14);
 		add(lbl_email);
 		
 		jtf_email = new JTextField();
 		jtf_email.setColumns(10);
-		jtf_email.setBounds(495, 444, 122, 20);
+		jtf_email.setBounds(495, 486, 122, 20);
 		jtf_email.setDocument(new JTextFieldLimit(70));
 		add(jtf_email);
 		
 		lbl_error_nacionalidad = new JLabel("");
 		lbl_error_nacionalidad.setForeground(Color.RED);
 		lbl_error_nacionalidad.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_nacionalidad.setBounds(334, 510, 283, 10);
+		lbl_error_nacionalidad.setBounds(334, 552, 283, 10);
 		add(lbl_error_nacionalidad);
 		
 		lbl_error_email = new JLabel("");
 		lbl_error_email.setForeground(Color.RED);
 		lbl_error_email.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_email.setBounds(334, 468, 283, 10);
+		lbl_error_email.setBounds(334, 510, 283, 10);
 		add(lbl_error_email);
 		
 		lbl_error_telefono = new JLabel("");
@@ -390,19 +392,19 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_piso = new JLabel("");
 		lbl_error_piso.setForeground(Color.RED);
 		lbl_error_piso.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_piso.setBounds(334, 385, 157, 10);
+		lbl_error_piso.setBounds(334, 427, 157, 10);
 		add(lbl_error_piso);
 		
 		lbl_error_codigo_postal = new JLabel("");
 		lbl_error_codigo_postal.setForeground(Color.RED);
 		lbl_error_codigo_postal.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_codigo_postal.setBounds(334, 343, 283, 10);
+		lbl_error_codigo_postal.setBounds(334, 385, 283, 10);
 		add(lbl_error_codigo_postal);
 		
 		lbl_error_provincia = new JLabel("");
 		lbl_error_provincia.setForeground(Color.RED);
 		lbl_error_provincia.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_provincia.setBounds(334, 301, 283, 10);
+		lbl_error_provincia.setBounds(334, 343, 283, 10);
 		add(lbl_error_provincia);
 		
 		lbl_error_factura = new JLabel("");

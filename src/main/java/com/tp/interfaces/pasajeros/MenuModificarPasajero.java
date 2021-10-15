@@ -39,7 +39,7 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 		}
 		
 		jb_borrar = new JButton("Borrar");
-		jb_borrar.setBounds(23, 539, 91, 30);
+		jb_borrar.setBounds(23, jb_siguiente.getBounds().y, 91, 30);
 		add(jb_borrar);
 		
 		this.agregarActionListeners();

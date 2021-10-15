@@ -147,7 +147,7 @@ public class MenuBusquedaPasajero extends JPanel {
 					m = new MenuModificarPasajero(ventana_contenedora,encabezado,contexto,rp_pasajeros.getRowObjects().get(fila));
 					nom = "Modificar Pasajero";
 				}
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,660,620,nom);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuAltaPasajero.x_bound,MenuAltaPasajero.y_bound,nom);
 			}
 		});
 		
