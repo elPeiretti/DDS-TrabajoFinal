@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.tp.dominio.direccion.Direccion;
+import com.tp.dominio.direccion.DireccionSqlDAO;
 import com.tp.dominio.geo.Ciudad;
 import com.tp.dominio.geo.CiudadSqlDAO;
 import com.tp.dominio.geo.Pais;
@@ -104,7 +105,7 @@ public class GestorPasajeros {
 		pasajero.setNacionalidad(nacionalidad);
 		pasajero.setTipoDocumento(td);
 		pasajero.setDireccion(direc);
-
+		
 		new PasajeroSqlDAO().insertarPasajero(pasajero);
 	}
 

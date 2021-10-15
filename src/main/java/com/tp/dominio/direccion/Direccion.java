@@ -32,7 +32,7 @@ public class Direccion {
 	public Direccion(){}
 
 	public Direccion(DireccionDTO ddto) {
-		this.idDireccion = ddto.getIdCiudad();
+		this.idDireccion = ddto.getIdDireccion();
 		this.codigoPostal = ddto.getCodigoPostal();
 		this.calle = ddto.getCalle();
 		this.nroCalle = ddto.getNroCalle();
