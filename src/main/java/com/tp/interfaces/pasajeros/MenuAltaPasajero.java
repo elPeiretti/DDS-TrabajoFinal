@@ -222,7 +222,7 @@ public class MenuAltaPasajero extends JPanel {
 		add(lbl_error_pais);
 		
 		lbl_nacimiento = new JLabel("<html>Nacimiento <font color='red'>(*)</font>:</html>");
-		lbl_nacimiento.setBounds(23, 278, 84, 14);
+		lbl_nacimiento.setBounds(23, 278, 95, 14);
 		add(lbl_nacimiento);
 		
 		lbl_error_nacimiento = new JLabel("");
