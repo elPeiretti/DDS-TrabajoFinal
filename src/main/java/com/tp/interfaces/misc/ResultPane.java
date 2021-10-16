@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.border.LineBorder;
+import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class ResultPane<E> extends JPanel {
 	
@@ -26,6 +29,7 @@ public class ResultPane<E> extends JPanel {
 	private Integer pagina_actual = 1;
 	private Long cant_paginas = 1L;
 	private Integer cant_filas = 8;
+	private TableRowSorter<TableModel> sorter;
 
 	public ResultPane() {
 		setBackground(Color.WHITE);
@@ -57,15 +61,15 @@ public class ResultPane<E> extends JPanel {
 			}
 		};
 		jtable_resultados.setModel(jtable_contenido);
-		jtable_resultados.setAutoCreateRowSorter(true);
-		
+		sorter = new TableRowSorter<>(jtable_contenido);
+		jtable_resultados.setRowSorter(sorter);
 		objetos_en_tabla = new ArrayList<E>();
 		
 	}
-
+	
 	public ResultPane(Runnable tableFillerMethod){
 		this();
-
+		
 		btn_next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -86,6 +90,15 @@ public class ResultPane<E> extends JPanel {
 				tableFillerMethod.run();
 			}
 		});
+	}
+	public void agregarColumnas(List<String> nombres,List<Integer> noOrdenables) {
+		nombres.forEach(n -> jtable_contenido.addColumn(n));
+		if(noOrdenables == null) return;
+		noOrdenables.forEach(n -> sorter.setSortable(n,false));
+	}
+	
+	public void agregarRowListener(RowSorterListener listener) {
+		sorter.addRowSorterListener(listener);
 	}
 	
 	public Integer getPaginaActual() {
@@ -137,6 +150,5 @@ public class ResultPane<E> extends JPanel {
 	public Integer getCantidadFilas(){
 		return cant_filas;
 	}
-		
 
 }

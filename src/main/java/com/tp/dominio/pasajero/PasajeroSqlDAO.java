@@ -3,6 +3,8 @@ package com.tp.dominio.pasajero;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.TypedQuery;
+import javax.swing.SortOrder;
+
 import org.hibernate.*;
 import com.tp.hibernate.HibernateUtil;
 
@@ -28,8 +30,18 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		if(criterios.containsKey("documento")) {
 			sqlStatement += "AND td.idTipoDocumento = :id_tipo AND p.nroDocumento = :documento ";
 		} 
+		String orderBy = "ORDER BY p.apellido, p.nombres";
 		
-		sqlStatement += "ORDER BY p.apellido, p.nombres";
+		if(criterios.containsKey("orden")) {
+			orderBy = "ORDER BY ";
+			String aux = criterios.get("orden").toString();
+			if(aux == "nombres") orderBy += "p.nombres";
+			if(aux == "apellido") orderBy += "p.apellido";
+			if(aux == "tipo_documento") orderBy += "td.idTipoDocumento";
+			if(aux == "documento") orderBy += "p.nroDocumento";
+			if(criterios.containsKey("dir")) orderBy += criterios.get("dir") == SortOrder.ASCENDING ? " ASC" : " DESC";
+		}
+		sqlStatement += orderBy;
 		
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		

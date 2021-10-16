@@ -1,6 +1,9 @@
 package com.tp.interfaces.pasajeros;
 
 import javax.swing.*;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 
 import com.tp.dominio.pasajero.Pasajero;
 import com.tp.dto.PasajeroDTO;
@@ -13,7 +16,9 @@ import com.tp.interfaces.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -39,7 +44,7 @@ public class MenuBusquedaPasajero extends JPanel {
 	private JLabel lbl_nombres;
 	private JTextField jtf_nombres;
 	private Map<String,Object> criterios_actuales;
-			
+	private ArrayList<String> indice_columnas = new ArrayList<String>(List.of("apellido","nombres","tipo_documento","documento"));
 	
 	public MenuBusquedaPasajero(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
@@ -106,10 +111,7 @@ public class MenuBusquedaPasajero extends JPanel {
 		jtf_nombres.setDocument(new JTextFieldLimit(50));
 		add(jtf_nombres);
 		
-		rp_pasajeros.getContenido().addColumn("Apellido");
-		rp_pasajeros.getContenido().addColumn("Nombres");
-		rp_pasajeros.getContenido().addColumn("Tipo Documento");
-		rp_pasajeros.getContenido().addColumn("Numero de Documento");
+		rp_pasajeros.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento"), null);
 	
 		this.inicializarCampos();
 		
@@ -182,10 +184,19 @@ public class MenuBusquedaPasajero extends JPanel {
 			}
 		});
 		
+		rp_pasajeros.agregarRowListener(new RowSorterListener() {
+			public void sorterChanged(RowSorterEvent e) {
+				if(e.getType() != RowSorterEvent.Type.SORT_ORDER_CHANGED) return;
+				for (SortKey key : e.getSource().getSortKeys()) {
+					criterios_actuales.put("orden", indice_columnas.get(key.getColumn()));
+					criterios_actuales.put("dir", key.getSortOrder());
+					llenarTabla();
+				}
+			}
+		});
 	}
 	
 	private void llenarTabla() {
-		
 		rp_pasajeros.getContenido().setRowCount(0);
 		rp_pasajeros.getRowObjects().clear();
 		
