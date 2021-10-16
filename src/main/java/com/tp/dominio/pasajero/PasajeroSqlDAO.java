@@ -1,17 +1,18 @@
 package com.tp.dominio.pasajero;
 
 import java.util.List;
-import java.util.Map;
 import javax.persistence.TypedQuery;
 import javax.swing.SortOrder;
 
 import org.hibernate.*;
+
+import com.tp.dto.BusqPasajeroDTO;
 import com.tp.hibernate.HibernateUtil;
 
 public class PasajeroSqlDAO implements PasajeroDAO {
 
 	@Override
-	public List<Pasajero> getPasajerosByCriteria(Map<String, Object> criterios, Integer li, Integer cant) {
+	public List<Pasajero> getPasajerosByCriteria(BusqPasajeroDTO criterios, Integer li, Integer cant) {
 		
 		List<Pasajero> resultado;
 		
@@ -19,44 +20,61 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		
 		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE true = true ";
 		
-		if(criterios.containsKey("nombres")) {
+		if(criterios.getNombres() != null) {
 			sqlStatement += "AND p.nombres LIKE :nombres ";
 		} 
 		
-		if(criterios.containsKey("apellido")) {
+		if(criterios.getApellido() != null) {
 			sqlStatement += "AND p.apellido LIKE :apellido ";
 		} 
 		
-		if(criterios.containsKey("documento")) {
-			sqlStatement += "AND td.idTipoDocumento = :id_tipo AND p.nroDocumento = :documento ";
+		if(criterios.getTipoDocumentoDTO() != null) {
+			sqlStatement += "AND td.idTipoDocumento = :id_tipo ";
+		} 
+		
+		if(criterios.getNroDocumento() != null) {
+			sqlStatement += "AND p.nroDocumento = :documento ";
 		} 
 		String orderBy = "ORDER BY p.apellido, p.nombres";
 		
-		if(criterios.containsKey("orden")) {
+		if(criterios.getColumna() != null) {
 			orderBy = "ORDER BY ";
-			String aux = criterios.get("orden").toString();
-			if(aux == "nombres") orderBy += "p.nombres";
-			if(aux == "apellido") orderBy += "p.apellido";
-			if(aux == "tipo_documento") orderBy += "td.idTipoDocumento";
-			if(aux == "documento") orderBy += "p.nroDocumento";
-			if(criterios.containsKey("dir")) orderBy += criterios.get("dir") == SortOrder.ASCENDING ? " ASC" : " DESC";
+			BusqPasajeroDTO.columnaOrden aux = criterios.getColumna();
+			switch(aux) {
+				case NOMBRES:
+					orderBy += "p.nombres ";
+					break;
+				case APELLIDO:
+					orderBy += "p.apellido ";
+					break;
+				case TIPODOC:
+					orderBy += "td.idTipoDocumento ";
+					break;
+				case NRODOC:
+					orderBy += "p.nroDocumento ";
+					break;
+			}
+			if(criterios.getSortOrder() != null) orderBy += criterios.getSortOrder() == SortOrder.ASCENDING ? "ASC" : "DESC";
 		}
 		sqlStatement += orderBy;
 		
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
-		if(criterios.containsKey("nombres")) {
-			hqlQuery.setParameter("nombres", criterios.get("nombres")+"%");
+		if(criterios.getNombres() != null) {
+			hqlQuery.setParameter("nombres", criterios.getNombres()+"%");
 		} 
 		
-		if(criterios.containsKey("apellido")) {
-			hqlQuery.setParameter("apellido", criterios.get("apellido")+"%");
+		if(criterios.getApellido() != null) {
+			hqlQuery.setParameter("apellido", criterios.getApellido()+"%");
 		} 
 		
-		if(criterios.containsKey("documento")) {
-			hqlQuery.setParameter("id_tipo", criterios.get("tipo_documento"));
-			hqlQuery.setParameter("documento", criterios.get("documento"));
+		if(criterios.getTipoDocumentoDTO() != null) {
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento().toString());
 		} 
+		
+		if(criterios.getNroDocumento() != null) {
+			hqlQuery.setParameter("documento", criterios.getNroDocumento());
+		}
 		
 		hqlQuery.setFirstResult(li);
 		hqlQuery.setMaxResults(cant);
@@ -69,7 +87,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 	}
 
 	@Override
-	public Long getCountPasajerosByCriteria(Map<String, Object> criterios) {
+	public Long getCountPasajerosByCriteria(BusqPasajeroDTO criterios) {
 		
 		Long resultado;
 		
@@ -77,32 +95,39 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		
 		String sqlStatement = "SELECT count(p) FROM Pasajero p JOIN p.tipoDocumento td WHERE true = true ";
 		
-		if(criterios.containsKey("nombres")) {
+		if(criterios.getNombres() != null) {
 			sqlStatement += "AND p.nombres LIKE :nombres ";
 		} 
 		
-		if(criterios.containsKey("apellido")) {
+		if(criterios.getApellido() != null) {
 			sqlStatement += "AND p.apellido LIKE :apellido ";
 		} 
 		
-		if(criterios.containsKey("documento")) {
-			sqlStatement += "AND td.idTipoDocumento = :id_tipo AND p.nroDocumento = :documento ";
+		if(criterios.getTipoDocumentoDTO() != null) {
+			sqlStatement += "AND td.idTipoDocumento = :id_tipo ";
 		} 
+		
+		if(criterios.getNroDocumento() != null) {
+			sqlStatement += "AND p.nroDocumento = :documento ";
+		}
 		
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
 		
-		if(criterios.containsKey("nombres")) {
-			hqlQuery.setParameter("nombres", criterios.get("nombres")+"%");
+		String aux;
+		if((aux = criterios.getNombres()) != null) {
+			hqlQuery.setParameter("nombres", aux+"%");
 		} 
 		
-		if(criterios.containsKey("apellido")) {
-			hqlQuery.setParameter("apellido", criterios.get("apellido")+"%");
+		if((aux = criterios.getApellido()) != null) {
+			hqlQuery.setParameter("apellido", aux+"%");
 		} 
 		
-		if(criterios.containsKey("documento")) {
-			hqlQuery.setParameter("id_tipo", criterios.get("tipo_documento"));
-			hqlQuery.setParameter("documento", criterios.get("documento"));
+		if(criterios.getTipoDocumentoDTO() != null) {
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento().toString());
 		} 
+		if((aux = criterios.getNroDocumento()) != null) {
+			hqlQuery.setParameter("documento", aux);
+		}
 		
 		resultado = hqlQuery.getSingleResult();
 		
@@ -112,34 +137,40 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 	}
 
 	@Override
-	public List<Pasajero> getPasajerosByCriteria(Map<String, Object> criterios) {
+	public List<Pasajero> getPasajerosByCriteria(BusqPasajeroDTO criterios) {
 		List<Pasajero> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE true = true ";
 		
-		if(criterios.containsKey("nombres")) {
+		if(criterios.getNombres() != null) {
 			sqlStatement += "AND p.nombres LIKE :nombres ";
 		} 
-		if(criterios.containsKey("apellido")) {
+		if(criterios.getApellido() != null) {
 			sqlStatement += "AND p.apellido LIKE :apellido ";
 		} 
-		if(criterios.containsKey("documento")) {
-			sqlStatement += "AND td.idTipoDocumento = :id_tipo AND p.nroDocumento = :documento ";
+		if(criterios.getTipoDocumentoDTO() != null) {
+			sqlStatement += "AND td.idTipoDocumento = :id_tipo ";
 		} 
+		if(criterios.getNroDocumento() != null) {
+			sqlStatement += "AND p.nroDocumento = :documento ";
+		}
 	
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
-		if(criterios.containsKey("nombres")) {
-			hqlQuery.setParameter("nombres", criterios.get("nombres")+"%");
+		String aux;
+		if((aux = criterios.getNombres()) != null) {
+			hqlQuery.setParameter("nombres", aux+"%");
 		} 
-		if(criterios.containsKey("apellido")) {
-			hqlQuery.setParameter("apellido", criterios.get("apellido")+"%");
+		if((aux = criterios.getApellido()) != null) {
+			hqlQuery.setParameter("apellido", aux+"%");
 		} 
-		if(criterios.containsKey("documento")) {
-			hqlQuery.setParameter("id_tipo", criterios.get("tipo_documento"));
-			hqlQuery.setParameter("documento", criterios.get("documento"));
+		if(criterios.getTipoDocumentoDTO() != null) {
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento().toString());
 		} 
+		if((aux = criterios.getNroDocumento()) != null) {
+			hqlQuery.setParameter("documento", aux);
+		}
 		
 		resultado = hqlQuery.getResultList();
 		session.close();

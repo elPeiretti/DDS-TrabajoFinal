@@ -6,6 +6,7 @@ import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
 
 import com.tp.dominio.pasajero.Pasajero;
+import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.TipoDocumentoDTO;
 import com.tp.gestores.GestorPasajeros;
@@ -18,7 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -43,8 +43,8 @@ public class MenuBusquedaPasajero extends JPanel {
 	private JTextField jtf_apellido;
 	private JLabel lbl_nombres;
 	private JTextField jtf_nombres;
-	private Map<String,Object> criterios_actuales;
-	private ArrayList<String> indice_columnas = new ArrayList<String>(List.of("apellido","nombres","tipo_documento","documento"));
+	private BusqPasajeroDTO criterios_actuales;
+	private Map<Integer,BusqPasajeroDTO.columnaOrden> indice_columnas;
 	
 	public MenuBusquedaPasajero(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
@@ -111,21 +111,26 @@ public class MenuBusquedaPasajero extends JPanel {
 		jtf_nombres.setDocument(new JTextFieldLimit(50));
 		add(jtf_nombres);
 		
-		rp_pasajeros.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento"), null);
-	
-		this.inicializarCampos();
 		
+		this.inicializarCampos();
 		this.agregarActionListeners();
 		this.agregarTabOrder();
 	}
 	
 	private void inicializarCampos() {
+		rp_pasajeros.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento"), null);
+		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
+		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
+		indice_columnas.put(1, BusqPasajeroDTO.columnaOrden.NOMBRES);
+		indice_columnas.put(2, BusqPasajeroDTO.columnaOrden.TIPODOC);
+		indice_columnas.put(3, BusqPasajeroDTO.columnaOrden.NRODOC);
 		
+		jcb_tipo_documento.addItem(null);
+		jcb_tipo_documento.setSelectedItem(null);
 		List<TipoDocumentoDTO> ltd = GestorPasajeros.getAllTipoDocumento();
 		
 		for(TipoDocumentoDTO t : ltd) {
 			jcb_tipo_documento.addItem(t);
-			if(t.getTipo().equals("DNI")) jcb_tipo_documento.setSelectedItem(t);
 		}
 		
 	}
@@ -166,32 +171,32 @@ public class MenuBusquedaPasajero extends JPanel {
 		
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				criterios_actuales = new HashMap<String,Object>();
+				criterios_actuales = new BusqPasajeroDTO();
 				if(!jtf_nombres.getText().isEmpty()) {
-					criterios_actuales.put("nombres", jtf_nombres.getText());
+					criterios_actuales.setNombres(jtf_nombres.getText());
 				}
 				if(!jtf_apellido.getText().isEmpty()) {
-					criterios_actuales.put("apellido", jtf_apellido.getText());
+					criterios_actuales.setApellido(jtf_apellido.getText());
+				}
+				if(jcb_tipo_documento.getSelectedItem() != null) {
+					criterios_actuales.setTipoDocumentoDTO((TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem());
 				}
 				if(!jtf_numero_documento.getText().isEmpty()) {
-					criterios_actuales.put("tipo_documento", ((TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem()).getIdTipoDocumento());
-					criterios_actuales.put("documento", jtf_numero_documento.getText());
+					criterios_actuales.setNroDocumento(jtf_numero_documento.getText());
 				}
 				rp_pasajeros.setPaginaActual(1);
-				
 				llenarTabla();
-				
 			}
 		});
 		
 		rp_pasajeros.agregarRowListener(new RowSorterListener() {
 			public void sorterChanged(RowSorterEvent e) {
 				if(e.getType() != RowSorterEvent.Type.SORT_ORDER_CHANGED) return;
-				for (SortKey key : e.getSource().getSortKeys()) {
-					criterios_actuales.put("orden", indice_columnas.get(key.getColumn()));
-					criterios_actuales.put("dir", key.getSortOrder());
-					llenarTabla();
-				}
+				SortKey key = e.getSource().getSortKeys().get(0);
+				criterios_actuales.setColumna(indice_columnas.get(key.getColumn()));
+				criterios_actuales.setSortOrder(key.getSortOrder());
+				e.getSource().setSortKeys(List.of(key));//es necesario eliminar las SortKey viejas manualmente
+				llenarTabla();
 			}
 		});
 	}

@@ -12,6 +12,7 @@ import com.tp.dominio.geo.CiudadSqlDAO;
 import com.tp.dominio.geo.Pais;
 import com.tp.dominio.geo.PaisSqlDAO;
 import com.tp.dominio.pasajero.*;
+import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.DireccionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.PosicionIVADTO;
@@ -39,7 +40,7 @@ public class GestorPasajeros {
 		
 	}
 	
-	public static List<PasajeroDTO> getPasajerosBy(Map<String,Object>criterios, Integer li, Integer cant) {
+	public static List<PasajeroDTO> getPasajerosBy(BusqPasajeroDTO criterios, Integer li, Integer cant) {
 		
 		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
 		
@@ -58,7 +59,7 @@ public class GestorPasajeros {
 		return resultado;
 	}
 	
-	public static Long getCountPasajerosBy(Map<String,Object>criterios) {
+	public static Long getCountPasajerosBy(BusqPasajeroDTO criterios) {
 		
 		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
 		return pasajeroDAO.getCountPasajerosByCriteria(criterios);
@@ -111,10 +112,10 @@ public class GestorPasajeros {
 
 	private static boolean existeDocumento(PasajeroDTO p) {
 		PasajeroDAO pDao = new PasajeroSqlDAO();
-		Map<String,Object> mapa = new HashMap<String,Object>();
-		mapa.put("tipo_documento", p.getTipoDocumentoDTO().getIdTipoDocumento());
-		mapa.put("documento", p.getNroDocumento());
-		return !pDao.getPasajerosByCriteria(mapa).isEmpty();
+		BusqPasajeroDTO dto = new BusqPasajeroDTO();
+		dto.setTipoDocumentoDTO(p.getTipoDocumentoDTO());
+		dto.setNroDocumento(p.getNroDocumento());
+		return !pDao.getPasajerosByCriteria(dto).isEmpty();
 	}
 	
 }

@@ -3,6 +3,7 @@ package com.tp.interfaces.misc;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -61,7 +62,7 @@ public class ResultPane<E> extends JPanel {
 			}
 		};
 		jtable_resultados.setModel(jtable_contenido);
-		sorter = new TableRowSorter<>(jtable_contenido);
+		sorter = new TableRowSorter<TableModel>(jtable_contenido);
 		jtable_resultados.setRowSorter(sorter);
 		objetos_en_tabla = new ArrayList<E>();
 		
