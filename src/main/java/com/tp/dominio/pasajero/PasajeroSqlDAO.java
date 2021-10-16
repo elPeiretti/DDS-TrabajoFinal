@@ -48,7 +48,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 					orderBy += "p.apellido ";
 					break;
 				case TIPODOC:
-					orderBy += "td.idTipoDocumento ";
+					orderBy += "td.tipo ";
 					break;
 				case NRODOC:
 					orderBy += "p.nroDocumento ";
@@ -69,7 +69,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		} 
 		
 		if(criterios.getTipoDocumentoDTO() != null) {
-			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento().toString());
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento());
 		} 
 		
 		if(criterios.getNroDocumento() != null) {
@@ -123,7 +123,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		} 
 		
 		if(criterios.getTipoDocumentoDTO() != null) {
-			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento().toString());
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento());
 		} 
 		if((aux = criterios.getNroDocumento()) != null) {
 			hqlQuery.setParameter("documento", aux);
@@ -166,7 +166,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 			hqlQuery.setParameter("apellido", aux+"%");
 		} 
 		if(criterios.getTipoDocumentoDTO() != null) {
-			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento().toString());
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento());
 		} 
 		if((aux = criterios.getNroDocumento()) != null) {
 			hqlQuery.setParameter("documento", aux);

@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -65,7 +67,6 @@ public class ResultPane<E> extends JPanel {
 		sorter = new TableRowSorter<TableModel>(jtable_contenido);
 		jtable_resultados.setRowSorter(sorter);
 		objetos_en_tabla = new ArrayList<E>();
-		
 	}
 	
 	public ResultPane(Runnable tableFillerMethod){
@@ -96,6 +97,7 @@ public class ResultPane<E> extends JPanel {
 		nombres.forEach(n -> jtable_contenido.addColumn(n));
 		if(noOrdenables == null) return;
 		noOrdenables.forEach(n -> sorter.setSortable(n,false));
+		sorter.setSortKeys(List.of(new SortKey(0,SortOrder.ASCENDING)));
 	}
 	
 	public void agregarRowListener(RowSorterListener listener) {
