@@ -124,12 +124,12 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		add(jcb_factura);
 		
 		lbl_ocupacion = new JLabel("<html>Ocupación <font color='red'>(*)</font>:</html>");
-		lbl_ocupacion.setBounds(23, 531, 84, 14);
+		lbl_ocupacion.setBounds(334, 492, 84, 14);
 		add(lbl_ocupacion);
 		
 		jtf_ocupacion = new JTextField();
 		jtf_ocupacion.setColumns(10);
-		jtf_ocupacion.setBounds(128, 528, 122, 20);
+		jtf_ocupacion.setBounds(495, 489, 122, 20);
 		jtf_ocupacion.setDocument(new JTextFieldLimit(30));
 		add(jtf_ocupacion);
 		
@@ -142,11 +142,11 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		add(jb_siguiente);
 		
 		jcb_nacionalidad = new JComboBox<PaisDTO>();
-		jcb_nacionalidad.setBounds(495, 528, 122, 20);
+		jcb_nacionalidad.setBounds(128, 528, 122, 20);
 		add(jcb_nacionalidad);
 		
 		lbl_nacionalidad = new JLabel("<html>Nacionalidad <font color='red'>(*)</font>:</html>");
-		lbl_nacionalidad.setBounds(334, 531, 110, 14);
+		lbl_nacionalidad.setBounds(23, 531, 110, 14);
 		add(lbl_nacionalidad);
 		
 		this.encabezado = encabezado;
@@ -161,7 +161,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		lbl_error_ocupacion = new JLabel("");
 		lbl_error_ocupacion.setForeground(Color.RED);
 		lbl_error_ocupacion.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_ocupacion.setBounds(23, 552, 227, 10);
+		lbl_error_ocupacion.setBounds(334, 513, 227, 10);
 		add(lbl_error_ocupacion);
 		
 		lbl_numero = new JLabel("<html>N\u00FAmero <font color='red'>(*)</font>:</html>");
@@ -345,25 +345,25 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		add(lbl_tipo_documento);
 		
 		lbl_email = new JLabel("E-mail:");
-		lbl_email.setBounds(334, 489, 84, 14);
+		lbl_email.setBounds(23, 489, 84, 14);
 		add(lbl_email);
 		
 		jtf_email = new JTextField();
 		jtf_email.setColumns(10);
-		jtf_email.setBounds(495, 486, 122, 20);
+		jtf_email.setBounds(128, 489, 122, 20);
 		jtf_email.setDocument(new JTextFieldLimit(70));
 		add(jtf_email);
 		
 		lbl_error_nacionalidad = new JLabel("");
 		lbl_error_nacionalidad.setForeground(Color.RED);
 		lbl_error_nacionalidad.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_nacionalidad.setBounds(334, 552, 283, 10);
+		lbl_error_nacionalidad.setBounds(23, 552, 283, 10);
 		add(lbl_error_nacionalidad);
 		
 		lbl_error_email = new JLabel("");
 		lbl_error_email.setForeground(Color.RED);
 		lbl_error_email.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_email.setBounds(334, 510, 283, 10);
+		lbl_error_email.setBounds(23, 510, 283, 10);
 		add(lbl_error_email);
 		
 		lbl_error_telefono = new JLabel("");
