@@ -45,7 +45,7 @@ public class Encabezado extends JPanel {
 			add(lbl_fecha);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Mensaje.mensajeError(new String[]{"Fallo en la lectura de la imagen del logo."});
 			e.printStackTrace();
 		}
 	}

@@ -244,7 +244,7 @@ public class MenuAltaPasajero extends JPanel {
 			mf.setPlaceholderCharacter('_');
 			mf.install(jftf_cuit);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			Mensaje.mensajeError(new String[]{"Ha ocurrido un error en la creación de la interfaz."});
 			e.printStackTrace();
 		}
 		

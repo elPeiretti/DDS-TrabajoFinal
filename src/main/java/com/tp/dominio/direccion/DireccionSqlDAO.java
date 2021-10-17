@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.tp.hibernate.HibernateUtil;
+import com.tp.interfaces.misc.Mensaje;
 
 public class DireccionSqlDAO implements DireccionDAO {
 
@@ -22,6 +23,7 @@ public class DireccionSqlDAO implements DireccionDAO {
         	if (tx!=null) 
         		tx.rollback();
         	e.printStackTrace();
+			Mensaje.mensajeError(new String[]{"No se ha podido cargar la dirección en la base de datos."});
         }
         finally {
         	session.close();

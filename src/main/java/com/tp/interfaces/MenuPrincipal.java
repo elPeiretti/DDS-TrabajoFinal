@@ -16,6 +16,7 @@ import com.tp.interfaces.facturacion.MenuFacturar;
 import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
 import com.tp.interfaces.ingresos.MenuListarIngresos;
 import com.tp.interfaces.misc.Encabezado;
+import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.TabOrder;
 import com.tp.interfaces.pagos.MenuRegistrarPago;
 import com.tp.interfaces.pasajeros.MenuBusquedaPasajero;
@@ -129,7 +130,7 @@ public class MenuPrincipal extends JPanel {
 			lbl_logo.setIcon(new ImageIcon(dlogo));
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Mensaje.mensajeError(new String[]{"Fallo en la lectura de la imagen del logo."});
 			e.printStackTrace();
 		}
 		

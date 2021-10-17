@@ -8,6 +8,7 @@ import org.hibernate.*;
 
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.hibernate.HibernateUtil;
+import com.tp.interfaces.misc.Mensaje;
 
 public class PasajeroSqlDAO implements PasajeroDAO {
 
@@ -190,6 +191,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
         	if (tx!=null) 
         		tx.rollback();
         	e.printStackTrace();
+			Mensaje.mensajeError(new String[]{"No se ha podido cargar el pasajero en la base de datos."});
         }
         finally {
         	session.close();
