@@ -374,7 +374,7 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_telefono = new JLabel("");
 		lbl_error_telefono.setForeground(Color.RED);
 		lbl_error_telefono.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		lbl_error_telefono.setBounds(334, 426, 283, 10);
+		lbl_error_telefono.setBounds(334, 468, 283, 10);
 		add(lbl_error_telefono);
 		
 		lbl_error_piso = new JLabel("");
@@ -743,10 +743,6 @@ public class MenuAltaPasajero extends JPanel {
 				String data = jtf_calle.getText();
 				if (data.isBlank()){
 					lbl_error_calle.setText("Este campo no puede estar vacío.");
-					campos_validos.put("calle", false);
-				}
-				else if(!data.matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) {
-					lbl_error_calle.setText("La calle solo puede contener letras.");
 					campos_validos.put("calle", false);
 				}
 				else {
