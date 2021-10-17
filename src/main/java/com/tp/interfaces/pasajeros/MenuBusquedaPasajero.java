@@ -111,7 +111,7 @@ public class MenuBusquedaPasajero extends JPanel {
 		jtf_nombres.setDocument(new JTextFieldLimit(50));
 		add(jtf_nombres);
 		
-		
+		EnterActionAssigner.setEnterAction(List.of(jb_buscar, jb_siguiente, jb_cancelar));
 		this.inicializarCampos();
 		this.agregarActionListeners();
 		this.agregarTabOrder();

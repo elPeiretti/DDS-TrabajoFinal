@@ -413,6 +413,7 @@ public class MenuAltaPasajero extends JPanel {
 		lbl_error_tipo_documento.setBounds(334, 175, 283, 10);
 		add(lbl_error_tipo_documento);
 		
+		EnterActionAssigner.setEnterAction(List.of(jb_siguiente, jb_cancelar));
 		this.inicializarCampos();
 		this.agregarActionListeners();
 		this.agregarTabOrder();

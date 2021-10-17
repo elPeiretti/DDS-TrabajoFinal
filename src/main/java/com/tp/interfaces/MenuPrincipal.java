@@ -16,6 +16,7 @@ import com.tp.interfaces.facturacion.MenuFacturar;
 import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
 import com.tp.interfaces.ingresos.MenuListarIngresos;
 import com.tp.interfaces.misc.Encabezado;
+import com.tp.interfaces.misc.EnterActionAssigner;
 import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.TabOrder;
 import com.tp.interfaces.pagos.MenuRegistrarPago;
@@ -134,6 +135,10 @@ public class MenuPrincipal extends JPanel {
 			e.printStackTrace();
 		}
 		
+		EnterActionAssigner.setEnterAction(List.of(jb_gestionar_pasajero, jb_reservar_habitacion, jb_ocupar_habitacion,
+											jb_facturar, jb_ingresar_pago, jb_gestionar_responsable_pagos, jb_cancelar_reserva,
+											jb_ingresar_nota_credito, jb_listar_cheques, jb_listar_ingresos, jb_salir));
+
 		this.agregarActionListeners();
 		this.agregarTabOrder();
 	}

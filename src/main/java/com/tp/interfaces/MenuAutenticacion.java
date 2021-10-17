@@ -94,7 +94,8 @@ public class MenuAutenticacion extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
+		EnterActionAssigner.setEnterAction(List.of(jb_iniciar_sesion, jb_salir));
 		this.agregarActionListeners();
 		this.agregarTabOrder();
 	}
@@ -148,7 +149,7 @@ public class MenuAutenticacion extends JPanel {
 		
 		jb_salir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				System.exit(0);
 			}
 		});
 		
