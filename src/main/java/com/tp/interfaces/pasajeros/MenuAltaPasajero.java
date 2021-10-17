@@ -3,13 +3,7 @@ package com.tp.interfaces.pasajeros;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import com.toedter.calendar.JDateChooser;
-import com.tp.dto.CiudadDTO;
-import com.tp.dto.DireccionDTO;
-import com.tp.dto.PaisDTO;
-import com.tp.dto.PasajeroDTO;
-import com.tp.dto.PosicionIVADTO;
-import com.tp.dto.ProvinciaDTO;
-import com.tp.dto.TipoDocumentoDTO;
+import com.tp.dto.*;
 import com.tp.excepciones.DocumentoExistenteException;
 import com.tp.gestores.GestorGeografico;
 import com.tp.gestores.GestorPasajeros;
@@ -27,7 +21,7 @@ import java.util.stream.Collectors;
 
 
 
-public class MenuAltaPasajero extends JPanel {
+public class MenuAltaPasajero extends JPanel implements SeteableTab{
 	
 	public static String titulo = "Alta Pasajero";
 	public static int x_bound = 660;
@@ -886,5 +880,10 @@ public class MenuAltaPasajero extends JPanel {
 			}
 		});
 		
+	}
+
+	@Override
+	public void setDefaultTab() {
+		jtf_apellido.requestFocus();
 	}
 }

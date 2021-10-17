@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-public class MenuBusquedaPasajero extends JPanel {
+public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 
 	public static String titulo = "Gestionar Pasajero";
 	public static int x_bound = 660;
@@ -217,6 +217,11 @@ public class MenuBusquedaPasajero extends JPanel {
 			rp_pasajeros.getContenido().addRow(v);
 			rp_pasajeros.getRowObjects().add(p);
 		}
+	}
+
+	@Override
+	public void setDefaultTab() {
+		jtf_apellido.requestFocus();
 	}
 
 }

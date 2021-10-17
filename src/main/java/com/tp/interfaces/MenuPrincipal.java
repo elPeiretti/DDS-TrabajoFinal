@@ -25,7 +25,7 @@ import com.tp.interfaces.pasajeros.MenuBusquedaPasajero;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MenuPrincipal extends JPanel {
+public class MenuPrincipal extends JPanel implements SeteableTab{
 
 	public static String titulo = "Menú Principal";
 	public static int x_bound = 660;
@@ -206,4 +206,9 @@ public class MenuPrincipal extends JPanel {
 		});
 	}
 
+	@Override
+	public void setDefaultTab() {
+		jb_gestionar_pasajero.requestFocus();
+	}
+	
 }

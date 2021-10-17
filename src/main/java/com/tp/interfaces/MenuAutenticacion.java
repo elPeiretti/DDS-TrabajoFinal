@@ -16,7 +16,7 @@ import com.tp.interfaces.misc.*;
 import java.awt.*;
 import java.text.ParseException;
 
-public class MenuAutenticacion extends JPanel {
+public class MenuAutenticacion extends JPanel implements SeteableTab{
 	
 	public static String titulo = "Autenticación";
 	public static int x_bound = 660;
@@ -153,6 +153,11 @@ public class MenuAutenticacion extends JPanel {
 			}
 		});
 		
+	}
+
+	@Override
+	public void setDefaultTab() {
+		jtf_codigo_conserje.requestFocus();		
 	}
 	
 }
