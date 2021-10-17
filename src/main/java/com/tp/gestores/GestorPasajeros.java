@@ -115,7 +115,7 @@ public class GestorPasajeros {
 		BusqPasajeroDTO dto = new BusqPasajeroDTO();
 		dto.setTipoDocumentoDTO(p.getTipoDocumentoDTO());
 		dto.setNroDocumento(p.getNroDocumento());
-		return !pDao.getPasajerosByCriteria(dto).isEmpty();
+		return pDao.getCountPasajerosByCriteria(dto)>0;
 	}
 	
 }
