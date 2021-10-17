@@ -112,6 +112,7 @@ public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 		add(jtf_nombres);
 		
 		EnterActionAssigner.setEnterAction(List.of(jb_buscar, jb_siguiente, jb_cancelar));
+		EnterActionAssigner.setEnterAction(jcb_tipo_documento);
 		this.inicializarCampos();
 		this.agregarActionListeners();
 		this.agregarTabOrder();

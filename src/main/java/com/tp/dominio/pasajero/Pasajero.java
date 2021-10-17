@@ -53,7 +53,7 @@ public class Pasajero {
 	@JoinColumn (name = "id_posicion_iva", referencedColumnName = "id_posicion_iva")
 	private PosicionIVA posicionIVA;
 
-	@ManyToOne (cascade = CascadeType.ALL)
+	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_direccion", referencedColumnName = "id_direccion")
 	private Direccion direccion;
 	

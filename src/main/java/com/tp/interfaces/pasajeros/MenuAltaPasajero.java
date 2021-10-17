@@ -409,6 +409,8 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		add(lbl_error_tipo_documento);
 		
 		EnterActionAssigner.setEnterAction(List.of(jb_siguiente, jb_cancelar));
+		EnterActionAssigner.setEnterActionComboBox(List.of(jcb_nacionalidad, jcb_pais, jcb_provincia, jcb_ciudad, jcb_tipo_documento, jcb_factura));
+		
 		this.inicializarCampos();
 		this.agregarActionListeners();
 		this.agregarTabOrder();
@@ -493,15 +495,20 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		
 		jcb_pais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(jcb_pais.getSelectedItem() != null)
+				if(jcb_pais.getSelectedItem() != null) {
+					jcb_provincia.removeAllItems();
+					jcb_ciudad.removeAllItems();
 					contexto.cargarListaProvincia(((PaisDTO) jcb_pais.getSelectedItem()).getIdPais(), false);
+				}
 			}
 		});
 		
 		jcb_provincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(jcb_provincia.getSelectedItem() != null) 
+				if(jcb_provincia.getSelectedItem() != null) {
+					jcb_ciudad.removeAllItems();
 					contexto.cargarListaCiudad(((ProvinciaDTO) jcb_provincia.getSelectedItem()).getIdProvincia(), false);
+				}
 			}
 			
 		});
@@ -622,7 +629,12 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 			lbl_error_codigo_postal.setText("Este campo no puede estar vacío.");
 		if (jtf_telefono.getText().isBlank())
 			lbl_error_telefono.setText("Este campo no puede estar vacío.");
-		
+		if (jcb_pais.getSelectedItem() == null)
+			lbl_error_pais.setText("Este campo no puede estar vacío.");
+		if (jcb_provincia.getSelectedItem() == null)
+			lbl_error_provincia.setText("Este campo no puede estar vacío.");
+		if (jcb_ciudad.getSelectedItem() == null)
+			lbl_error_ciudad.setText("Este campo no puede estar vacío.");
 		if(dc_nacimiento.getDate() == null)
 			lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
 
@@ -641,6 +653,9 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		campos_validos.put("numero documento", false);
 		campos_validos.put("codigo postal", true);
 		campos_validos.put("piso", true);
+		campos_validos.put("pais", true);
+		campos_validos.put("provincia", true);
+		campos_validos.put("ciudad", true);
 		//campos_validos.put("departamento", true);
 		campos_validos.put("telefono", false);
 		campos_validos.put("email", true);
@@ -883,6 +898,48 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 				}
 				
 			}
+		});
+		
+		jcb_pais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(jcb_pais.getSelectedItem() == null) {
+					lbl_error_pais.setText("Este campo no puede estar vacío.");
+					campos_validos.put("pais",false);
+				} else {
+					lbl_error_pais.setText("");
+					campos_validos.put("pais",true);
+				}
+				
+			}
+			
+		});
+		
+		jcb_provincia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(jcb_provincia.getSelectedItem() == null) {
+					lbl_error_provincia.setText("Este campo no puede estar vacío.");
+					campos_validos.put("provincia",false);
+				} else {
+					lbl_error_provincia.setText("");
+					campos_validos.put("provincia",true);
+				}
+				
+			}
+			
+		});
+		
+		jcb_ciudad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(jcb_ciudad.getSelectedItem() == null) {
+					lbl_error_ciudad.setText("Este campo no puede estar vacío.");
+					campos_validos.put("ciudad",false);
+				} else {
+					lbl_error_ciudad.setText("");
+					campos_validos.put("ciudad",true);
+				}
+				
+			}
+			
 		});
 		
 	}
