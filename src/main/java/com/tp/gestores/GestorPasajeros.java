@@ -158,7 +158,7 @@ public class GestorPasajeros {
 			errores.add("El campo código postal no puede estar vacío.");
 		else if(!pasajero.getDireccionDTO().getCodigoPostal().matches("[A-Z]*[0-9]+[A-Z]*")) 
 			errores.add("El campo código postal posee un formato inválido.");
-
+		
 		if (pasajero.getTelefono().isBlank())
 			errores.add("El campo teléfono no puede estar vacío.");
 		else if(!pasajero.getTelefono().matches("(\\+)?([0-9]){7,15}")) 
