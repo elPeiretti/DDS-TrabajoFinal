@@ -590,9 +590,16 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 				
 				if(jcb_factura.getSelectedItem() == null) return;
 
-				if (((PosicionIVADTO)jcb_factura.getSelectedItem()).getPosicion().equals("R.I."))
+				if (((PosicionIVADTO)jcb_factura.getSelectedItem()).getPosicion().equals("R.I.")) {
 					cuit_obligatorio = true;
-				else{
+					if(jftf_cuit.getText().equals("__-________-_")) {
+						lbl_error_cuit.setText("Este campo no puede estar vacío");
+						campos_validos.put("cuit", false);
+					} else if(!jftf_cuit.getText().matches("[0-9][0-9]-[0-9]{8}-[0-9]")) {
+						lbl_error_cuit.setText("El CUIT ingresado es invalido.");
+						campos_validos.put("cuit", false);
+					}
+				}else{
 					cuit_obligatorio = false;
 					if (lbl_error_cuit.getText().equals("Este campo no puede estar vacío"))
 						lbl_error_cuit.setText("");
