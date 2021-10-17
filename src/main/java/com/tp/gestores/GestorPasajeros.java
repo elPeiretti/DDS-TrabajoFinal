@@ -17,6 +17,7 @@ import com.tp.dto.DireccionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.PosicionIVADTO;
 import com.tp.dto.TipoDocumentoDTO;
+import com.tp.excepciones.CamposInvalidosException;
 import com.tp.excepciones.DocumentoExistenteException;
 
 public class GestorPasajeros {
@@ -116,6 +117,60 @@ public class GestorPasajeros {
 		dto.setTipoDocumentoDTO(p.getTipoDocumentoDTO());
 		dto.setNroDocumento(p.getNroDocumento());
 		return pDao.getCountPasajerosByCriteria(dto)>0;
+	}
+
+	public static void validarCampos(PasajeroDTO pasajero, boolean cuit_obligatorio) throws CamposInvalidosException{
+
+		ArrayList<String> errores = new ArrayList<String>();
+		errores.add("Campos inválidos en el pasajero.");
+
+		if (pasajero.getApellido().isBlank())
+			errores.add("El campo apellido no puede estar vacío.");
+		else if(!pasajero.getApellido().matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
+			errores.add("El campo apellido solo puede contener letras");
+
+		if (pasajero.getNombres().isBlank())
+			errores.add("El campo nombres no puede estar vacío.");
+		else if(!pasajero.getNombres().matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) 
+			errores.add("El campo nombres solo puede contener letras");
+
+		if(cuit_obligatorio && pasajero.getCuit() == null ) 
+			errores.add("El campo CUIT no puede estar vacío.");
+		else if(pasajero.getCuit() != null && !pasajero.getCuit().matches("[0-9][0-9]-[0-9]{8}-[0-9]")) 
+			errores.add("El CUIT posee un formato inválido.");
+
+		if (pasajero.getFechaDeNacimiento() == null)
+			errores.add("El campo fecha de nacimiento no puede estar vacío.");
+
+		if (pasajero.getDireccionDTO().getCalle().isBlank())
+			errores.add("El campo calle no puede estar vacío.");
+		
+		if (pasajero.getDireccionDTO().getNroCalle() == null)
+			errores.add("El campo número no puede estar vacío.");
+
+		if (pasajero.getOcupacion().isBlank())
+			errores.add("El campo ocupación no puede estar vacío.");
+
+		if (pasajero.getNroDocumento().isBlank())
+			errores.add("El campo número de documento no puede estar vacío.");
+
+		if (pasajero.getDireccionDTO().getCodigoPostal().isBlank())
+			errores.add("El campo código postal no puede estar vacío.");
+		else if(!pasajero.getDireccionDTO().getCodigoPostal().matches("[A-Z]*[0-9]+[A-Z]*")) 
+			errores.add("El campo código postal posee un formato inválido.");
+
+		if(pasajero.getDireccionDTO().getPiso() == null) 
+			errores.add("El campo piso no puede estar vacío.");
+
+		if (pasajero.getTelefono().isBlank())
+			errores.add("El campo teléfono no puede estar vacío.");
+		else if(!pasajero.getTelefono().matches("(\\+)?([0-9]){7,15}")) 
+			errores.add("El campo teléfono posee un formato inválido.");
+
+		if(!pasajero.getEmail().matches("(^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?!-)(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6})?"))
+			errores.add("El campo email posee un formato inválido.");
+		
+		if (errores.size()>1) throw new CamposInvalidosException(errores);
 	}
 	
 }

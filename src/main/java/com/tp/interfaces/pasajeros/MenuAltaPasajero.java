@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import com.toedter.calendar.JDateChooser;
 import com.tp.dto.*;
+import com.tp.excepciones.CamposInvalidosException;
 import com.tp.excepciones.DocumentoExistenteException;
 import com.tp.gestores.GestorGeografico;
 import com.tp.gestores.GestorPasajeros;
@@ -512,7 +513,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 					indicarCamposIncompletos();
 					return;
 				}
-				
+
 				DireccionDTO direc = new DireccionDTO(null, jtf_codigo_postal.getText(), jtf_calle.getText(),
 														  jtf_numero.getText().isBlank()? null:Integer.valueOf(jtf_numero.getText()), 
 														  jtf_piso.getText().isBlank()? null:Integer.valueOf(jtf_piso.getText()), 
@@ -528,7 +529,8 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 												(TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem(), ((PosicionIVADTO)jcb_factura.getSelectedItem()).getIdPosicionIVA(),
 												direc);
 
-				try {				
+				try {
+					GestorPasajeros.validarCampos(p,cuit_obligatorio);				
 					GestorPasajeros.darAltaPasajero(p,true);
 					int opt = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
 					if (opt == 1) {
@@ -539,6 +541,9 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 						((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora, encabezado),
 																			MenuBusquedaPasajero.x_bound,MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 					}
+				}
+				catch(CamposInvalidosException exc){
+					Mensaje.mensajeError(exc.errores.toArray(new String[]{}));
 				}
 				catch(DocumentoExistenteException exc) {
 					int opt = Mensaje.warningDocumentoExistente();
