@@ -22,9 +22,10 @@ public class VentanaPrincipal extends JFrame {
 					Session session = HibernateUtil.getSessionFactory().openSession();
 					session.close();
 					VentanaPrincipal frame = new VentanaPrincipal();
+					frame.setResizable(false);
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace();	
 				}
 			}
 		});
