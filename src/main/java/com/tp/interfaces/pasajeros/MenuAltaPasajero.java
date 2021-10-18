@@ -150,7 +150,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 		add(lbl_nacionalidad);
 		
 		this.encabezado = encabezado;
-		encabezado.setBounds(0, 0, 640, 110);
+		this.encabezado.setBounds(0, 0, 640, 110);
 		add(encabezado);
 		
 		dc_nacimiento = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
@@ -579,6 +579,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar el alta del pasajero?");
 				if (opt == 1) { 
+					menu_anterior.add(encabezado);
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(menu_anterior,MenuBusquedaPasajero.x_bound,
 																		MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);
 				}
