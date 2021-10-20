@@ -60,12 +60,12 @@ public class MenuAutenticacion extends JPanel implements SeteableTab{
 		jb_salir.setBounds(259, 388, 130, 33);
 		add(jb_salir);
 		
-		lbl_contrasena = new JLabel("Contrase\u00F1a (*):");
+		lbl_contrasena = new JLabel("<html>Contrase\u00F1a <font color='red'>(*)</font>:</html>");
 		lbl_contrasena.setBounds(259, 269, 130, 14);
 		add(lbl_contrasena);
 		
-		JLabel lbl_codigo_conserje = new JLabel("C\u00F3digo de Conserje (*):");
-		lbl_codigo_conserje.setBounds(259, 198, 130, 14);
+		JLabel lbl_codigo_conserje = new JLabel("<html>C\u00F3digo de Conserje <font color='red'>(*)</font>:</html>");
+		lbl_codigo_conserje.setBounds(259, 198, 160, 14);
 		add(lbl_codigo_conserje);
 		
 		lbl_logo = new JLabel();

@@ -739,8 +739,14 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 			public void focusLost(FocusEvent e) {
 
 				if (dc_nacimiento.getDate() == null){
-					lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
-					campos_validos.put("nacimiento", false);
+					if (((JTextField) dc_nacimiento.getDateEditor().getUiComponent()).getText().equals("__/__/____"))
+						lbl_error_nacimiento.setText("Este campo no puede estar vacío.");
+					else lbl_error_nacimiento.setText("La fecha posee un formato invalido.");
+					campos_validos.put("nacimiento", false); 
+				} 
+				else if (dc_nacimiento.getDate().after(new Date())) {
+					lbl_error_nacimiento.setText("La fecha no puede ser posterior a la actual.");
+					campos_validos.put("nacimiento", false); 
 				}
 				else {
 					campos_validos.put("nacimiento", true);

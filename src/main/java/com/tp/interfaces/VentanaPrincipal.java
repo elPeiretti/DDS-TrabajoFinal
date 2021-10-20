@@ -40,8 +40,8 @@ public class VentanaPrincipal extends JFrame {
 		encabezado = new Encabezado();
 		encabezado.lbl_fecha.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
 		
-		cambiarPanel(new MenuAutenticacion(this,encabezado), MenuAutenticacion.x_bound,MenuAutenticacion.y_bound,MenuAutenticacion.titulo);
-		//cambiarPanel(new MenuPrincipal(this,encabezado), MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);
+		//cambiarPanel(new MenuAutenticacion(this,encabezado), MenuAutenticacion.x_bound,MenuAutenticacion.y_bound,MenuAutenticacion.titulo);
+		cambiarPanel(new MenuPrincipal(this,encabezado), MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);
 	}
 
 	public void cambiarPanel(JPanel panel, int x, int y, String title){
