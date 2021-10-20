@@ -539,7 +539,8 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 				try {
 					GestorPasajeros.validarCampos(p,cuit_obligatorio);				
 					GestorPasajeros.darAltaPasajero(p,true);
-					int opt = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
+					int opt = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?", 
+															"Alta Exitosa" , new String[]{"No", "Si"});
 					if (opt == 1) {
 						limpiarCampos();
 						inicializarMapa();
@@ -557,7 +558,8 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 					if(opt == 1) {
 						try{GestorPasajeros.darAltaPasajero(p,false);}
 						catch(DocumentoExistenteException exc2){} // nunca va a ser lanzada
-						int opt2 = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?");
+						int opt2 = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?",
+																"Alta Exitosa" , new String[]{"No", "Si"});
 						if (opt2 == 1) {
 							limpiarCampos();
 							inicializarMapa();

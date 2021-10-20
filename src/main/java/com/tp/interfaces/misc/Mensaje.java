@@ -8,6 +8,10 @@ public class Mensaje {
 		String[] opt = {"Cancelar", "Confirmar"};
 		return JOptionPane.showOptionDialog(null, msg, "Confirmar acción", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[1]);
 	}
+	
+	public static int mensajeConfirmacion(String msg, String titulo, String[] opt) {
+		return JOptionPane.showOptionDialog(null, msg, titulo, JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[1]);
+	}
 
 	public static int mensajeInformacion(String msg) {
 		String[] opt = {"Continuar"};
@@ -29,4 +33,6 @@ public class Mensaje {
 		}
 		return JOptionPane.showOptionDialog(null, msg, "Error", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[0]);
 	}
+
+	
 }
