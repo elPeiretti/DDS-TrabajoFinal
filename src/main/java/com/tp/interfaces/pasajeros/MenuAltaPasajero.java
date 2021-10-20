@@ -536,9 +536,8 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 												(TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem(), ((PosicionIVADTO)jcb_factura.getSelectedItem()).getIdPosicionIVA(),
 												direc);
 
-				try {
-					GestorPasajeros.validarCampos(p,cuit_obligatorio);				
-					GestorPasajeros.darAltaPasajero(p,true);
+				try {			
+					GestorPasajeros.darAltaPasajero(p,true, cuit_obligatorio);
 					int opt = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?", 
 															"Alta Exitosa" , new String[]{"No", "Si"});
 					if (opt == 1) {
@@ -556,8 +555,12 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 				catch(DocumentoExistenteException exc) {
 					int opt = Mensaje.warningDocumentoExistente();
 					if(opt == 1) {
-						try{GestorPasajeros.darAltaPasajero(p,false);}
+						try{GestorPasajeros.darAltaPasajero(p,false, cuit_obligatorio);}
 						catch(DocumentoExistenteException exc2){} // nunca va a ser lanzada
+						catch(CamposInvalidosException exc3){
+							Mensaje.mensajeError(exc3.errores.toArray(new String[]{}));
+						}
+						
 						int opt2 = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?",
 																"Alta Exitosa" , new String[]{"No", "Si"});
 						if (opt2 == 1) {

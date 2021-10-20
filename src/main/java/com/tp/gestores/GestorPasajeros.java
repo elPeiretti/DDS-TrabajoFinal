@@ -47,6 +47,11 @@ public class GestorPasajeros {
 		
 		List<Pasajero> pasajeros = pasajeroDAO.getPasajerosByCriteria(criterios, li, cant);
 		
+		return convertToPasajeroDTO(pasajeros);
+		
+	}
+	
+	private static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
 		List<PasajeroDTO> resultado = new ArrayList<PasajeroDTO>();
 		
 		for(Pasajero p : pasajeros) {
@@ -58,7 +63,7 @@ public class GestorPasajeros {
 		}
 		
 		return resultado;
-	}
+	} 
 	
 	public static Long getCountPasajerosBy(BusqPasajeroDTO criterios) {
 		
@@ -82,8 +87,10 @@ public class GestorPasajeros {
 		return resultado; 
 	}
 
-    public static void darAltaPasajero(PasajeroDTO p, boolean validarDocumento) throws DocumentoExistenteException {
+    public static void darAltaPasajero(PasajeroDTO p, boolean validarDocumento, boolean cuit_obligatorio) throws DocumentoExistenteException, CamposInvalidosException {
 		boolean documentoExistente = false;
+		
+		validarCampos(p, cuit_obligatorio);
 		
 		if(validarDocumento)
 			documentoExistente = GestorPasajeros.existeDocumento(p);
