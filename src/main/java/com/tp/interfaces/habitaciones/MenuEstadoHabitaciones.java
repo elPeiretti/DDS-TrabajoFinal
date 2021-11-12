@@ -3,12 +3,16 @@ package com.tp.interfaces.habitaciones;
 import javax.swing.*;
 
 import com.toedter.calendar.JDateChooser;
+import com.tp.gestores.GestorHabitaciones;
+import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.time.Instant;
+
 import javax.swing.border.LineBorder;
 
-public class MenuEstadoHabitaciones extends JPanel {
+public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
 	public static String titulo = "Estado Habitaciones";
 	public static int x_bound = 660;
@@ -75,5 +79,15 @@ public class MenuEstadoHabitaciones extends JPanel {
 		dc_fecha_hasta = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		dc_fecha_hasta.setBounds(411, 142, 100, 20);
 		add(dc_fecha_hasta);
+		
+		GestorHabitaciones.buscarEstadoHabitaciones(Instant.now(), Instant.now());
+		
 	}
+
+	@Override
+	public void setDefaultTab() {
+		dc_fecha_desde.getDateEditor().getUiComponent().requestFocus();
+	}
+	
+	
 }
