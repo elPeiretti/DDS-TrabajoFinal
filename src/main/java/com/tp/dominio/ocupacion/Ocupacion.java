@@ -33,4 +33,17 @@ public class Ocupacion {
 			inverseJoinColumns =  @JoinColumn(name = "id_pasajero", referencedColumnName = "id_pasajero")
 	)
 	private List<Pasajero> acompaniantes;
+	
+	public Habitacion getHabitacion() {
+		return habitacion;
+	}
+
+	public Instant getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public Instant getFechaEgreso() {
+		return fechaEgreso;
+	}
+	
 }

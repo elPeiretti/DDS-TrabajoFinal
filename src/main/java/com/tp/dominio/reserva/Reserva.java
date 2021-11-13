@@ -27,4 +27,17 @@ public class Reserva {
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_responsable_reserva", referencedColumnName = "id_responsable_reserva")
 	private ResponsableReserva responsable;
+	
+	
+	public Instant getFechaIngreso() {
+		return fechaIngreso;
+	}
+	public Instant getFechaEgreso() {
+		return fechaEgreso;
+	}
+	public Habitacion getHabitacion() {
+		return habitacion;
+	}
+	
+	
 }

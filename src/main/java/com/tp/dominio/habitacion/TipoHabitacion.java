@@ -9,8 +9,8 @@ import javax.persistence.*;
 public class TipoHabitacion {
 	@Column (name = "nombre")
 	private String nombre;
-	@Column (name = "cantidad")
-	private Integer cantidad;
+	@Column (name = "capacidad")
+	private Integer capacidad;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id_tipo_habitacion")

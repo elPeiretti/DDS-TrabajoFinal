@@ -17,13 +17,14 @@ public class ReservaSqlDAO implements ReservaDAO {
 		List<Reserva> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		String sqlStatement = "SELECT r FROM Reserva r WHERE (r.fechaIngreso BETWEEN :fecha_desde AND :fecha_hasta) "
+		String sqlStatement = "SELECT r FROM Reserva r WHERE r.estado != :estado AND (r.fechaIngreso BETWEEN :fecha_desde AND :fecha_hasta) "
 				+ "OR (r.fechaEgreso BETWEEN :fecha_desde AND :fecha_hasta) OR (:fecha_desde > r.fechaIngreso AND :fecha_hasta < r.fechaEgreso)";	
 
 		TypedQuery<Reserva> hqlQuery = session.createQuery(sqlStatement); 
 		
 		hqlQuery.setParameter("fecha_desde", fecha_desde);
 		hqlQuery.setParameter("fecha_hasta", fecha_hasta);
+		hqlQuery.setParameter("estado", EstadoReserva.CANCELADA);
 		
 		resultado = hqlQuery.getResultList();
 		session.close();

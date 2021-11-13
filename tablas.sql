@@ -139,7 +139,7 @@ capacidad INTEGER);
 CREATE TABLE tpdds.habitacion
 (id_habitacion SERIAL PRIMARY KEY,
 estado VARCHAR(100),
-numero INTEGER,
+numero VARCHAR(100),
 id_tipo_habitacion INTEGER);
 
 
@@ -153497,3 +153497,31 @@ INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,n
 
 INSERT INTO tpdds.conserje(nombre,apellido,usuario,contrasenia) VALUES
 ('María','Chucena','MCHUC1','PASSWORD');
+
+INSERT INTO tpdds.tipo_habitacion(nombre,capacidad) VALUES
+('INDIVIDUAL ESTÁNDAR',1), ('DOBLE ESTÁNDAR',2),('DOBLE SUPERIOR',2), ('SUPERIOR FAMILY PLAN',5), ('SUITE',2);
+
+INSERT INTO tpdds.costo_por_noche(fecha_inicio_vigencia,fecha_fin_vigencia,costo,id_tipo_habitacion) VALUES
+('2021-11-13','2021-12-13',30.50,1), ('2021-11-13','2021-12-13',50.50,2), ('2021-11-13','2021-12-13',70.50,3),
+('2021-11-13','2021-12-13',87.4, 4),('2021-11-13','2021-12-13',120.2,5),
+('2021-06-13','2021-11-12',30.50,1);
+
+INSERT INTO tpdds.habitacion(numero,estado,id_tipo_habitacion) VALUES
+('A01','LIBRE',1),('B01','LIBRE',2),('C01','LIBRE',3),('D01','OCUPADA',4),('E01','LIBRE',5);
+
+INSERT INTO tpdds.responsable_reserva(nombre,apellido,telefono) VALUES
+('ARMANDO','PAREDES','3425151789'), ('SAN MARTIN','DE LOS ANDES','3426859273');
+
+INSERT INTO tpdds.reserva(id_responsable_reserva, id_habitacion, fecha_ingreso, fecha_egreso, estado) VALUES
+(1,1,'2021-12-06','2021-12-08','VIGENTE'),
+(2,2,'2021-12-01','2021-12-08','VIGENTE'),
+(2,3,'2021-12-01','2021-12-08','VIGENTE'),
+(1,2,'2021-10-20','2021-11-30','VIGENTE'),
+(2,5,'2021-11-12','2021-12-02','VIGENTE');
+
+INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero_responsable) VALUES
+('2021-10-20','2021-12-30',4,2),
+('2021-11-08','2021-11-11',5,5);
+
+INSERT INTO tpdds.acompaniante(id_ocupacion,id_pasajero) VALUES
+(2,6),(1,7),(1,9),(1,8);

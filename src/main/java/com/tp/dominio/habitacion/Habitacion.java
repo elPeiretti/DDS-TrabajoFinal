@@ -30,4 +30,12 @@ public class Habitacion {
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
 	private List<Servicio> servicios;
+	
+	public String getNumero() {
+		return numero;
+	}
+	
+	public EstadoHabitacion getEstado() {
+		return estado;
+	}
 }
