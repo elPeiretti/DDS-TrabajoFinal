@@ -139,7 +139,7 @@ capacidad INTEGER);
 CREATE TABLE tpdds.habitacion
 (id_habitacion SERIAL PRIMARY KEY,
 estado VARCHAR(100),
-numero INTEGER,
+numero VARCHAR(5),
 id_tipo_habitacion INTEGER);
 
 
@@ -153497,3 +153497,81 @@ INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,n
 
 INSERT INTO tpdds.conserje(nombre,apellido,usuario,contrasenia) VALUES
 ('María','Chucena','MCHUC1','PASSWORD');
+
+INSERT INTO tpdds.tipo_habitacion(id_tipo_habitacion,nombre,capacidad) VALUES
+(1,'INDIVIDUAL ESTÁNDAR',1),
+(2,'DOBLE ESTÁNDAR',2),
+(3,'DOBLE SUPERIOR',2),
+(4,'SUPERIOR FAMILY PLAN',5),
+(5,'SUITE',2);
+
+INSERT INTO tpdds.costo_por_noche(fecha_inicio_vigencia,fecha_fin_vigencia,costo,id_tipo_habitacion) VALUES
+('2021-11-13','2021-12-13',30.50,1), 
+('2021-11-13','2021-12-13',50.50,2), 
+('2021-11-13','2021-12-13',70.50,3),
+('2021-11-13','2021-12-13',87.4, 4),
+('2021-11-13','2021-12-13',120.2,5),
+('2021-06-13','2021-11-12',30.50,1);
+
+
+INSERT INTO tpdds.habitacion(id_habitacion,estado,numero,id_tipo_habitacion) VALUES 
+(1,'LIBRE','A00',1),
+(2,'LIBRE','A01',1),
+(3,'LIBRE','A02',1),
+(4,'LIBRE','A03',1),
+(5,'LIBRE','A04',1),
+(6,'LIBRE','A05',1),
+(7,'LIBRE','A06',1),
+(8,'LIBRE','A07',1),
+(9,'LIBRE','B00',2),
+(10,'LIBRE','B01',2),
+(11,'LIBRE','B02',2),
+(12,'LIBRE','B03',2),
+(13,'LIBRE','B04',2),
+(14,'LIBRE','B05',2),
+(15,'LIBRE','B06',2),
+(16,'LIBRE','C00',3),
+(17,'LIBRE','C01',3),
+(18,'LIBRE','C00',3),
+(19,'LIBRE','C01',3),
+(20,'LIBRE','C00',3),
+(21,'LIBRE','C01',3),
+(22,'LIBRE','D00',4),
+(23,'LIBRE','D01',4),
+(24,'LIBRE','D02',4),
+(25,'LIBRE','D03',4),
+(26,'LIBRE','D04',4),
+(27,'LIBRE','D05',4),
+(28,'LIBRE','D06',4),
+(29,'LIBRE','D07',4),
+(30,'LIBRE','E00',5),
+(31,'LIBRE','E01',5);
+ 
+
+INSERT INTO tpdds.responsable_reserva(nombre,apellido,telefono) VALUES
+('ARMANDO','PAREDES','3425151789'), 
+('SAN MARTIN','DE LOS ANDES','3426859273'),
+('BASTIAN','ELSE','2515152526');
+
+INSERT INTO tpdds.reserva(id_responsable_reserva, id_habitacion, fecha_ingreso, fecha_egreso, estado) VALUES
+(1,1,'2021-12-06','2021-12-08','VIGENTE'),
+(2,2,'2021-12-01','2021-12-08','VIGENTE'),
+(2,3,'2021-12-01','2021-12-08','VIGENTE'),
+(1,2,'2021-10-20','2021-11-30','VIGENTE'),
+(2,5,'2021-11-12','2021-12-02','VIGENTE');
+
+INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero_responsable) VALUES
+('2021-10-20','2021-12-30',27,2),
+('2021-11-08','2021-11-11',5,5),
+('2021-11-08','2021-11-15',15,4),
+('2021-10-25','2021-10-29',14,3);
+
+INSERT INTO tpdds.acompaniante(id_ocupacion,id_pasajero) VALUES
+(2,6),(1,7),(1,9),(1,8);
+
+
+
+
+
+
+
