@@ -153568,3 +153568,10 @@ INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero
 
 INSERT INTO tpdds.acompaniante(id_ocupacion,id_pasajero) VALUES
 (2,6),(1,7),(1,9),(1,8);
+
+
+
+
+
+
+
