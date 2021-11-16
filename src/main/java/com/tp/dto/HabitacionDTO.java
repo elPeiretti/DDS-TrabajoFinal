@@ -15,5 +15,12 @@ public class HabitacionDTO {
 	public void setEstado(EstadoHabitacion estado) {
 		this.estado = estado;	
 	}
+
+	public String getNumero(){
+		return numero;
+	}
+	public EstadoHabitacion getEstado(){
+		return estado;
+	}
 	
 }

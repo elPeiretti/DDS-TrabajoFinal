@@ -3,14 +3,15 @@ package com.tp.interfaces.habitaciones;
 import javax.swing.*;
 
 import com.toedter.calendar.JDateChooser;
+import com.tp.dto.FechaDTO;
+import com.tp.dto.HabitacionDTO;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.misc.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.time.Instant;
-import java.time.LocalDate;
+import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ import java.beans.PropertyChangeListener;
 import com.tp.interfaces.*;
 
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
@@ -30,10 +33,12 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	private JFrame ventana_contenedora;
 	private Encabezado encabezado;
 	private JTable jtable_habitaciones;
+	private DefaultTableModel jtable_habitaciones_contenido;
+	private JScrollPane jspane_habitaciones;
 	private JLabel lbl_fecha_desde;
 	private JLabel lbl_fecha_hasta;
 	private JButton jb_cancelar;
-	private JButton btn_siguiente;
+	private JButton jb_siguiente;
 	private JLabel lbl_error_fecha_desde;
 	private JLabel lbl_error_fecha_hasta;
 	private JDateChooser dc_fecha_desde;
@@ -61,14 +66,24 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jb_cancelar.setBounds(427, 419, 89, 30);
 		add(jb_cancelar);
 		
-		btn_siguiente = new JButton("Siguiente");
-		btn_siguiente.setBounds(526, 419, 89, 30);
-		add(btn_siguiente);
+		jb_siguiente = new JButton("Siguiente");
+		jb_siguiente.setBounds(526, 419, 89, 30);
+		add(jb_siguiente);
 		
 		jtable_habitaciones = new JTable();
-		jtable_habitaciones.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		jtable_habitaciones.setBounds(10, 195, 620, 200);
-		add(jtable_habitaciones);
+		jtable_habitaciones_contenido = new DefaultTableModel(){
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		};
+
+		jtable_habitaciones.setModel(jtable_habitaciones_contenido);
+		jtable_habitaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		jspane_habitaciones = new JScrollPane(jtable_habitaciones);
+		jspane_habitaciones.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		jspane_habitaciones.setBounds(10, 195, 620, 200);
+		add(jspane_habitaciones);
 		
 		lbl_error_fecha_desde = new JLabel("");
 		lbl_error_fecha_desde.setForeground(Color.RED);
@@ -92,6 +107,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		dc_fecha_hasta.setMinSelectableDate(new Date());
 		add(dc_fecha_hasta);
 
+		EnterActionAssigner.setEnterAction(List.of(jb_cancelar,jb_siguiente));
 		this.campos_validos = new HashMap<String,Boolean>();
 		this.inicializarMapa();
 		this.agregarActionListeners();
@@ -134,7 +150,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						campos_validos.put("fecha hasta", false);
 					}
 					else if (campos_validos.get("fecha hasta")){
-						GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						llenarTabla(l);
 					}
 				}
 				
@@ -147,6 +164,10 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					campos_validos.put("fecha desde", true);
 					lbl_error_fecha_desde.setText("");
 					dc_fecha_hasta.setMinSelectableDate(dc_fecha_desde.getDate());
+					if(campos_validos.get("fecha hasta")){
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						llenarTabla(l);
+					}
 				}
 			}
 		});
@@ -162,7 +183,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					else lbl_error_fecha_hasta.setText("La fecha posee un formato invalido.");
 					campos_validos.put("fecha hasta", false); 
 				} 
-				else if (dc_fecha_hasta.getDate().before(new Date())) {
+				else if (dc_fecha_hasta.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(new Date().toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
 					lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la actual.");
 					campos_validos.put("fecha hasta", false); 
 				}
@@ -175,7 +196,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					lbl_error_fecha_hasta.setText("");
 
 					if (campos_validos.get("fecha desde")){
-						GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						llenarTabla(l);
 					}
 				}
 				
@@ -187,10 +209,37 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				if("date".equals(e.getPropertyName())) {
 					campos_validos.put("fecha hasta", true);
 					lbl_error_fecha_hasta.setText("");
+					
+					if(campos_validos.get("fecha desde")){
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						llenarTabla(l);
+					}
 				}
 			}
 		});
 		
+	}
+
+	private void llenarTabla(List<FechaDTO> listaFechas) {
+
+		jtable_habitaciones_contenido.setRowCount(0);
+		jtable_habitaciones_contenido.setColumnCount(0);
+
+		// agregar columnas
+		jtable_habitaciones_contenido.addColumn("Fecha");
+		for(HabitacionDTO h : listaFechas.get(0).getHabitaciones().values()){
+			jtable_habitaciones_contenido.addColumn(h.getNumero());
+		}
+		
+		
+		for(FechaDTO f : listaFechas){
+			jtable_habitaciones_contenido.addRow(f.getDataAsStringVector());
+		}
+
+		jtable_habitaciones.setRowHeight(30);
+		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		jtable_habitaciones.setDefaultRenderer(Object.class, cellRenderer);
 	}
 
 	@Override
