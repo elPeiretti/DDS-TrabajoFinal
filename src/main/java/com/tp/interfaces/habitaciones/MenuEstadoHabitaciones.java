@@ -280,8 +280,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 			header.addColumnGroup(g);
 		}
 
-		//fct_habitaciones = new FixedColumnTable(1, jspane_habitaciones);
-		//fct_habitaciones.getFixedTable().setRowHeight(30);
+		fct_habitaciones = new FixedColumnTable(1, jspane_habitaciones);
+		fct_habitaciones.getFixedTable().setRowHeight(30);
 
 		jtable_habitaciones.setRowHeight(30);
 		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();

@@ -43,6 +43,8 @@ public class GestorHabitaciones {
 		
 		Instant fechaAux = fecha_desde.plus(0, ChronoUnit.MILLIS).truncatedTo(ChronoUnit.DAYS);
 		fecha_hasta = fecha_hasta.truncatedTo(ChronoUnit.DAYS);
+		fecha_desde = fecha_desde.truncatedTo(ChronoUnit.DAYS);
+		
 		List<FechaDTO> resultado = new ArrayList<FechaDTO>();
 				
 		while(Duration.between(fechaAux,fecha_hasta).toDays() >= 0) {
@@ -62,9 +64,9 @@ public class GestorHabitaciones {
 			if(r.getHabitacion().getEstado().equals(EstadoHabitacion.MANTENIMIENTO)) continue;
 			
 			fechaAux = fecha_desde.isBefore(r.getFechaIngreso().truncatedTo(ChronoUnit.DAYS))? r.getFechaIngreso().truncatedTo(ChronoUnit.DAYS):fecha_desde.plus(0,ChronoUnit.DAYS).truncatedTo(ChronoUnit.DAYS);
-			int i = 0;
+			int i = (int) Duration.between(fecha_desde,fechaAux).toDays();
 			while(Duration.between(fechaAux,r.getFechaEgreso().truncatedTo(ChronoUnit.DAYS)).toDays() >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
-				Map<String, HabitacionDTO> habitaciones = resultado.get(i).getHabitaciones();
+				Map<String, HabitacionDTO> habitaciones = resultado.get(i++).getHabitaciones();
 				habitaciones.get(r.getHabitacion().getNumero()).setEstado(EstadoHabitacion.RESERVADA);
 				fechaAux = fechaAux.plus(1, ChronoUnit.DAYS);
 			}
@@ -74,7 +76,7 @@ public class GestorHabitaciones {
 			if(o.getHabitacion().getEstado().equals(EstadoHabitacion.MANTENIMIENTO)) continue;
 			
 			fechaAux = fecha_desde.isBefore(o.getFechaIngreso().truncatedTo(ChronoUnit.DAYS))? o.getFechaIngreso().truncatedTo(ChronoUnit.DAYS):fecha_desde.plus(0,ChronoUnit.DAYS).truncatedTo(ChronoUnit.DAYS);
-			int i = 0;
+			int i = (int) Duration.between(fecha_desde,fechaAux).toDays();
 			while(Duration.between(fechaAux,o.getFechaEgreso().truncatedTo(ChronoUnit.DAYS)).toDays() >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
 				Map<String, HabitacionDTO> habitaciones = resultado.get(i++).getHabitaciones();
 				habitaciones.get(o.getHabitacion().getNumero()).setEstado(EstadoHabitacion.OCUPADA);
