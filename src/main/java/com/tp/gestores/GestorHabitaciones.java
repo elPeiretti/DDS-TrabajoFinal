@@ -42,6 +42,7 @@ public class GestorHabitaciones {
 	private static List<FechaDTO> convertToEstadoHabitacionDTO(List<Habitacion> listaHabitaciones, List<Reserva> listaReservas, List<Ocupacion> listaOcupaciones, Instant fecha_desde, Instant fecha_hasta) {
 		
 		Instant fechaAux = fecha_desde.plus(0, ChronoUnit.MILLIS).truncatedTo(ChronoUnit.DAYS);
+		fecha_hasta = fecha_hasta.truncatedTo(ChronoUnit.DAYS);
 		List<FechaDTO> resultado = new ArrayList<FechaDTO>();
 				
 		while(Duration.between(fechaAux,fecha_hasta).toDays() >= 0) {

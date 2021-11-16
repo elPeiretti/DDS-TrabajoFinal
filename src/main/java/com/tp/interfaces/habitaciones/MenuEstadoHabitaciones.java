@@ -56,6 +56,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	private JDateChooser dc_fecha_desde;
 	private JDateChooser dc_fecha_hasta;
 	private HashMap<String,Boolean> campos_validos;
+	private FixedColumnTable fct_habitaciones;
 	
 	public MenuEstadoHabitaciones(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
@@ -95,8 +96,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jspane_habitaciones = new JScrollPane(jtable_habitaciones);
 		jspane_habitaciones.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		jspane_habitaciones.setBounds(10, 195, 620, 200);
-		add(jspane_habitaciones);
 		
+		add(jspane_habitaciones);
+
 		lbl_error_fecha_desde = new JLabel("");
 		lbl_error_fecha_desde.setForeground(Color.RED);
 		lbl_error_fecha_desde.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -177,8 +179,14 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					lbl_error_fecha_desde.setText("");
 					dc_fecha_hasta.setMinSelectableDate(dc_fecha_desde.getDate());
 					if(campos_validos.get("fecha hasta")){
-						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
-						llenarTabla(l);
+						if(dc_fecha_hasta.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(dc_fecha_desde.getDate().toInstant().truncatedTo(ChronoUnit.DAYS))<0){
+							campos_validos.put("fecha hasta",false);
+							lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");
+						}
+						else{
+							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+							llenarTabla(l);
+						}
 					}
 				}
 			}
@@ -271,11 +279,15 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		for(ColumnGroup g : grupos_columnas.values()){
 			header.addColumnGroup(g);
 		}
-		
+
+		//fct_habitaciones = new FixedColumnTable(1, jspane_habitaciones);
+		//fct_habitaciones.getFixedTable().setRowHeight(30);
+
 		jtable_habitaciones.setRowHeight(30);
 		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
 		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		jtable_habitaciones.setDefaultRenderer(Object.class, cellRenderer);
+
 	}
 
 	@Override
