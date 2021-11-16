@@ -33,5 +33,9 @@ public class HabitacionDTO implements Comparable{
 		}
 		return this.tipoHabitacion.compareTo( ((HabitacionDTO) o).tipoHabitacion);
 	}
+
+	public String getTipoHabitacion(){
+		return tipoHabitacion;
+	}
 	
 }

@@ -1,5 +1,6 @@
 package com.tp.interfaces.habitaciones;
 
+import javax.persistence.Column;
 import javax.swing.*;
 
 import com.toedter.calendar.JDateChooser;
@@ -9,14 +10,20 @@ import com.tp.gestores.GestorHabitaciones;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.misc.*;
+import com.tp.interfaces.misc.columngroup.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -25,6 +32,9 @@ import com.tp.interfaces.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
@@ -72,14 +82,14 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jb_siguiente.setBounds(526, 419, 89, 30);
 		add(jb_siguiente);
 		
-		jtable_habitaciones = new JTable();
-		jtable_habitaciones_contenido = new DefaultTableModel(){
-			public boolean isCellEditable(int row, int column){
-				return false;
+		
+		jtable_habitaciones_contenido = new DefaultTableModel();
+		jtable_habitaciones = new JTable(jtable_habitaciones_contenido){
+			protected JTableHeader createDefaultTableHeader() {
+				return new GroupableTableHeader(columnModel);
 			}
 		};
 
-		jtable_habitaciones.setModel(jtable_habitaciones_contenido);
 		jtable_habitaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		jspane_habitaciones = new JScrollPane(jtable_habitaciones);
@@ -227,18 +237,41 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jtable_habitaciones_contenido.setRowCount(0);
 		jtable_habitaciones_contenido.setColumnCount(0);
 
-		// agregar columnas
+		// agregar columnas y crear grupos
 		jtable_habitaciones_contenido.addColumn("Fecha");		
-
+		Map<String,ColumnGroup> grupos_columnas = new HashMap<String,ColumnGroup>();
+		
 		for(HabitacionDTO h : listaFechas.get(0).getHabitaciones().values().stream().sorted().collect(Collectors.toList())){
 			jtable_habitaciones_contenido.addColumn(h.getNumero());
+			ColumnGroup grupo = new ColumnGroup(h.getTipoHabitacion());
+			
+			List<ColumnGroup> listaGrupos = grupos_columnas.values().stream().collect(Collectors.toList());
+			if(grupos_columnas.containsValue(grupo)){
+				grupo = listaGrupos.get(listaGrupos.indexOf(grupo));
+			}
+			grupos_columnas.put(h.getNumero(), grupo);
 		}
-		
-		
+
+		//agregar filas
 		for(FechaDTO f : listaFechas){
 			jtable_habitaciones_contenido.addRow(f.getDataAsStringVector());
 		}
 
+		// crear agrupaciones
+		TableColumnModel cm = jtable_habitaciones.getColumnModel();
+		int i = 1;
+		while (i<jtable_habitaciones_contenido.getColumnCount()){
+			TableColumn columna = cm.getColumn(i);
+			ColumnGroup grupo = grupos_columnas.get((String)columna.getHeaderValue());
+			grupo.add(columna);
+			i++;
+		}
+
+		GroupableTableHeader header = (GroupableTableHeader) jtable_habitaciones.getTableHeader();
+		for(ColumnGroup g : grupos_columnas.values()){
+			header.addColumnGroup(g);
+		}
+		
 		jtable_habitaciones.setRowHeight(30);
 		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
 		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
