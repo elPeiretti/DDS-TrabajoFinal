@@ -18,4 +18,8 @@ public class TipoHabitacion {
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_tipo_habitacion", referencedColumnName = "id_tipo_habitacion")
 	private Collection<CostoPorNoche> costo;
+
+	public String getNombre(){
+		return nombre;
+	}
 }

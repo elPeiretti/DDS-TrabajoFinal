@@ -12,7 +12,9 @@ import com.tp.interfaces.misc.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.beans.PropertyChangeEvent;
@@ -226,8 +228,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jtable_habitaciones_contenido.setColumnCount(0);
 
 		// agregar columnas
-		jtable_habitaciones_contenido.addColumn("Fecha");
-		for(HabitacionDTO h : listaFechas.get(0).getHabitaciones().values()){
+		jtable_habitaciones_contenido.addColumn("Fecha");		
+
+		for(HabitacionDTO h : listaFechas.get(0).getHabitaciones().values().stream().sorted().collect(Collectors.toList())){
 			jtable_habitaciones_contenido.addColumn(h.getNumero());
 		}
 		

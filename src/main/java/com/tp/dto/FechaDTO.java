@@ -25,7 +25,7 @@ public class FechaDTO {
     public Vector<String> getDataAsStringVector() {
         Vector<String> data = new Vector<String>();
 		data.add(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.ofInstant(fecha,ZoneId.of("America/Buenos_Aires"))).toString());
-		habitaciones.values().stream().map(h -> h.getEstado().toString()).forEach(e -> data.add(e));
+		habitaciones.values().stream().sorted().map(h -> h.getEstado().toString()).forEach(e -> data.add(e));
 		return data;
     }
 }

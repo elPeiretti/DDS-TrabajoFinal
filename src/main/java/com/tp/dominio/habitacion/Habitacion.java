@@ -38,4 +38,8 @@ public class Habitacion {
 	public EstadoHabitacion getEstado() {
 		return estado;
 	}
+	
+	public TipoHabitacion getTipoHabitacion(){
+		return tipo;
+	}
 }
