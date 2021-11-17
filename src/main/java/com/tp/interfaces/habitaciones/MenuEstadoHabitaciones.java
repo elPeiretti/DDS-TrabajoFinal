@@ -74,8 +74,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jb_siguiente = new JButton("Siguiente");
 		jb_siguiente.setBounds(526, 419, 89, 30);
 		add(jb_siguiente);
-		
-		
+
 		jtable_habitaciones_contenido = new DefaultTableModel();
 		jtable_habitaciones = new JTable(jtable_habitaciones_contenido){
 			protected JTableHeader createDefaultTableHeader() {
@@ -137,16 +136,18 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 			public void focusLost(FocusEvent e) {
 				Date desde = dc_fecha_desde.getDate();
 				Date hasta = dc_fecha_hasta.getDate();
+				Date hoy = new Date();
+				hoy.setHours(0);
 				if(desde != null) desde.setHours(0);
 				if (hasta != null) hasta.setHours(0);
-	
+				
 				if (dc_fecha_desde.getDate() == null){
 					if (((JTextField) dc_fecha_desde.getDateEditor().getUiComponent()).getText().equals("__/__/____"))
 						lbl_error_fecha_desde.setText("Este campo no puede estar vacío.");
 					else lbl_error_fecha_desde.setText("La fecha posee un formato invalido.");
 					campos_validos.put("fecha desde", false); 
 				} 
-				else if (desde.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(new Date().toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
+				else if (desde.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(hoy.toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
 					lbl_error_fecha_desde.setText("La fecha no puede ser anterior a la actual.");
 					dc_fecha_hasta.setMinSelectableDate(new Date());
 					campos_validos.put("fecha desde", false); 
@@ -199,6 +200,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 			public void focusLost(FocusEvent e) {
 				Date desde = dc_fecha_desde.getDate();
 				Date hasta = dc_fecha_hasta.getDate();
+				Date hoy = new Date();
+				hoy.setHours(0);
 				if(desde != null) desde.setHours(0);
 				if (hasta != null) hasta.setHours(0);
 
@@ -208,7 +211,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					else lbl_error_fecha_hasta.setText("La fecha posee un formato invalido.");
 					campos_validos.put("fecha hasta", false); 
 				} 
-				else if (hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(new Date().toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
+				else if (hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(hoy.toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
 					lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la actual.");
 					campos_validos.put("fecha hasta", false); 
 				}
@@ -252,8 +255,23 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
 	private void llenarTabla(List<FechaDTO> listaFechas) {
 
-		jtable_habitaciones_contenido.setRowCount(0);
-		jtable_habitaciones_contenido.setColumnCount(0);
+		if(jspane_habitaciones!=null){
+			remove(jspane_habitaciones);
+		}
+		jtable_habitaciones_contenido = new DefaultTableModel();
+		jtable_habitaciones = new JTable(jtable_habitaciones_contenido){
+			protected JTableHeader createDefaultTableHeader() {
+				return new GroupableTableHeader(columnModel);
+			}
+		};
+
+		jtable_habitaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		jspane_habitaciones = new JScrollPane(jtable_habitaciones);
+		jspane_habitaciones.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		jspane_habitaciones.setBounds(10, 195, 620, 200);
+		
+		add(jspane_habitaciones);
 
 		// agregar columnas y crear grupos
 		jtable_habitaciones_contenido.addColumn("Fecha");		
