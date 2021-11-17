@@ -153554,17 +153554,17 @@ INSERT INTO tpdds.responsable_reserva(nombre,apellido,telefono) VALUES
 ('BASTIAN','ELSE','2515152526');
 
 INSERT INTO tpdds.reserva(id_responsable_reserva, id_habitacion, fecha_ingreso, fecha_egreso, estado) VALUES
-(1,1,'2021-12-06','2021-12-08','VIGENTE'),
-(2,2,'2021-12-01','2021-12-08','VIGENTE'),
-(2,3,'2021-12-01','2021-12-08','VIGENTE'),
-(1,2,'2021-10-20','2021-11-30','VIGENTE'),
-(2,5,'2021-11-12','2021-12-02','VIGENTE');
+(1,1,'2022-12-06','2022-12-08','VIGENTE'),
+(2,2,'2022-12-01','2022-12-08','VIGENTE'),
+(2,3,'2022-12-01','2022-12-08','VIGENTE'),
+(1,2,'2022-10-20','2022-11-30','VIGENTE'),
+(2,5,'2022-11-12','2022-12-02','VIGENTE');
 
 INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero_responsable) VALUES
-('2021-10-20','2021-12-30',27,2),
-('2021-11-08','2021-11-11',5,5),
-('2021-11-08','2021-11-15',15,4),
-('2021-10-25','2021-10-29',14,3);
+('2022-10-20','2022-12-30',27,2),
+('2022-11-08','2022-11-11',5,5),
+('2022-11-08','2022-11-15',15,4),
+('2022-10-25','2022-10-29',14,3);
 
 INSERT INTO tpdds.acompaniante(id_ocupacion,id_pasajero) VALUES
 (2,6),(1,7),(1,9),(1,8);
