@@ -1,8 +1,7 @@
 package com.tp.interfaces.habitaciones;
 
-import javax.persistence.Column;
-import javax.swing.*;
 
+import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
@@ -11,24 +10,17 @@ import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.misc.*;
 import com.tp.interfaces.misc.columngroup.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import com.tp.interfaces.*;
-
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -143,14 +135,18 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 			public void focusGained(FocusEvent e) {}
 			
 			public void focusLost(FocusEvent e) {
-
+				Date desde = dc_fecha_desde.getDate();
+				Date hasta = dc_fecha_hasta.getDate();
+				if(desde != null) desde.setHours(0);
+				if (hasta != null) hasta.setHours(0);
+	
 				if (dc_fecha_desde.getDate() == null){
 					if (((JTextField) dc_fecha_desde.getDateEditor().getUiComponent()).getText().equals("__/__/____"))
 						lbl_error_fecha_desde.setText("Este campo no puede estar vacío.");
 					else lbl_error_fecha_desde.setText("La fecha posee un formato invalido.");
 					campos_validos.put("fecha desde", false); 
 				} 
-				else if (dc_fecha_desde.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(new Date().toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
+				else if (desde.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(new Date().toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
 					lbl_error_fecha_desde.setText("La fecha no puede ser anterior a la actual.");
 					dc_fecha_hasta.setMinSelectableDate(new Date());
 					campos_validos.put("fecha desde", false); 
@@ -159,12 +155,12 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					campos_validos.put("fecha desde", true);
 					dc_fecha_hasta.setMinSelectableDate(dc_fecha_desde.getDate());
 					lbl_error_fecha_desde.setText("");
-					if (campos_validos.get("fecha hasta") && dc_fecha_hasta.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(dc_fecha_desde.getDate().toInstant().truncatedTo(ChronoUnit.DAYS))<0){
+					if (campos_validos.get("fecha hasta") && hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(desde.toInstant().truncatedTo(ChronoUnit.DAYS))<0){
 						lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");
 						campos_validos.put("fecha hasta", false);
 					}
 					else if (campos_validos.get("fecha hasta")){
-						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
 				}
@@ -174,17 +170,22 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		
 		dc_fecha_desde.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent e) {
+				Date desde = dc_fecha_desde.getDate();
+				Date hasta = dc_fecha_hasta.getDate();
+				if(desde != null) desde.setHours(0);
+				if (hasta != null) hasta.setHours(0);
+
 				if("date".equals(e.getPropertyName())) {
 					campos_validos.put("fecha desde", true);
 					lbl_error_fecha_desde.setText("");
 					dc_fecha_hasta.setMinSelectableDate(dc_fecha_desde.getDate());
 					if(campos_validos.get("fecha hasta")){
-						if(dc_fecha_hasta.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(dc_fecha_desde.getDate().toInstant().truncatedTo(ChronoUnit.DAYS))<0){
+						if(hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(desde.toInstant().truncatedTo(ChronoUnit.DAYS))<0){
 							campos_validos.put("fecha hasta",false);
 							lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");
 						}
 						else{
-							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 							llenarTabla(l);
 						}
 					}
@@ -196,6 +197,10 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 			public void focusGained(FocusEvent e) {}
 			
 			public void focusLost(FocusEvent e) {
+				Date desde = dc_fecha_desde.getDate();
+				Date hasta = dc_fecha_hasta.getDate();
+				if(desde != null) desde.setHours(0);
+				if (hasta != null) hasta.setHours(0);
 
 				if (dc_fecha_hasta.getDate() == null){
 					if (((JTextField) dc_fecha_hasta.getDateEditor().getUiComponent()).getText().equals("__/__/____"))
@@ -203,11 +208,11 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					else lbl_error_fecha_hasta.setText("La fecha posee un formato invalido.");
 					campos_validos.put("fecha hasta", false); 
 				} 
-				else if (dc_fecha_hasta.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(new Date().toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
+				else if (hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(new Date().toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
 					lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la actual.");
 					campos_validos.put("fecha hasta", false); 
 				}
-				else if (campos_validos.get("fecha desde") && dc_fecha_hasta.getDate().toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(dc_fecha_desde.getDate().toInstant().truncatedTo(ChronoUnit.DAYS))<0){
+				else if (campos_validos.get("fecha desde") && hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(desde.toInstant().truncatedTo(ChronoUnit.DAYS))<0){
 					lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");
 					campos_validos.put("fecha hasta", false);
 				}
@@ -216,7 +221,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					lbl_error_fecha_hasta.setText("");
 
 					if (campos_validos.get("fecha desde")){
-						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
 				}
@@ -226,12 +231,17 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		
 		dc_fecha_hasta.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent e) {
+				Date desde = dc_fecha_desde.getDate();
+				Date hasta = dc_fecha_hasta.getDate();
+				if(desde != null) desde.setHours(0);
+				if (hasta != null) hasta.setHours(0);
+
 				if("date".equals(e.getPropertyName())) {
 					campos_validos.put("fecha hasta", true);
 					lbl_error_fecha_hasta.setText("");
 					
 					if(campos_validos.get("fecha desde")){
-						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(dc_fecha_desde.getDate().toInstant(), dc_fecha_hasta.getDate().toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
 				}

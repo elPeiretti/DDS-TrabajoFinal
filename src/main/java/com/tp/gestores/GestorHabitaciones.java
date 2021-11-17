@@ -31,7 +31,7 @@ public class GestorHabitaciones {
 		HabitacionDAO daoHabitacion = new HabitacionSqlDAO();
 		ReservaDAO daoReserva = new ReservaSqlDAO();
 		OcupacionDAO daoOcupacion = new OcupacionSqlDAO();
-		
+
 		List<Habitacion> listaHabitaciones = daoHabitacion.getAllHabitaciones();
 		List<Reserva> listaReservas = daoReserva.getReservasInRange(fecha_desde,fecha_hasta);
 		List<Ocupacion> listaOcupaciones = daoOcupacion.getOcupacionesInRange(fecha_desde,fecha_hasta);
@@ -41,14 +41,13 @@ public class GestorHabitaciones {
 
 	private static List<FechaDTO> convertToEstadoHabitacionDTO(List<Habitacion> listaHabitaciones, List<Reserva> listaReservas, List<Ocupacion> listaOcupaciones, Instant fecha_desde, Instant fecha_hasta) {
 		
-		Instant fechaAux = fecha_desde.plus(0, ChronoUnit.MILLIS).truncatedTo(ChronoUnit.DAYS);
+		Instant fechaAux = fecha_desde.truncatedTo(ChronoUnit.DAYS);
 		fecha_hasta = fecha_hasta.truncatedTo(ChronoUnit.DAYS);
 		fecha_desde = fecha_desde.truncatedTo(ChronoUnit.DAYS);
 		
 		List<FechaDTO> resultado = new ArrayList<FechaDTO>();
 				
 		while(Duration.between(fechaAux,fecha_hasta).toDays() >= 0) {
-			
 			Map<String, HabitacionDTO> estadosIniciales = new HashMap<String, HabitacionDTO>();
 			
 			for(Habitacion h : listaHabitaciones) {
