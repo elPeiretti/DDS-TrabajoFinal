@@ -5,6 +5,7 @@ import java.time.Instant;
 import javax.persistence.*;
 
 import com.tp.dominio.habitacion.Habitacion;
+import com.tp.dominio.pasajero.Pasajero;
 
 @Entity
 @Table(name = "tpdds.reserva")
@@ -38,6 +39,12 @@ public class Reserva {
 	public Habitacion getHabitacion() {
 		return habitacion;
 	}
+    public Integer getIdReserva() {
+        return idReserva;
+    }
+    public ResponsableReserva getResponsable() {
+        return responsable;
+    }
 	
 	
 }

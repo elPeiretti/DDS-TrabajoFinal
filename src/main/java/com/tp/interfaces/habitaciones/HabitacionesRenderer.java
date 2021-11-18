@@ -40,7 +40,6 @@ public class HabitacionesRenderer extends DefaultTableCellRenderer{
             switch(model.getEstado(row, column)){
                 case "RESERVADA":{
                     setBackground(color_RESERVADA);
-                    System.out.println("RESERVADA");
                     break;
                 }
                 case "OCUPADA":{

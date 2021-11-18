@@ -42,4 +42,8 @@ public class Habitacion {
 	public TipoHabitacion getTipoHabitacion(){
 		return tipo;
 	}
+
+    public Integer getIdHabitacion() {
+        return idHabitacion;
+    }
 }

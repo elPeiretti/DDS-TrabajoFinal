@@ -6,6 +6,8 @@ import java.util.List;
 
 public class OcupacionDTO {
 	private Integer idOcupacion;
+
+	private String numeroHabitacion;
 	
 	private Instant fechaIngreso;
 	
@@ -64,5 +66,9 @@ public class OcupacionDTO {
 	public void setAcompaniantes(List<PasajeroDTO> acompaniantes) {
 		this.acompaniantes = acompaniantes;
 	}
+
+    public void setNumeroHabitacion(String numeroHabitacion) {
+		this.numeroHabitacion = numeroHabitacion;
+    }
 	
 }

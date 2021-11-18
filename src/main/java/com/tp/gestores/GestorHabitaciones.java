@@ -88,11 +88,15 @@ public class GestorHabitaciones {
 	}
 
     public static List<ReservaDTO> getReservasVigentesInRange(Instant fechaInicio, Instant fechaFin, String numeroHabitacion) {
-		//TODO
-		System.out.println(numeroHabitacion);
-		System.out.println(fechaInicio);
-		System.out.println(fechaFin);
-        return null;
+		
+		ReservaDAO daoReserva = new ReservaSqlDAO();
+		List<Reserva> listaReservas = daoReserva.getReservasInRange(fechaInicio,fechaFin,numeroHabitacion);
+		List<ReservaDTO> reservas = new ArrayList<ReservaDTO>();
+
+		for (Reserva r: listaReservas){
+			reservas.add(new ReservaDTO(r));
+		}
+        return reservas;
     }
 	
 }

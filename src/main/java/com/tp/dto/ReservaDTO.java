@@ -2,6 +2,8 @@
 
 import java.time.Instant;
 
+import com.tp.dominio.reserva.Reserva;
+
 public class ReservaDTO {
     Integer idReserva;
     Integer idHabitacion;
@@ -10,6 +12,17 @@ public class ReservaDTO {
 	String apellidoResponsable;
     Instant inicioReserva;
     Instant finReserva;
+
+    public ReservaDTO() {}
+    public ReservaDTO(Reserva r) {
+        idReserva = r.getIdReserva();
+        idHabitacion = r.getHabitacion().getIdHabitacion();
+        numeroHabitacion = r.getHabitacion().getNumero();
+        nombreResponsable = r.getResponsable().getNombre();
+        apellidoResponsable = r.getResponsable().getApellido();
+        inicioReserva = r.getFechaIngreso();
+        finReserva = r.getFechaEgreso();
+    }
 
     public String getNumeroHabitacion() {
         return numeroHabitacion;
