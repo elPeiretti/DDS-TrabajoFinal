@@ -48,7 +48,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	private JDateChooser dc_fecha_desde;
 	private JDateChooser dc_fecha_hasta;
 	private HashMap<String,Boolean> campos_validos;
-	private FixedColumnTable fct_habitaciones;
+	private HabitacionesTable fct_habitaciones;
+	private Date prev_desde;
+	private Date prev_hasta;
 	
 	public MenuEstadoHabitaciones(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
@@ -75,7 +77,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jb_siguiente.setBounds(526, 419, 89, 30);
 		add(jb_siguiente);
 
-		jtable_habitaciones_contenido = new DefaultTableModel();
+		jtable_habitaciones_contenido = new HabitacionesTableModel();
 		jtable_habitaciones = new JTable(jtable_habitaciones_contenido){
 			protected JTableHeader createDefaultTableHeader() {
 				return new GroupableTableHeader(columnModel);
@@ -87,7 +89,6 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		jspane_habitaciones = new JScrollPane(jtable_habitaciones);
 		jspane_habitaciones.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		jspane_habitaciones.setBounds(10, 195, 620, 200);
-		
 		add(jspane_habitaciones);
 
 		lbl_error_fecha_desde = new JLabel("");
@@ -161,6 +162,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						campos_validos.put("fecha hasta", false);
 					}
 					else if (campos_validos.get("fecha hasta")){
+						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+						prev_desde = desde;
+						prev_hasta = hasta;
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
@@ -186,6 +190,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 							lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");
 						}
 						else{
+							if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+							prev_desde = desde;
+							prev_hasta = hasta;
 							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 							llenarTabla(l);
 						}
@@ -224,6 +231,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					lbl_error_fecha_hasta.setText("");
 
 					if (campos_validos.get("fecha desde")){
+						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+						prev_desde = desde;
+						prev_hasta = hasta;
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
@@ -244,6 +254,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					lbl_error_fecha_hasta.setText("");
 					
 					if(campos_validos.get("fecha desde")){
+						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+						prev_desde = desde;
+						prev_hasta = hasta;
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
@@ -255,32 +268,17 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
 	private void llenarTabla(List<FechaDTO> listaFechas) {
 
-		if(jspane_habitaciones!=null){
-			remove(jspane_habitaciones);
-		}
-		jtable_habitaciones_contenido = new DefaultTableModel();
-		jtable_habitaciones = new JTable(jtable_habitaciones_contenido){
-			protected JTableHeader createDefaultTableHeader() {
-				return new GroupableTableHeader(columnModel);
-			}
-		};
-
-		jtable_habitaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
-		jspane_habitaciones = new JScrollPane(jtable_habitaciones);
-		jspane_habitaciones.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		jspane_habitaciones.setBounds(10, 195, 620, 200);
-		
-		add(jspane_habitaciones);
+		jtable_habitaciones_contenido.setRowCount(0);
+		jtable_habitaciones_contenido.setColumnCount(0);
 
 		// agregar columnas y crear grupos
-		jtable_habitaciones_contenido.addColumn("Fecha");		
+		jtable_habitaciones_contenido.addColumn("Fecha");	
 		Map<String,ColumnGroup> grupos_columnas = new HashMap<String,ColumnGroup>();
 		
 		for(HabitacionDTO h : listaFechas.get(0).getHabitaciones().values().stream().sorted().collect(Collectors.toList())){
 			jtable_habitaciones_contenido.addColumn(h.getNumero());
 			ColumnGroup grupo = new ColumnGroup(h.getTipoHabitacion());
-			
+
 			List<ColumnGroup> listaGrupos = grupos_columnas.values().stream().collect(Collectors.toList());
 			if(grupos_columnas.containsValue(grupo)){
 				grupo = listaGrupos.get(listaGrupos.indexOf(grupo));
@@ -296,7 +294,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		// crear agrupaciones
 		TableColumnModel cm = jtable_habitaciones.getColumnModel();
 		int i = 1;
-		while (i<jtable_habitaciones_contenido.getColumnCount()){
+		while (i<cm.getColumnCount()){
 			TableColumn columna = cm.getColumn(i);
 			ColumnGroup grupo = grupos_columnas.get((String)columna.getHeaderValue());
 			grupo.add(columna);
@@ -307,15 +305,11 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		for(ColumnGroup g : grupos_columnas.values()){
 			header.addColumnGroup(g);
 		}
-
-		fct_habitaciones = new FixedColumnTable(1, jspane_habitaciones);
-		fct_habitaciones.getFixedTable().setRowHeight(30);
-
+		
+		fct_habitaciones = new HabitacionesTable(jspane_habitaciones);
+		fct_habitaciones.getFechasTable().setRowHeight(30);
 		jtable_habitaciones.setRowHeight(30);
-		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-		jtable_habitaciones.setDefaultRenderer(Object.class, cellRenderer);
-
+		jtable_habitaciones.requestFocus();
 	}
 
 	@Override
