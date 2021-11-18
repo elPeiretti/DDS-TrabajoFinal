@@ -5,9 +5,11 @@ import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
+import com.tp.dto.OcupacionDTO;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
+import com.tp.interfaces.habitaciones.ocupaciones.MenuBuscarResponsable;
 import com.tp.interfaces.misc.*;
 import com.tp.interfaces.misc.columngroup.*;
 import java.awt.*;
@@ -15,6 +17,7 @@ import java.awt.event.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
@@ -125,6 +128,17 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	}
 
 	private void agregarActionListeners() {
+		jb_siguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OcupacionDTO o = new OcupacionDTO();
+				o.setFechaIngreso(Instant.now());
+				o.setFechaEgreso(Instant.now());
+				o.setIdHabitacion(1);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,o),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
+			}
+			
+		});
+		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 ((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);

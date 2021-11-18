@@ -3,27 +3,30 @@ package com.tp.interfaces.habitaciones.ocupaciones;
 import javax.swing.*;
 
 import com.tp.dto.OcupacionDTO;
+import com.tp.dto.PasajeroDTO;
+import com.tp.dto.TipoDocumentoDTO;
+import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.util.List;
 
-public class MenuBuscarAcompaniantes extends JPanel {
+public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 
 	public static String titulo = "Buscar Acompañantes";
 	public static int x_bound = 660;
-	public static int y_bound = 700;
+	public static int y_bound = 720;
 
 	private JFrame ventana_contenedora;
 	private Encabezado encabezado;
 	private JTextField jtf_numero_documento;
 	private JTextField jtf_nombres;
 	private JTextField jtf_apellido;
-	private JComboBox jcb_tipo_documento;
+	private JComboBox<TipoDocumentoDTO> jcb_tipo_documento;
 	private JLabel lbl_numero_documento;
 	private JLabel lbl_apellido;
 	private JLabel lbl_tipo_documento;
 	private JPanel rp_pasajeros_busqueda;
-	private ResultPane rp_pasajeros_agregados;
+	private ResultPane<PasajeroDTO> rp_pasajeros_agregados;
 	private JButton jb_buscar;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
@@ -100,6 +103,9 @@ public class MenuBuscarAcompaniantes extends JPanel {
 		
 		this.agregarTabOrder();
 	}	
+	//jtable solo string
+	//jtable_contenido objetos
+	//Insertas las filas y los objetos
 	private void agregarTabOrder() {
 		this.setFocusTraversalPolicy(new TabOrder(List.of(
 				jtf_apellido,
@@ -112,4 +118,9 @@ public class MenuBuscarAcompaniantes extends JPanel {
 				)));
 		this.setFocusTraversalPolicyProvider(true);
 		}
+	
+	@Override
+	public void setDefaultTab() {
+		jtf_apellido.requestFocus();
+	}
 }

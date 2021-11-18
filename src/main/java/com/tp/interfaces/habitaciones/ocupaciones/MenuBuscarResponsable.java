@@ -18,6 +18,7 @@ import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.TipoDocumentoDTO;
 import com.tp.gestores.GestorPasajeros;
+import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
 import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
 import com.tp.interfaces.misc.Encabezado;
@@ -26,7 +27,7 @@ import com.tp.interfaces.misc.JTextFieldLimit;
 import com.tp.interfaces.misc.ResultPane;
 import com.tp.interfaces.misc.TabOrder;
 
-public class MenuBuscarResponsable extends JPanel {
+public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 
 	public static String titulo = "Buscar Pasajero Responsable";
 	public static int x_bound = 660;
@@ -217,6 +218,11 @@ public class MenuBuscarResponsable extends JPanel {
 			rp_pasajeros.getContenido().addRow(v);
 			rp_pasajeros.getRowObjects().add(p);
 		}
+	}
+
+	@Override
+	public void setDefaultTab() {
+		jtf_apellido.requestFocus();		
 	}
 
 }
