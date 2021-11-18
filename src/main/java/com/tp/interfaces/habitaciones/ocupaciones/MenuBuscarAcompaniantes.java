@@ -37,7 +37,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	private JLabel lbl_numero_documento;
 	private JLabel lbl_apellido;
 	private JLabel lbl_tipo_documento;
-	private ResultPane<PasajeroDTO> rp_pasajeros_busqueda;
+	private ResultPaneAcompaniantes<PasajeroDTO> rp_pasajeros_busqueda;
 	private ResultPane<PasajeroDTO> rp_pasajeros_agregados;
 	private JButton jb_buscar;
 	private JButton jb_siguiente;
@@ -99,7 +99,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		lbl_tipo_documento.setBounds(83, 162, 130, 30);
 		add(lbl_tipo_documento);
 		
-		rp_pasajeros_busqueda = new ResultPane<PasajeroDTO>(this::llenarTablaBusquedaAcompaniantes);
+		rp_pasajeros_busqueda = new ResultPaneAcompaniantes<PasajeroDTO>(this::llenarTablaBusquedaAcompaniantes);
 		rp_pasajeros_busqueda.setBounds(10, 244, 620, 180);
 		add(rp_pasajeros_busqueda);
 		
@@ -123,11 +123,13 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		MenuBuscarAcompaniantes contexto = this;
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {			
+				
 			}
 		});
 		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,nuevaOcupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
 				}
 		});
 		
@@ -167,17 +169,17 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		rp_pasajeros_busqueda.getContenido().setRowCount(0);
 		rp_pasajeros_busqueda.getRowObjects().clear();
 		
-		rp_pasajeros_busqueda.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosBy(criterios_actuales)/8.0));
-		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosBy(criterios_actuales, (rp_pasajeros_busqueda.getPaginaActual()-1)*8, 8);
+		rp_pasajeros_busqueda.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosBy(criterios_actuales, nuevaOcupacion.getResponsable())/8.0));
+		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosBy(criterios_actuales, (rp_pasajeros_busqueda.getPaginaActual()-1)*8, 8, nuevaOcupacion.getResponsable());
 		
 		for(PasajeroDTO p : lp) {
-			//Vector<Object> v = new Vector<Object>();
-			Vector<String> v = new Vector<String>();
+			Vector<Object> v = new Vector<Object>();
+			//Vector<String> v = new Vector<String>();
 			v.add(p.getApellido());
 			v.add(p.getNombres());
 			v.add(p.getTipoDocumentoDTO().getTipo());
 			v.add(p.getNroDocumento());
-			//v.add(false);
+			v.add(false);
 			rp_pasajeros_busqueda.getContenido().addRow(v);
 			rp_pasajeros_busqueda.getRowObjects().add(p);
 		}
