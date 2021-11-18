@@ -28,6 +28,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -81,11 +82,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		add(jb_siguiente);
 
 		jtable_habitaciones_contenido = new HabitacionesTableModel();
-		jtable_habitaciones = new JTable(jtable_habitaciones_contenido){
-			protected JTableHeader createDefaultTableHeader() {
-				return new GroupableTableHeader(columnModel);
-			}
-		};
+		jtable_habitaciones = new PintableTable(jtable_habitaciones_contenido);
 
 		jtable_habitaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
