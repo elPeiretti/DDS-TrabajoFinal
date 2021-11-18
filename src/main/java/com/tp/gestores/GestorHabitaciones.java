@@ -23,6 +23,7 @@ import com.tp.dominio.reserva.ReservaSqlDAO;
 
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
+import com.tp.dto.ReservaDTO;
 
 public class GestorHabitaciones {
 
@@ -85,5 +86,13 @@ public class GestorHabitaciones {
 			
 		return resultado;
 	}
+
+    public static List<ReservaDTO> getReservasVigentesInRange(Instant fechaInicio, Instant fechaFin, String numeroHabitacion) {
+		//TODO
+		System.out.println(numeroHabitacion);
+		System.out.println(fechaInicio);
+		System.out.println(fechaFin);
+        return null;
+    }
 	
 }

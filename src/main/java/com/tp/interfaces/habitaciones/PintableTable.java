@@ -18,7 +18,7 @@ public class PintableTable extends JTable{
 
     private boolean seleccionando;
     private Point celdaInicial;
-    private Point celdaFinal;
+    private Point celdaFinal; 
 
     public PintableTable(DefaultTableModel jtable_habitaciones_contenido) {
         super(jtable_habitaciones_contenido);
@@ -73,6 +73,10 @@ public class PintableTable extends JTable{
                             celdaInicial.y=row;
                         }
                         seleccionando = false;
+                    }
+                    else{
+                        celdaInicial.setLocation(column, row);
+                        jtable_habitaciones_contenido.fireTableDataChanged();
                     }
                 } 
                 jtable_habitaciones_contenido.fireTableDataChanged(); 

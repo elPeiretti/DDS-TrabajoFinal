@@ -1,6 +1,15 @@
 package com.tp.interfaces.misc;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.function.Function;
+
 import javax.swing.JOptionPane;
+
+import com.tp.dto.ReservaDTO;
 
 public class Mensaje {
 	
@@ -33,6 +42,22 @@ public class Mensaje {
 		}
 		return JOptionPane.showOptionDialog(null, msg, "Error", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[0]);
 	}
+
+    public static int OcuparIgual(List<ReservaDTO> reservas) {
+		
+		String msg = "<html><center>La habitación "+reservas.get(0).getNumeroHabitacion()+" posee las siguientes reservas registradas:<br><br>";
+		Function<Instant,String> f = (fecha) -> (DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.ofInstant(fecha,ZoneId.of("+0"))).toString());
+
+		for (ReservaDTO r : reservas){
+			msg += r.getApellidoResponsable()+", "+r.getNombreResponsable()+"<br>";
+			msg += "Desde: "+ f.apply(r.getInicioReserva()) + " - Hasta: "+ f.apply(r.getFinReserva())+ "<br><br>";
+		}
+		msg+= "Seleccione la operación a realizar:</center></html>";
+
+		String[] opt = {"Volver", "Ocupar Igual"};
+
+		return JOptionPane.showOptionDialog(null, msg, "¡Reservas existentes!", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[1]);
+    }
 
 	
 }
