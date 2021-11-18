@@ -6,6 +6,7 @@ import com.toedter.calendar.JDateChooser;
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.OcupacionDTO;
+import com.tp.dto.ReservaDTO;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
@@ -18,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +32,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -81,11 +86,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		add(jb_siguiente);
 
 		jtable_habitaciones_contenido = new HabitacionesTableModel();
-		jtable_habitaciones = new JTable(jtable_habitaciones_contenido){
-			protected JTableHeader createDefaultTableHeader() {
-				return new GroupableTableHeader(columnModel);
-			}
-		};
+		jtable_habitaciones = new PintableTable(jtable_habitaciones_contenido);
 
 		jtable_habitaciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
@@ -130,11 +131,30 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	private void agregarActionListeners() {
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OcupacionDTO o = new OcupacionDTO();
-				o.setFechaIngreso(Instant.now());
-				o.setFechaEgreso(Instant.now());
-				o.setIdHabitacion(1);
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,o),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
+				if( ((PintableTable)jtable_habitaciones).isSeleccionando() || ((PintableTable)jtable_habitaciones).getCeldaFinal().getX() == -1 ){
+					Mensaje.mensajeInformacion("Debe seleccionar al menos una habitación para continuar.");
+					return;
+				}
+
+				Point inicio = ((PintableTable)jtable_habitaciones).getCeldaInicial();
+				Point fin = ((PintableTable)jtable_habitaciones).getCeldaFinal();
+				
+				String numeroHabitacion = (String) jtable_habitaciones.getColumnModel().getColumn(inicio.x).getHeaderValue();
+				Instant fechaInicio = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(inicio.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC);
+				Instant fechaFin = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(fin.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC);
+				List<ReservaDTO> reservas = GestorHabitaciones.getReservasVigentesInRange(fechaInicio,fechaFin,numeroHabitacion);
+				
+				if(!reservas.isEmpty()){
+					if(Mensaje.OcuparIgual(reservas)!=1) return;
+				}
+
+
+				OcupacionDTO ocupacion = new OcupacionDTO();
+				ocupacion.setFechaIngreso(fechaInicio);
+				ocupacion.setFechaEgreso(fechaFin);
+				ocupacion.setNumeroHabitacion(numeroHabitacion);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,ocupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
+				
 			}
 			
 		});

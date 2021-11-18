@@ -1,7 +1,12 @@
 ﻿package com.tp.interfaces.habitaciones;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,6 +25,7 @@ public class HabitacionesTable implements ChangeListener, PropertyChangeListener
     private JTable jtable_habitaciones;
 	private JTable jtable_fechas;
 	private JScrollPane jspane_tabla;
+	private List selectedCells;
 
     public HabitacionesTable (JScrollPane scrollPane){
         
@@ -29,6 +35,7 @@ public class HabitacionesTable implements ChangeListener, PropertyChangeListener
 		//jtable_habitaciones.setAutoCreateColumnsFromModel( false );
 		
 		jtable_habitaciones.addPropertyChangeListener( this );
+		jtable_habitaciones.setCellSelectionEnabled(true);
 		HabitacionesRenderer cellRenderer = new HabitacionesRenderer();
 		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		jtable_habitaciones.setDefaultRenderer(Object.class, cellRenderer);
@@ -59,36 +66,26 @@ public class HabitacionesTable implements ChangeListener, PropertyChangeListener
 		scrollPane.getRowHeader().addChangeListener( this );
 	}
 
-	/*
-	 *  Return the table being used in the row header
-	 */
-	public JTable getFechasTable()
-	{
+	public JTable getFechasTable(){
 		return jtable_fechas;
 	}
-//
-//  Implement the ChangeListener
-//
-	public void stateChanged(ChangeEvent e)
-	{
+
+	@Override
+	public void stateChanged(ChangeEvent e){
 		//  Sync the scroll pane scrollbar with the row header
 		JViewport viewport = (JViewport) e.getSource();
 	    jspane_tabla.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
 	}
-//
-//  Implement the PropertyChangeListener
-//
-	public void propertyChange(PropertyChangeEvent e)
-	{
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e){
 		//  Keep the jtable_fechas table in sync with the jtable_habitaciones table
 
-		if ("selectionModel".equals(e.getPropertyName()))
-		{
+		if ("selectionModel".equals(e.getPropertyName())){
 			jtable_fechas.setSelectionModel( jtable_habitaciones.getSelectionModel() );
 		}
 
-		if ("model".equals(e.getPropertyName()))
-		{
+		if ("model".equals(e.getPropertyName())){
 			jtable_fechas.setModel( jtable_habitaciones.getModel() );
 		}
 	}

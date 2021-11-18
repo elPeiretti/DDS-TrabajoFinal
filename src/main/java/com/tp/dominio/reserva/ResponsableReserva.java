@@ -20,4 +20,11 @@ public class ResponsableReserva {
 	private Integer idResponsableReserva;
 	@OneToMany (mappedBy = "responsable", cascade = CascadeType.ALL) 
 	private List<Reserva> reservas;
+	
+    public String getNombre() {
+        return nombre;
+    }
+    public String getApellido() {
+        return apellido;
+    }
 }
