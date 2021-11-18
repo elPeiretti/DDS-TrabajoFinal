@@ -1,6 +1,8 @@
 package com.tp.interfaces.habitaciones.ocupaciones;
 
 import javax.swing.*;
+
+import com.tp.dto.OcupacionDTO;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.util.List;
@@ -12,7 +14,7 @@ public class MenuBuscarAcompaniantes extends JPanel {
 	public static int y_bound = 700;
 
 	private JFrame ventana_contenedora;
-	private JPanel encabezado;
+	private Encabezado encabezado;
 	private JTextField jtf_numero_documento;
 	private JTextField jtf_nombres;
 	private JTextField jtf_apellido;
@@ -25,14 +27,16 @@ public class MenuBuscarAcompaniantes extends JPanel {
 	private JButton jb_buscar;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
+	private OcupacionDTO nuevaOcupacion;
 	
 	// setear ventana a 640x700
-	public MenuBuscarAcompaniantes(JFrame ventana_contenedora) {
+	public MenuBuscarAcompaniantes(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
+		this.nuevaOcupacion = nuevaOcupacion;
 		setLayout(null);
 		
-		encabezado = new Encabezado();
+		this.encabezado = encabezado;
 		encabezado.setBounds(0, 0, 640, 110);
 		add(encabezado);
 		
