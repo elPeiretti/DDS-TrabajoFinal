@@ -56,7 +56,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 		{
 	        TableColumnModel columnModel = main.getColumnModel();
 	        TableColumn column = columnModel.getColumn(0);
-    	    columnModel.removeColumn(column);
+    	    //columnModel.removeColumn(column);
 			fixed.getColumnModel().addColumn(column);
 		}
 
