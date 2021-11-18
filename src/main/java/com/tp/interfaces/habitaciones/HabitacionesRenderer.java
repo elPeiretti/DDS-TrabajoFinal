@@ -12,6 +12,7 @@ public class HabitacionesRenderer extends DefaultTableCellRenderer{
     Color color_OCUPADA = Color.RED;
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+        column++;
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         HabitacionesTableModel model = (HabitacionesTableModel) table.getModel();
         

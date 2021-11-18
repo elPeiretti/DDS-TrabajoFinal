@@ -20,14 +20,14 @@ public class HabitacionesTable implements ChangeListener, PropertyChangeListener
     private JTable jtable_habitaciones;
 	private JTable jtable_fechas;
 	private JScrollPane jspane_tabla;
-	private TableColumn eliminada;
 
     public HabitacionesTable (JScrollPane scrollPane){
         
 		this.jspane_tabla = scrollPane;
 
 		jtable_habitaciones = ((JTable)scrollPane.getViewport().getView());
-		jtable_habitaciones.setAutoCreateColumnsFromModel( false );
+		//jtable_habitaciones.setAutoCreateColumnsFromModel( false );
+		
 		jtable_habitaciones.addPropertyChangeListener( this );
 		HabitacionesRenderer cellRenderer = new HabitacionesRenderer();
 		cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -48,7 +48,6 @@ public class HabitacionesTable implements ChangeListener, PropertyChangeListener
 		TableColumn column = jtable_habitaciones.getColumnModel().getColumn(0);
 		jtable_fechas.getColumnModel().addColumn(column);
 		jtable_habitaciones.removeColumn(column);
-		eliminada = column;
 
 		//  Add the jtable_fechas table to the scroll pane
 
