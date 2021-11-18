@@ -49,6 +49,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	private JDateChooser dc_fecha_hasta;
 	private HashMap<String,Boolean> campos_validos;
 	private HabitacionesTable fct_habitaciones;
+	private Date prev_desde;
+	private Date prev_hasta;
 	
 	public MenuEstadoHabitaciones(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
@@ -160,6 +162,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						campos_validos.put("fecha hasta", false);
 					}
 					else if (campos_validos.get("fecha hasta")){
+						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+						prev_desde = desde;
+						prev_hasta = hasta;
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
@@ -185,6 +190,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 							lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");
 						}
 						else{
+							if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+							prev_desde = desde;
+							prev_hasta = hasta;
 							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 							llenarTabla(l);
 						}
@@ -223,6 +231,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					lbl_error_fecha_hasta.setText("");
 
 					if (campos_validos.get("fecha desde")){
+						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+						prev_desde = desde;
+						prev_hasta = hasta;
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
@@ -243,6 +254,9 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					lbl_error_fecha_hasta.setText("");
 					
 					if(campos_validos.get("fecha desde")){
+						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
+						prev_desde = desde;
+						prev_hasta = hasta;
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
 						llenarTabla(l);
 					}
@@ -295,6 +309,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		fct_habitaciones = new HabitacionesTable(jspane_habitaciones);
 		fct_habitaciones.getFechasTable().setRowHeight(30);
 		jtable_habitaciones.setRowHeight(30);
+		jtable_habitaciones.requestFocus();
 	}
 
 	@Override

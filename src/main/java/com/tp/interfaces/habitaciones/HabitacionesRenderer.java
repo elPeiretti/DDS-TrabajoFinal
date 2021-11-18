@@ -10,6 +10,7 @@ public class HabitacionesRenderer extends DefaultTableCellRenderer{
 
     Color color_RESERVADA = Color.YELLOW;
     Color color_OCUPADA = Color.RED;
+    Color color_SELECCIONADA = Color.BLUE;
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
         column++;
