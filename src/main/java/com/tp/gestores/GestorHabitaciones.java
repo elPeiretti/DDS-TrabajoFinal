@@ -1,7 +1,6 @@
 package com.tp.gestores;
 
-import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import com.tp.dto.ReservaDTO;
 
 public class GestorHabitaciones {
 
-	public static List<FechaDTO> buscarEstadoHabitaciones(Instant fecha_desde, Instant fecha_hasta) {
+	public static List<FechaDTO> buscarEstadoHabitaciones(LocalDate fecha_desde, LocalDate fecha_hasta) {
 		
 		HabitacionDAO daoHabitacion = new HabitacionSqlDAO();
 		ReservaDAO daoReserva = new ReservaSqlDAO();
@@ -46,15 +45,13 @@ public class GestorHabitaciones {
 		return convertToEstadoHabitacionDTO(listaHabitaciones, listaReservas, listaOcupaciones, fecha_desde, fecha_hasta);
 	}
 
-	private static List<FechaDTO> convertToEstadoHabitacionDTO(List<Habitacion> listaHabitaciones, List<Reserva> listaReservas, List<Ocupacion> listaOcupaciones, Instant fecha_desde, Instant fecha_hasta) {
+	private static List<FechaDTO> convertToEstadoHabitacionDTO(List<Habitacion> listaHabitaciones, List<Reserva> listaReservas, List<Ocupacion> listaOcupaciones, LocalDate fecha_desde, LocalDate fecha_hasta) {
 		
-		Instant fechaAux = fecha_desde.truncatedTo(ChronoUnit.DAYS);
-		fecha_hasta = fecha_hasta.truncatedTo(ChronoUnit.DAYS);
-		fecha_desde = fecha_desde.truncatedTo(ChronoUnit.DAYS);
+		LocalDate fechaAux = fecha_desde;
 		
 		List<FechaDTO> resultado = new ArrayList<FechaDTO>();
 				
-		while(Duration.between(fechaAux,fecha_hasta).toDays() >= 0) {
+		while(ChronoUnit.DAYS.between(fechaAux,fecha_hasta) >= 0) {
 			Map<String, HabitacionDTO> estadosIniciales = new HashMap<String, HabitacionDTO>();
 			
 			for(Habitacion h : listaHabitaciones) {
@@ -67,11 +64,10 @@ public class GestorHabitaciones {
 		}
 		
 		for(Reserva r : listaReservas) {
-			if(r.getHabitacion().getEstado().equals(EstadoHabitacion.MANTENIMIENTO)) continue;
 			
-			fechaAux = fecha_desde.isBefore(r.getFechaIngreso().truncatedTo(ChronoUnit.DAYS))? r.getFechaIngreso().truncatedTo(ChronoUnit.DAYS):fecha_desde.plus(0,ChronoUnit.DAYS).truncatedTo(ChronoUnit.DAYS);
-			int i = (int) Duration.between(fecha_desde,fechaAux).toDays();
-			while(Duration.between(fechaAux,r.getFechaEgreso().truncatedTo(ChronoUnit.DAYS)).toDays() >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
+			fechaAux = fecha_desde.isBefore(r.getFechaIngreso())? r.getFechaIngreso():fecha_desde.plus(0,ChronoUnit.DAYS);
+			int i = (int) ChronoUnit.DAYS.between(fecha_desde,fechaAux);
+			while(ChronoUnit.DAYS.between(fechaAux,r.getFechaEgreso()) >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
 				Map<String, HabitacionDTO> habitaciones = resultado.get(i++).getHabitaciones();
 				habitaciones.get(r.getHabitacion().getNumero()).setEstado(EstadoHabitacion.RESERVADA);
 				fechaAux = fechaAux.plus(1, ChronoUnit.DAYS);
@@ -79,11 +75,10 @@ public class GestorHabitaciones {
 		}
 		
 		for(Ocupacion o : listaOcupaciones) {
-			if(o.getHabitacion().getEstado().equals(EstadoHabitacion.MANTENIMIENTO)) continue;
 			
-			fechaAux = fecha_desde.isBefore(o.getFechaIngreso().truncatedTo(ChronoUnit.DAYS))? o.getFechaIngreso().truncatedTo(ChronoUnit.DAYS):fecha_desde.plus(0,ChronoUnit.DAYS).truncatedTo(ChronoUnit.DAYS);
-			int i = (int) Duration.between(fecha_desde,fechaAux).toDays();
-			while(Duration.between(fechaAux,o.getFechaEgreso().truncatedTo(ChronoUnit.DAYS)).toDays() >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
+			fechaAux = fecha_desde.isBefore(o.getFechaIngreso())? o.getFechaIngreso():fecha_desde.plus(0,ChronoUnit.DAYS);
+			int i = (int) ChronoUnit.DAYS.between(fecha_desde,fechaAux);
+			while(ChronoUnit.DAYS.between(fechaAux,o.getFechaEgreso()) >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
 				Map<String, HabitacionDTO> habitaciones = resultado.get(i++).getHabitaciones();
 				habitaciones.get(o.getHabitacion().getNumero()).setEstado(EstadoHabitacion.OCUPADA);
 				fechaAux = fechaAux.plus(1, ChronoUnit.DAYS);
@@ -93,7 +88,7 @@ public class GestorHabitaciones {
 		return resultado;
 	}
 
-    public static List<ReservaDTO> getReservasVigentesInRange(Instant fechaInicio, Instant fechaFin, String numeroHabitacion) {
+    public static List<ReservaDTO> getReservasVigentesInRange(LocalDate fechaInicio, LocalDate fechaFin, String numeroHabitacion) {
 		
 		ReservaDAO daoReserva = new ReservaSqlDAO();
 		List<Reserva> listaReservas = daoReserva.getReservasInRange(fechaInicio,fechaFin,numeroHabitacion);
@@ -119,20 +114,30 @@ public class GestorHabitaciones {
     	
     	Habitacion habitacion = habitacionDao.getHabitacionByNumero(ocupacionDto.getHabitacion().getNumero());
     	
-    	if(ocupacionDto.getFechaIngreso().truncatedTo(ChronoUnit.DAYS).equals(Instant.now().truncatedTo(ChronoUnit.DAYS))) {
+    	if(ocupacionDto.getFechaIngreso().equals(LocalDate.now())) {
     		habitacion.setEstado(EstadoHabitacion.OCUPADA);
     	}
     	
-    	Pasajero responsable = pasajeroDao.getPasajeroById(ocupacionDto.getResponsable().getIdPasajero());
+    	List<Integer> idPasajeros = ocupacionDto.getAcompaniantes().stream().map(p -> p.getIdPasajero()).collect(Collectors.toList());
+    	idPasajeros.add(ocupacionDto.getResponsable().getIdPasajero());
+    	 
+    	List<Pasajero> resultado = pasajeroDao.getPasajerosById(idPasajeros);
     	
-    	List<Pasajero> acompaniantes = pasajeroDao.getPasajerosById(ocupacionDto.getAcompaniantes().stream().map(p -> p.getIdPasajero()).collect(Collectors.toList()));
+    	Pasajero responsable = resultado.get(resultado.size()-1);
     	
+    	List<Pasajero> acompaniantes = resultado.subList(0, resultado.size()-1);
+    	
+    	
+    	//Pasajero responsable = pasajeroDao.getPasajeroById(ocupacionDto.getResponsable().getIdPasajero());
+    	
+    	//List<Pasajero> acompaniantes = pasajeroDao.getPasajerosById(ocupacionDto.getAcompaniantes().stream().map(p -> p.getIdPasajero()).collect(Collectors.toList()));
+    	/*
     	for(Pasajero a : acompaniantes) {
     		if(a.getPosicionIVA().equals(responsable.getPosicionIVA())) a.setPosicionIVA(responsable.getPosicionIVA());
     		if(a.getNacionalidad().equals(responsable.getNacionalidad())) a.setNacionalidad(responsable.getNacionalidad());
     		if(a.getTipoDocumento().equals(responsable.getTipoDocumento())) a.setTipoDocumento(responsable.getTipoDocumento());
     		if(a.getDireccion().getCiudad().equals(responsable.getDireccion().getCiudad())) a.getDireccion().setCiudad(responsable.getDireccion().getCiudad());
-    	}
+    	}*/
     	
     	Ocupacion ocupacion = new Ocupacion(ocupacionDto);
     	

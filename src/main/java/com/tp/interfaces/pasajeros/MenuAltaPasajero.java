@@ -15,6 +15,7 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -530,7 +531,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 														  ((PaisDTO)jcb_pais.getSelectedItem()).getIdPais());
 														  
 				PasajeroDTO p = new PasajeroDTO(null,jtf_nombres.getText(), jtf_apellido.getText(), jftf_cuit.getText().equals("__-________-_")? null :jftf_cuit.getText(),
-												jtf_numero_documento.getText(), dc_nacimiento.getDate().toInstant(),
+												jtf_numero_documento.getText(), dc_nacimiento.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
 												((PaisDTO) jcb_nacionalidad.getSelectedItem()).getIdPais(),
 												jtf_email.getText(), jtf_telefono.getText(), jtf_ocupacion.getText(),
 												(TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem(), ((PosicionIVADTO)jcb_factura.getSelectedItem()).getIdPosicionIVA(),

@@ -1,6 +1,6 @@
 package com.tp.dominio.medioDePago.otro;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -16,7 +16,7 @@ public class Cheque extends MedioDePago {
 	@Column (name =  "plaza")
 	private String plaza;
 	@Column (name =  "fecha_cobro")
-	private Instant fechaCobro;
+	private LocalDate fechaCobro;
 	@Enumerated(EnumType.STRING)
 	@Column (name =  "estado")
 	private EstadoCheque estado;

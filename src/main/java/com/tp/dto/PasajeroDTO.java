@@ -1,6 +1,6 @@
 package com.tp.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
@@ -20,7 +20,7 @@ public class PasajeroDTO {
 	private String apellido;
 	private String cuit;
 	private String nroDocumento;
-	private Instant fechaDeNacimiento;
+	private LocalDate fechaDeNacimiento;
 	private Integer nacionalidad; 
 	private String email;
 	private String telefono;
@@ -30,7 +30,7 @@ public class PasajeroDTO {
 	private DireccionDTO direccionDTO; 
 	
 	public PasajeroDTO(Integer idPasajero, String nombre, String apellido, String cuit, String nroDocumento,
-			Instant fechaDeNacimiento, Integer nacionalidad, String email, String telefono, String ocupacion,
+			LocalDate fechaDeNacimiento, Integer nacionalidad, String email, String telefono, String ocupacion,
 			TipoDocumentoDTO tipoDocumentoDTO, Integer idPosicionIVA, DireccionDTO direccionDTO) {
 		super();
 		this.idPasajero = idPasajero;
@@ -79,10 +79,10 @@ public class PasajeroDTO {
 	public void setNroDocumento(String nroDocumento) {
 		this.nroDocumento = nroDocumento;
 	}
-	public Instant getFechaDeNacimiento() {
+	public LocalDate getFechaDeNacimiento() {
 		return fechaDeNacimiento;
 	}
-	public void setFechaDeNacimiento(Instant fechaDeNacimiento) {
+	public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
 	public Integer getNacionalidad() {

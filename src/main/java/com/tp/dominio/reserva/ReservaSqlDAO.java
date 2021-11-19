@@ -1,6 +1,6 @@
 package com.tp.dominio.reserva;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -13,7 +13,7 @@ import com.tp.hibernate.HibernateUtil;
 public class ReservaSqlDAO implements ReservaDAO {
 
 	@Override
-	public List<Reserva> getReservasInRange(Instant fecha_desde, Instant fecha_hasta) {
+	public List<Reserva> getReservasInRange(LocalDate fecha_desde, LocalDate fecha_hasta) {
 		List<Reserva> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -32,7 +32,7 @@ public class ReservaSqlDAO implements ReservaDAO {
 	}
 
 	@Override
-	public List<Reserva> getReservasInRange(Instant fecha_desde, Instant fecha_hasta, String numeroHabitacion) {
+	public List<Reserva> getReservasInRange(LocalDate fecha_desde, LocalDate fecha_hasta, String numeroHabitacion) {
 		List<Reserva> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();

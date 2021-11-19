@@ -1,6 +1,6 @@
 package com.tp.dominio.ocupacion;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.*;
@@ -18,9 +18,9 @@ public class Ocupacion {
 	@Column (name = "id_ocupacion")
 	private Integer idOcupacion;
 	@Column (name = "fecha_ingreso")
-	private Instant fechaIngreso;
+	private LocalDate fechaIngreso;
 	@Column (name = "fecha_egreso")
-	private Instant fechaEgreso;
+	private LocalDate fechaEgreso;
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
 	private Habitacion habitacion;
@@ -47,11 +47,11 @@ public class Ocupacion {
 		return habitacion;
 	}
 
-	public Instant getFechaIngreso() {
+	public LocalDate getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public Instant getFechaEgreso() {
+	public LocalDate getFechaEgreso() {
 		return fechaEgreso;
 	}
 
@@ -59,11 +59,11 @@ public class Ocupacion {
 		this.idOcupacion = idOcupacion;
 	}
 
-	public void setFechaIngreso(Instant fechaIngreso) {
+	public void setFechaIngreso(LocalDate fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	public void setFechaEgreso(Instant fechaEgreso) {
+	public void setFechaEgreso(LocalDate fechaEgreso) {
 		this.fechaEgreso = fechaEgreso;
 	}
 

@@ -1,6 +1,6 @@
 package com.tp.interfaces.misc;
 
-import java.time.Instant;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -46,7 +46,7 @@ public class Mensaje {
     public static int mensajeOcuparIgual(List<ReservaDTO> reservas) {
 		
 		String msg = "<html><center>La habitación "+reservas.get(0).getNumeroHabitacion()+" posee las siguientes reservas registradas:<br><br>";
-		Function<Instant,String> f = (fecha) -> (DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.ofInstant(fecha,ZoneId.of("+0"))).toString());
+		Function<LocalDate,String> f = (fecha) -> (DateTimeFormatter.ofPattern("dd/MM/yyyy").format(fecha));
 
 		for (ReservaDTO r : reservas){
 			msg += r.getApellidoResponsable()+", "+r.getNombreResponsable()+"<br>";

@@ -1,15 +1,15 @@
 package com.tp.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 
 public class OcupacionDTO {
 	private Integer idOcupacion;
 
-	private Instant fechaIngreso;
+	private LocalDate fechaIngreso;
 	
-	private Instant fechaEgreso;
+	private LocalDate fechaEgreso;
 	
 	private PasajeroDTO responsable;
 	
@@ -29,19 +29,19 @@ public class OcupacionDTO {
 		this.idOcupacion = idOcupacion;
 	}
 
-	public Instant getFechaIngreso() {
+	public LocalDate getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public void setFechaIngreso(Instant fechaIngreso) {
+	public void setFechaIngreso(LocalDate fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	public Instant getFechaEgreso() {
+	public LocalDate getFechaEgreso() {
 		return fechaEgreso;
 	}
 
-	public void setFechaEgreso(Instant fechaEgreso) {
+	public void setFechaEgreso(LocalDate fechaEgreso) {
 		this.fechaEgreso = fechaEgreso;
 	}
 

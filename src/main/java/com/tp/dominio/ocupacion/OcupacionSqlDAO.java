@@ -1,6 +1,6 @@
 package com.tp.dominio.ocupacion;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -16,7 +16,7 @@ import com.tp.interfaces.misc.Mensaje;
 public class OcupacionSqlDAO implements OcupacionDAO {
 
 	@Override
-	public List<Ocupacion> getOcupacionesInRange(Instant fecha_desde, Instant fecha_hasta) {
+	public List<Ocupacion> getOcupacionesInRange(LocalDate fecha_desde, LocalDate fecha_hasta) {
 		List<Ocupacion> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();

@@ -1,6 +1,6 @@
 package com.tp.dominio.factura.cancelacion;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -12,7 +12,7 @@ import com.tp.dominio.pasajero.Pasajero;
 
 public class NotaDeCredito {
 	@Column (name = "fecha_de_emision")
-	private Instant fechaDeEmision;
+	private LocalDate fechaDeEmision;
 	@Enumerated(EnumType.STRING)
 	@Column (name = "tipo_nota")
 	private TipoNotaDeCredito tipo;

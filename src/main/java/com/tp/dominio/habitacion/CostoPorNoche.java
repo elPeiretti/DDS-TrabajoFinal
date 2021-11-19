@@ -1,6 +1,6 @@
 package com.tp.dominio.habitacion;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -11,9 +11,9 @@ import javax.persistence.*;
 
 public class CostoPorNoche {
 	@Column (name = "fecha_inicio_vigencia")
-	private Instant fechaInicioVigencia;
+	private LocalDate fechaInicioVigencia;
 	@Column (name = "fecha_fin_vigencia")
-	private Instant fechaFinVigencia;
+	private LocalDate fechaFinVigencia;
 	@Column (name = "costo")
 	private Double costo;
 	@Id
@@ -23,14 +23,13 @@ public class CostoPorNoche {
 	
 	public CostoPorNoche() {}
 	
-	public CostoPorNoche (Instant fechaInicioVigencia, Instant fechaFinVigencia, Double costo) {
+	public CostoPorNoche (LocalDate fechaInicioVigencia, LocalDate fechaFinVigencia, Double costo) {
 		this.fechaInicioVigencia = fechaInicioVigencia;
 		this.fechaFinVigencia = fechaFinVigencia;
 		this.costo = costo;
 	}
 	
 	public String toString() {
-		return idCostoPorNoche.toString() + " " + LocalDateTime.ofInstant(fechaFinVigencia, ZoneOffset.UTC).toString() + " " 
-	+ LocalDateTime.ofInstant(fechaInicioVigencia, ZoneOffset.UTC).toString();
+		return idCostoPorNoche.toString() + " " + fechaFinVigencia.toString() + " " + fechaInicioVigencia.toString();
 	}
 }

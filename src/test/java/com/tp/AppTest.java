@@ -2,7 +2,7 @@ package com.tp;
 
 import static org.junit.Assert.assertTrue;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -57,7 +57,7 @@ public class AppTest
     
     private static void agregarHabitacionTipoHabitacionYCostoPorNoche() {
     	
-    	CostoPorNoche c_noche = new CostoPorNoche(Instant.now(),Instant.now(),20.5);
+    	CostoPorNoche c_noche = new CostoPorNoche(LocalDate.now(),LocalDate.now(),20.5);
     	
     	Transaction tx = null;
         Session session = HibernateUtil.getSessionFactory().openSession();

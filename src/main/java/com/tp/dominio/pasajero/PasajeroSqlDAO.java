@@ -1,6 +1,7 @@
 package com.tp.dominio.pasajero;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import javax.swing.SortOrder;
@@ -385,7 +386,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		sqlStatement += orderBy;
 		
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
-		hqlQuery.setParameter("hoy", Instant.now());
+		hqlQuery.setParameter("hoy", LocalDate.now());
 		
 		if(criterios.getNombres() != null) {
 			hqlQuery.setParameter("nombres", criterios.getNombres()+"%");
@@ -441,7 +442,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		sqlStatement += "AND  (:hoy - p.fechaDeNacimiento)>= 365*18 ";
 		
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
-		hqlQuery.setParameter("hoy", Instant.now());
+		hqlQuery.setParameter("hoy", LocalDate.now());
 		
 		String aux;
 		if((aux = criterios.getNombres()) != null) {

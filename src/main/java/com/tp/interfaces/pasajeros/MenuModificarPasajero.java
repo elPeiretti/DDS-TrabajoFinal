@@ -2,6 +2,7 @@ package com.tp.interfaces.pasajeros;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -124,7 +125,9 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 		jtf_piso.setText(dir.getPiso().toString());
 		jtf_departamento.setText(dir.getNroDepartamento().toString()); // ver comentarios en Direccion
 		jtf_telefono.setText(psjr.getTelefono());
-		dc_nacimiento.setDate(Date.from(psjr.getNacimiento()));
+		dc_nacimiento.setDate(Date.from(psjr.getNacimiento().atStartOfDay()
+			      .atZone(ZoneId.systemDefault())
+			      .toInstant()));
 		jcb_pais.setSelectedItem(dir.getPais());
 		jcb_provincia.setSelectedItem(dir.getProvincia());
 		jcb_ciudad.setSelectedItem(dir.getCiudad());

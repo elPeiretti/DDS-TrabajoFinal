@@ -18,7 +18,8 @@ import java.awt.event.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -140,8 +141,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				Point fin = ((PintableTable)jtable_habitaciones).getCeldaFinal();
 				
 				String numeroHabitacion = (String) jtable_habitaciones.getColumnModel().getColumn(inicio.x).getHeaderValue();
-				Instant fechaInicio = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(inicio.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.of("+0"));
-				Instant fechaFin = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(fin.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.of("+0"));
+				LocalDate fechaInicio = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(inicio.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				LocalDate fechaFin = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(fin.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 				List<ReservaDTO> reservas = GestorHabitaciones.getReservasVigentesInRange(fechaInicio,fechaFin,numeroHabitacion);
 				
 				if(!reservas.isEmpty()){
@@ -149,8 +150,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				}
 								
 				OcupacionDTO ocupacion = new OcupacionDTO();
-				ocupacion.setFechaIngreso(fechaInicio.truncatedTo(ChronoUnit.DAYS));
-				ocupacion.setFechaEgreso(fechaFin.truncatedTo(ChronoUnit.DAYS));
+				ocupacion.setFechaIngreso(fechaInicio);
+				ocupacion.setFechaEgreso(fechaFin);
 				ocupacion.getHabitacion().setNumero(numeroHabitacion);
 				
 				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,ocupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
@@ -199,7 +200,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 						prev_desde = desde;
 						prev_hasta = hasta;
-						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						llenarTabla(l);
 					}
 				}
@@ -227,7 +228,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 							if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 							prev_desde = desde;
 							prev_hasta = hasta;
-							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
+							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 							llenarTabla(l);
 						}
 					}
@@ -268,7 +269,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 						prev_desde = desde;
 						prev_hasta = hasta;
-						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						llenarTabla(l);
 					}
 				}
@@ -291,7 +292,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 						prev_desde = desde;
 						prev_hasta = hasta;
-						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant(), hasta.toInstant());
+						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						llenarTabla(l);
 					}
 				}
