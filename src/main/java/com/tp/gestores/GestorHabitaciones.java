@@ -123,11 +123,16 @@ public class GestorHabitaciones {
     	 
     	List<Pasajero> resultado = pasajeroDao.getPasajerosById(idPasajeros);
     	
-    	Pasajero responsable = resultado.get(resultado.size()-1);
-    	
-    	List<Pasajero> acompaniantes = resultado.subList(0, resultado.size()-1);
-    	
-    	
+		List<Pasajero> acompaniantes = new ArrayList<Pasajero>();
+		Pasajero responsable = null;
+		for (Pasajero p : resultado){
+			if (p.getIdPasajero().equals(ocupacionDto.getResponsable().getIdPasajero()))
+				responsable = p;
+			else{
+				acompaniantes.add(p);
+			}
+		}
+
     	//Pasajero responsable = pasajeroDao.getPasajeroById(ocupacionDto.getResponsable().getIdPasajero());
     	
     	//List<Pasajero> acompaniantes = pasajeroDao.getPasajerosById(ocupacionDto.getAcompaniantes().stream().map(p -> p.getIdPasajero()).collect(Collectors.toList()));
