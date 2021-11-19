@@ -51,7 +51,7 @@ public class GestorPasajeros {
 		
 	}
 	
-	private static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
+	public static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
 		List<PasajeroDTO> resultado = new ArrayList<PasajeroDTO>();
 		
 		for(Pasajero p : pasajeros) {

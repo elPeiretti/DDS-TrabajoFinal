@@ -23,6 +23,7 @@ import com.tp.dominio.reserva.ReservaSqlDAO;
 
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
+import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ReservaDTO;
 
 public class GestorHabitaciones {
@@ -98,5 +99,10 @@ public class GestorHabitaciones {
 		}
         return reservas;
     }
+
+	public static List<PasajeroDTO> getUltimosOcupantes(String habitacion) {
+		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
+		return GestorPasajeros.convertToPasajeroDTO(ocupacionDAO.getUltimaOcupacion(habitacion).getPasajeros());
+	}
 	
 }

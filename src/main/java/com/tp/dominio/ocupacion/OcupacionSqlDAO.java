@@ -30,4 +30,22 @@ public class OcupacionSqlDAO implements OcupacionDAO {
 		return resultado;
 	}
 
+	@Override
+	public Ocupacion getUltimaOcupacion(String habitacion) {
+		Ocupacion resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		String sqlStatement = "SELECT o FROM Ocupacion o WHERE o.fechaEgreso = "
+				+ "(SELECT MAX(oc.fechaEgreso) FROM Ocupacion oc WHERE oc.habitacion = "
+				+ "(SELECT h.idHabitacion FROM Habitacion h WHERE h.numero = :numero))";	
+
+		TypedQuery<Ocupacion> hqlQuery = session.createQuery(sqlStatement); 
+		
+		hqlQuery.setParameter("numero", habitacion);
+		resultado = hqlQuery.getSingleResult();
+		
+		session.close();
+		return resultado;
+	}
+
 }

@@ -153,5 +153,11 @@ public class ResultPane<E> extends JPanel {
 	public Integer getCantidadFilas(){
 		return cant_filas;
 	}
+	
+	public E getSelectedRow() {
+		int row = jtable_resultados.getSelectedRow();
+		if(row == -1) return null;
+		return objetos_en_tabla.get(row);
+	}
 
 }

@@ -7,4 +7,6 @@ public interface OcupacionDAO {
 
 	List<Ocupacion> getOcupacionesInRange(Instant fecha_desde, Instant fecha_hasta);
 
+	Ocupacion getUltimaOcupacion(String habitacion);
+
 }

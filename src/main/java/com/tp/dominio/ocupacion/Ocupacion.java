@@ -1,6 +1,7 @@
 package com.tp.dominio.ocupacion;
 
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import com.tp.dominio.pasajero.Pasajero;
 
 @Entity
 @Table(name = "tpdds.ocupacion")
-
+//@SecondaryTable(name = "tpdds.acompaniante")
 public class Ocupacion {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -26,14 +27,16 @@ public class Ocupacion {
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_pasajero_responsable", referencedColumnName = "id_pasajero")
 	private Pasajero responsable;
-	@ManyToMany (cascade = CascadeType.ALL)
+	@ManyToMany (cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinTable(
-			name = "acompaniante",
+			name = "tpdds.acompaniante",
 			joinColumns =  @JoinColumn(name = "id_ocupacion", referencedColumnName = "id_ocupacion"),
 			inverseJoinColumns =  @JoinColumn(name = "id_pasajero", referencedColumnName = "id_pasajero")
 	)
 	private List<Pasajero> acompaniantes;
-	
+	public Integer getId() {
+		return idOcupacion;
+	}
 	public Habitacion getHabitacion() {
 		return habitacion;
 	}
@@ -44,6 +47,13 @@ public class Ocupacion {
 
 	public Instant getFechaEgreso() {
 		return fechaEgreso;
+	}
+
+	public List<Pasajero> getPasajeros() {
+		List<Pasajero> lista = new LinkedList<Pasajero>();
+		lista.add(responsable);
+		acompaniantes.stream().forEach(a -> lista.add(a));
+		return lista;
 	}
 	
 }
