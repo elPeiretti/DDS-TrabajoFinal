@@ -52,6 +52,17 @@ public class GestorPasajeros {
 	}
 	
 	public static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
+	public static List<PasajeroDTO> getPasajerosBy(BusqPasajeroDTO criterios, Integer li, Integer cant, PasajeroDTO responsable) {
+		
+		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		List<Pasajero> pasajeros = pasajeroDAO.getPasajerosByCriteria(criterios, li, cant, responsable);
+		
+		return convertToPasajeroDTO(pasajeros);
+		
+	}
+		
+	private static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
 		List<PasajeroDTO> resultado = new ArrayList<PasajeroDTO>();
 		
 		for(Pasajero p : pasajeros) {
@@ -69,6 +80,13 @@ public class GestorPasajeros {
 		
 		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
 		return pasajeroDAO.getCountPasajerosByCriteria(criterios);
+		
+	}
+	
+	public static Long getCountPasajerosBy(BusqPasajeroDTO criterios, PasajeroDTO responsable) {
+		
+		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		return pasajeroDAO.getCountPasajerosByCriteria(criterios, responsable);
 		
 	}
 
@@ -176,5 +194,22 @@ public class GestorPasajeros {
 		
 		if (errores.size()>1) throw new CamposInvalidosException(errores);
 	}
+
+	public static List<PasajeroDTO> getPasajerosAdultosBy(BusqPasajeroDTO criterios, Integer li, Integer cant) {
+		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		List<Pasajero> pasajeros = pasajeroDAO.getPasajerosAdultosByCriteria(criterios, li, cant);
+		
+		return convertToPasajeroDTO(pasajeros);
+	}
+
+	public static double getCountPasajerosAdultosBy(BusqPasajeroDTO criterios) {
+		
+		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		return pasajeroDAO.getCountPasajerosAdultosByCriteria(criterios);
+	}
+	
+	
 	
 }

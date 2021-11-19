@@ -1,19 +1,22 @@
 package com.tp.dominio.ocupacion;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.tp.dominio.reserva.Reserva;
 import com.tp.hibernate.HibernateUtil;
+import com.tp.interfaces.misc.Mensaje;
 
 public class OcupacionSqlDAO implements OcupacionDAO {
 
 	@Override
-	public List<Ocupacion> getOcupacionesInRange(Instant fecha_desde, Instant fecha_hasta) {
+	public List<Ocupacion> getOcupacionesInRange(LocalDate fecha_desde, LocalDate fecha_hasta) {
 		List<Ocupacion> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -46,6 +49,25 @@ public class OcupacionSqlDAO implements OcupacionDAO {
 		
 		session.close();
 		return resultado;
+	public void insertarOcupacionyCancelarReservas(Ocupacion ocupacion, List<Reserva> reservas) {
+		Transaction tx = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+        	tx = session.beginTransaction();
+        	session.saveOrUpdate(ocupacion);
+        	for(Reserva r : reservas) session.saveOrUpdate(r);
+        	tx.commit();
+        }
+        catch(HibernateException e) {
+        	if (tx!=null) 
+        		tx.rollback();
+        	e.printStackTrace();
+			Mensaje.mensajeError(new String[]{"No se ha podido cargar la ocupacion en la base de datos."});
+        }
+        finally {
+        	session.close();
+        }
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.tp.dominio.factura.cancelacion;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class Pago {
 	@Column (name = "vuelto")
 	private Double vuelto;//mal
 	@Column (name = "fecha_de_realizacion")
-	private Instant fechaDeRealizacion;
+	private LocalDate fechaDeRealizacion;
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_factura", referencedColumnName = "id_factura")
 	private Factura factura;

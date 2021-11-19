@@ -1,6 +1,6 @@
 package com.tp.dominio.medioDePago.tarjeta;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 import com.tp.dominio.medioDePago.MedioDePago;
@@ -14,7 +14,7 @@ public class TarjetaDeCredito extends MedioDePago {
 	@Column (name = "cvv")
 	private String cvv;
 	@Column (name = "fecha_vencimiento")
-	private Instant fechaVencimiento;
+	private LocalDate fechaVencimiento;
 	@Column (name = "cuotas")
 	private Integer cuotas;
 	@ManyToOne (cascade = CascadeType.ALL)

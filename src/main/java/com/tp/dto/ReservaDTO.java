@@ -1,6 +1,6 @@
 ﻿package com.tp.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import com.tp.dominio.reserva.Reserva;
 
@@ -10,8 +10,8 @@ public class ReservaDTO {
     String numeroHabitacion;
     String nombreResponsable;
 	String apellidoResponsable;
-    Instant inicioReserva;
-    Instant finReserva;
+    LocalDate inicioReserva;
+    LocalDate finReserva;
 
     public ReservaDTO() {}
     public ReservaDTO(Reserva r) {
@@ -64,19 +64,19 @@ public class ReservaDTO {
         this.apellidoResponsable = apellidoResponsable;
     }
 
-    public Instant getInicioReserva() {
+    public LocalDate getInicioReserva() {
         return inicioReserva;
     }
 
-    public void setInicioReserva(Instant inicioReserva) {
+    public void setInicioReserva(LocalDate inicioReserva) {
         this.inicioReserva = inicioReserva;
     }
 
-    public Instant getFinReserva() {
+    public LocalDate getFinReserva() {
         return finReserva;
     }
 
-    public void setFinReserva(Instant finReserva) {
+    public void setFinReserva(LocalDate finReserva) {
         this.finReserva = finReserva;
     }
     

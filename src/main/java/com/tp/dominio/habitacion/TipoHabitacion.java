@@ -22,4 +22,7 @@ public class TipoHabitacion {
 	public String getNombre(){
 		return nombre;
 	}
+    public Integer getCapacidad() {
+        return capacidad;
+    }
 }

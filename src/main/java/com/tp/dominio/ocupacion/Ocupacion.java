@@ -2,12 +2,14 @@ package com.tp.dominio.ocupacion;
 
 import java.time.Instant;
 import java.util.LinkedList;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.*;
 
 import com.tp.dominio.habitacion.Habitacion;
 import com.tp.dominio.pasajero.Pasajero;
+import com.tp.dto.OcupacionDTO;
 
 @Entity
 @Table(name = "tpdds.ocupacion")
@@ -18,9 +20,9 @@ public class Ocupacion {
 	@Column (name = "id_ocupacion")
 	private Integer idOcupacion;
 	@Column (name = "fecha_ingreso")
-	private Instant fechaIngreso;
+	private LocalDate fechaIngreso;
 	@Column (name = "fecha_egreso")
-	private Instant fechaEgreso;
+	private LocalDate fechaEgreso;
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
 	private Habitacion habitacion;
@@ -37,15 +39,24 @@ public class Ocupacion {
 	public Integer getId() {
 		return idOcupacion;
 	}
+	
+	public Ocupacion() {
+	}
+	
+	public Ocupacion(OcupacionDTO ocupacionDto) {
+		this.fechaIngreso = ocupacionDto.getFechaIngreso();
+		this.fechaEgreso = ocupacionDto.getFechaEgreso();
+	}
+
 	public Habitacion getHabitacion() {
 		return habitacion;
 	}
 
-	public Instant getFechaIngreso() {
+	public LocalDate getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public Instant getFechaEgreso() {
+	public LocalDate getFechaEgreso() {
 		return fechaEgreso;
 	}
 
@@ -54,6 +65,28 @@ public class Ocupacion {
 		lista.add(responsable);
 		acompaniantes.stream().forEach(a -> lista.add(a));
 		return lista;
+	public void setIdOcupacion(Integer idOcupacion) {
+		this.idOcupacion = idOcupacion;
+	}
+
+	public void setFechaIngreso(LocalDate fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+
+	public void setFechaEgreso(LocalDate fechaEgreso) {
+		this.fechaEgreso = fechaEgreso;
+	}
+
+	public void setHabitacion(Habitacion habitacion) {
+		this.habitacion = habitacion;
+	}
+
+	public void setResponsable(Pasajero responsable) {
+		this.responsable = responsable;
+	}
+
+	public void setAcompaniantes(List<Pasajero> acompaniantes) {
+		this.acompaniantes = acompaniantes;
 	}
 	
 }

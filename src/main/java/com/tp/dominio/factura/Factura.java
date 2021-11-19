@@ -1,6 +1,6 @@
 package com.tp.dominio.factura;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import java.util.Collection;
 
@@ -21,7 +21,7 @@ public class Factura {
 	@Column (name =  "importe_factura")
 	private Double importeTotal;//mal
 	@Column (name =  "fecha_de_emision")
-	private Instant fechaDeEmision;
+	private LocalDate fechaDeEmision;
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name =  "id_factura")

@@ -1,23 +1,25 @@
 package com.tp.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 
 public class OcupacionDTO {
 	private Integer idOcupacion;
 
-	private String numeroHabitacion;
+	private LocalDate fechaIngreso;
 	
-	private Instant fechaIngreso;
-	
-	private Instant fechaEgreso;
-	
-	private Integer idHabitacion;
+	private LocalDate fechaEgreso;
 	
 	private PasajeroDTO responsable;
 	
 	private List<PasajeroDTO> acompaniantes;
+
+	private HabitacionDTO habitacion;
+
+	public OcupacionDTO(){
+		this.habitacion = new HabitacionDTO();
+	}
 
 	public Integer getIdOcupacion() {
 		return idOcupacion;
@@ -27,28 +29,20 @@ public class OcupacionDTO {
 		this.idOcupacion = idOcupacion;
 	}
 
-	public Instant getFechaIngreso() {
+	public LocalDate getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public void setFechaIngreso(Instant fechaIngreso) {
+	public void setFechaIngreso(LocalDate fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	public Instant getFechaEgreso() {
+	public LocalDate getFechaEgreso() {
 		return fechaEgreso;
 	}
 
-	public void setFechaEgreso(Instant fechaEgreso) {
+	public void setFechaEgreso(LocalDate fechaEgreso) {
 		this.fechaEgreso = fechaEgreso;
-	}
-
-	public Integer getIdHabitacion() {
-		return idHabitacion;
-	}
-
-	public void setIdHabitacion(Integer idHabitacion) {
-		this.idHabitacion = idHabitacion;
 	}
 
 	public PasajeroDTO getResponsable() {
@@ -67,8 +61,12 @@ public class OcupacionDTO {
 		this.acompaniantes = acompaniantes;
 	}
 
-    public void setNumeroHabitacion(String numeroHabitacion) {
-		this.numeroHabitacion = numeroHabitacion;
+    public HabitacionDTO getHabitacion() {
+        return habitacion;
     }
-	
+
+    public void setHabitacion(HabitacionDTO h) {
+		this.habitacion = h;
+    }
+
 }

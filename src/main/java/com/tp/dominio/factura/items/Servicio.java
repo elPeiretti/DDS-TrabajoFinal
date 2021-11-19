@@ -1,6 +1,6 @@
 package com.tp.dominio.factura.items;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -12,7 +12,7 @@ public class Servicio {
 	@Column (name = "id_servicio")
 	private Integer idServicio;
 	@Column (name = "fecha_realizacion")
-	private Instant fechaDeRealizacion;
+	private LocalDate fechaDeRealizacion;
 	@Column (name = "precio_unitario")
 	private Double precioUnitario;
 	@Column (name = "cantidad")

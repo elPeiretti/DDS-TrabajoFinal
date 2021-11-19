@@ -44,4 +44,9 @@ public class Ciudad {
 	public Pais getPais() {
 		return provincia.getPais();
 	}
+	
+	public boolean equals(Object p) {
+		return p instanceof Ciudad && this.idCiudad.equals(((Ciudad) p).idCiudad);	
+	}
+	
 }

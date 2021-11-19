@@ -1,14 +1,34 @@
 package com.tp.interfaces.habitaciones.ocupaciones;
 
 import javax.swing.*;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
+import com.tp.dominio.ocupacion.Ocupacion;
+import com.tp.dto.BusqPasajeroDTO;
+import com.tp.dto.HabitacionDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.TipoDocumentoDTO;
+import com.tp.gestores.GestorHabitaciones;
+import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.SeteableTab;
+import com.tp.interfaces.VentanaPrincipal;
+import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 
@@ -25,12 +45,14 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	private JLabel lbl_numero_documento;
 	private JLabel lbl_apellido;
 	private JLabel lbl_tipo_documento;
-	private JPanel rp_pasajeros_busqueda;
-	private ResultPane<PasajeroDTO> rp_pasajeros_agregados;
+	private ResultPaneAcompaniantes<PasajeroDTO> rp_pasajeros_busqueda;
+	private ResultPaneAcompaniantes<PasajeroDTO> rp_pasajeros_agregados;
 	private JButton jb_buscar;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
 	private OcupacionDTO nuevaOcupacion;
+	private Map<Integer,BusqPasajeroDTO.columnaOrden> indice_columnas;
+	private BusqPasajeroDTO criterios_actuales;
 	
 	// setear ventana a 640x700
 	public MenuBuscarAcompaniantes(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion) {
@@ -67,7 +89,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		lbl_numero_documento.setBounds(331, 162, 100, 30);
 		add(lbl_numero_documento);
 		
-		jcb_tipo_documento = new JComboBox();
+		jcb_tipo_documento = new JComboBox<TipoDocumentoDTO>();
 		jcb_tipo_documento.setBounds(157, 165, 140, 20);
 		add(jcb_tipo_documento);
 		
@@ -85,12 +107,15 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		lbl_tipo_documento.setBounds(83, 162, 130, 30);
 		add(lbl_tipo_documento);
 		
-		rp_pasajeros_busqueda = new ResultPane();
+		rp_pasajeros_busqueda = new ResultPaneAcompaniantes<PasajeroDTO>(this::llenarTablaBusquedaAcompaniantes);
 		rp_pasajeros_busqueda.setBounds(10, 244, 620, 180);
 		add(rp_pasajeros_busqueda);
 		
-		rp_pasajeros_agregados = new ResultPane();
+		rp_pasajeros_agregados = new ResultPaneAcompaniantes<PasajeroDTO>();
 		rp_pasajeros_agregados.setBounds(10, 435, 620, 180);
+		rp_pasajeros_agregados.remove(rp_pasajeros_agregados.getNextBtn());
+		rp_pasajeros_agregados.remove(rp_pasajeros_agregados.getPrevBtn());
+		rp_pasajeros_agregados.remove(rp_pasajeros_agregados.getPageNumbers());
 		add(rp_pasajeros_agregados);
 		
 		jb_siguiente = new JButton("Siguiente");
@@ -101,8 +126,183 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		jb_cancelar.setBounds(83, 640, 100, 30);
 		add(jb_cancelar);
 		
+		this.inicializarCampos();
+		this.agregarActionListeners();
 		this.agregarTabOrder();
-	}	
+		
+		if(nuevaOcupacion.getAcompaniantes() != null) {
+			this.llenarTablaAgregadosAcompaniantes();
+		}
+		
+	}
+	
+	public void agregarActionListeners() {
+		MenuBuscarAcompaniantes contexto = this;
+		
+		
+		rp_pasajeros_busqueda.getTable().addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				
+				int row = rp_pasajeros_busqueda.getTable().getSelectedRow();
+				int col = rp_pasajeros_busqueda.getTable().getSelectedColumn();
+				
+				if(row == -1 || col == -1 || row == Integer.MAX_VALUE || col == Integer.MAX_VALUE) return;
+				if(col != rp_pasajeros_busqueda.getContenido().getColumnCount()-1) return;
+				
+				Boolean check = (Boolean) rp_pasajeros_busqueda.getContenido().getValueAt(row, col);
+				
+				Integer capacidad = nuevaOcupacion.getHabitacion().getTipoHabitacionDTO().getCapacidad();
+				if(!check && rp_pasajeros_agregados.getRowObjects().size() == capacidad-1){
+					Mensaje.mensajeInformacion("<html><center>La capacidad de la habitación "+nuevaOcupacion.getHabitacion().getNumero()
+												+" es de "+ capacidad.toString()+" personas.<br>No se pueden agregar más acompañantes.</center></html>");
+					return;
+				}
+
+				rp_pasajeros_busqueda.getContenido().setValueAt(!check, row, col);
+				check = !check;
+				
+				if(check) {
+					Vector<Object> v = rp_pasajeros_busqueda.getRowObjects().get(row).asVector();
+					v.add(true);
+					int agregar = rp_pasajeros_agregados.getRowObjects().indexOf(rp_pasajeros_busqueda.getRowObjects().get(row));
+					if(agregar != -1) return;
+					rp_pasajeros_agregados.getRowObjects().add(rp_pasajeros_busqueda.getRowObjects().get(row));
+					rp_pasajeros_agregados.getContenido().addRow(v);
+				} else {
+					int removedRow = rp_pasajeros_agregados.getRowObjects().indexOf(rp_pasajeros_busqueda.getRowObjects().get(row));
+					if(removedRow == -1) return;
+					rp_pasajeros_agregados.getContenido().removeRow(removedRow);
+					rp_pasajeros_agregados.getRowObjects().remove(removedRow);
+				}
+				
+				rp_pasajeros_agregados.getContenido().fireTableDataChanged();
+			}
+		});
+		
+		
+		rp_pasajeros_agregados.getTable().addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				int row = rp_pasajeros_agregados.getTable().getSelectedRow();
+				int col = rp_pasajeros_agregados.getTable().getSelectedColumn();
+				
+				if(row == -1 || col == -1 || row == Integer.MAX_VALUE || col == Integer.MAX_VALUE) return;
+				
+				if(col != rp_pasajeros_agregados.getContenido().getColumnCount()-1) return;
+								
+				int removeTick = rp_pasajeros_busqueda.getRowObjects().indexOf(rp_pasajeros_agregados.getRowObjects().get(row));
+				if(removeTick != -1) {
+					rp_pasajeros_busqueda.getContenido().setValueAt(false, removeTick, rp_pasajeros_busqueda.getContenido().getColumnCount()-1);
+					rp_pasajeros_busqueda.getContenido().fireTableDataChanged();
+				} 
+					
+				rp_pasajeros_agregados.getContenido().removeRow(row);
+				rp_pasajeros_agregados.getRowObjects().remove(row);
+				
+				
+				rp_pasajeros_agregados.getContenido().fireTableDataChanged();
+			}
+		});
+		
+		jb_siguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				nuevaOcupacion.setAcompaniantes(rp_pasajeros_agregados.getRowObjects());
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MensajeConfirmarOcupacion(ventana_contenedora,encabezado,nuevaOcupacion),MensajeConfirmarOcupacion.x_bound,MensajeConfirmarOcupacion.y_bound,MensajeConfirmarOcupacion.titulo);
+			}
+		});
+		
+		jb_cancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,nuevaOcupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
+				}
+		});
+		
+		jb_buscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				criterios_actuales = new BusqPasajeroDTO();
+				if(!jtf_nombres.getText().isEmpty()) {
+					criterios_actuales.setNombres(jtf_nombres.getText());
+				}
+				if(!jtf_apellido.getText().isEmpty()) {
+					criterios_actuales.setApellido(jtf_apellido.getText());
+				}
+				if(jcb_tipo_documento.getSelectedItem() != null) {
+					criterios_actuales.setTipoDocumentoDTO((TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem());
+				}
+				if(!jtf_numero_documento.getText().isEmpty()) {
+					criterios_actuales.setNroDocumento(jtf_numero_documento.getText());
+				}
+				rp_pasajeros_busqueda.setPaginaActual(1);
+				llenarTablaBusquedaAcompaniantes();
+			}
+		});
+		
+		rp_pasajeros_busqueda.agregarRowListener(new RowSorterListener() {
+			public void sorterChanged(RowSorterEvent e) {
+				if(e.getType() != RowSorterEvent.Type.SORT_ORDER_CHANGED) return;
+				SortKey key = e.getSource().getSortKeys().get(0);
+				criterios_actuales.setColumna(indice_columnas.get(key.getColumn()));
+				criterios_actuales.setSortOrder(key.getSortOrder());
+				e.getSource().setSortKeys(List.of(key));//es necesario eliminar las SortKey viejas manualmente
+				llenarTablaBusquedaAcompaniantes();
+			}
+		});
+	}
+	
+	private void llenarTablaBusquedaAcompaniantes() {
+		rp_pasajeros_busqueda.getContenido().setRowCount(0);
+		rp_pasajeros_busqueda.getRowObjects().clear();
+		
+		rp_pasajeros_busqueda.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosBy(criterios_actuales, nuevaOcupacion.getResponsable())/8.0));
+		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosBy(criterios_actuales, (rp_pasajeros_busqueda.getPaginaActual()-1)*8, 8, nuevaOcupacion.getResponsable());
+		
+		for(PasajeroDTO p : lp) {
+			Vector<Object> v = p.asVector();
+			if(rp_pasajeros_agregados.getRowObjects().contains(p))	v.add(true);
+			else v.add(false);
+			rp_pasajeros_busqueda.getContenido().addRow(v);
+			rp_pasajeros_busqueda.getRowObjects().add(p);
+		}
+	}
+	
+	private void llenarTablaAgregadosAcompaniantes() {
+		rp_pasajeros_agregados.getContenido().setRowCount(0);
+		rp_pasajeros_agregados.getRowObjects().clear();
+		
+		List<PasajeroDTO> lp = nuevaOcupacion.getAcompaniantes();
+		
+		for(PasajeroDTO p : lp) {
+			Vector<Object> v = p.asVector();
+			v.add(true);
+			
+			rp_pasajeros_agregados.getContenido().addRow(v);
+			rp_pasajeros_agregados.getRowObjects().add(p);
+		}
+	}
+	
+	private void inicializarCampos() {
+
+		HabitacionDTO h = GestorHabitaciones.getHabitacionByNumero(nuevaOcupacion.getHabitacion().getNumero());
+		nuevaOcupacion.setHabitacion(h);
+
+		rp_pasajeros_busqueda.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento", "Acompañante"), List.of(4));
+		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
+		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
+		indice_columnas.put(1, BusqPasajeroDTO.columnaOrden.NOMBRES);
+		indice_columnas.put(2, BusqPasajeroDTO.columnaOrden.TIPODOC);
+		indice_columnas.put(3, BusqPasajeroDTO.columnaOrden.NRODOC);
+		
+		rp_pasajeros_agregados.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento", "Acompañante"), List.of(4));
+		
+		
+		jcb_tipo_documento.addItem(null);
+		jcb_tipo_documento.setSelectedItem(null);
+		List<TipoDocumentoDTO> ltd = GestorPasajeros.getAllTipoDocumento();
+		
+		for(TipoDocumentoDTO t : ltd) {
+			jcb_tipo_documento.addItem(t);
+		}
+		
+	}
 	//jtable solo string
 	//jtable_contenido objetos
 	//Insertas las filas y los objetos

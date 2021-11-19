@@ -2,6 +2,8 @@ package com.tp.dominio.pasajero;
 
 import javax.persistence.*;
 
+import com.tp.dominio.geo.Pais;
+
 @Entity
 @Table(name = "tpdds.posicion_iva")
 
@@ -25,6 +27,10 @@ public class PosicionIVA {
 	}
 	public void setPosicion(String posicion) {
 		this.posicion = posicion;
+	}
+	
+	public boolean equals(Object p){
+		return p instanceof PosicionIVA && this.idPosicionIVA.equals(((PosicionIVA) p).idPosicionIVA);
 	}
 	
 	

@@ -206,8 +206,8 @@ public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 		rp_pasajeros.getContenido().setRowCount(0);
 		rp_pasajeros.getRowObjects().clear();
 		
-		rp_pasajeros.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosBy(criterios_actuales)/8.0));
-		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosBy(criterios_actuales, (rp_pasajeros.getPaginaActual()-1)*8, 8);
+		rp_pasajeros.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosAdultosBy(criterios_actuales)/8.0));
+		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosAdultosBy(criterios_actuales, (rp_pasajeros.getPaginaActual()-1)*8, 8);
 		
 		for(PasajeroDTO p : lp) {
 			Vector<String> v = new Vector<String>();

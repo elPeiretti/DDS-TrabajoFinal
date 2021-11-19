@@ -1,6 +1,6 @@
 package com.tp.dominio.pasajero;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -30,7 +30,7 @@ public class Pasajero {
 	private String nroDocumento;
 
 	@Column (name = "fecha_nacimiento")
-	private Instant fechaDeNacimiento;
+	private LocalDate fechaDeNacimiento;
 
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "nacionalidad", referencedColumnName = "id_pais")
@@ -86,7 +86,7 @@ public class Pasajero {
 	public String getNroDocumento() {
 		return nroDocumento;
 	}
-	public Instant getNacimiento() {
+	public LocalDate getNacimiento() {
 		return fechaDeNacimiento;
 	}
 	public Pais getNacionalidad() {

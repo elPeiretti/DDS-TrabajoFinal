@@ -1,6 +1,6 @@
 package com.tp.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.swing.SortOrder;
 
@@ -11,7 +11,7 @@ public class BusqPasajeroDTO {
 	private String apellido;
 	//private String cuit;
 	private String nroDocumento;
-	//private Instant fechaDeNacimiento;
+	//private LocalDate fechaDeNacimiento;
 	//private Integer nacionalidad; 
 	//private String email;
 	//private String telefono;

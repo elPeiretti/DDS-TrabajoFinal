@@ -1,6 +1,6 @@
 package com.tp.interfaces.misc;
 
-import java.time.Instant;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -43,10 +43,10 @@ public class Mensaje {
 		return JOptionPane.showOptionDialog(null, msg, "Error", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[0]);
 	}
 
-    public static int OcuparIgual(List<ReservaDTO> reservas) {
+    public static int mensajeOcuparIgual(List<ReservaDTO> reservas) {
 		
 		String msg = "<html><center>La habitación "+reservas.get(0).getNumeroHabitacion()+" posee las siguientes reservas registradas:<br><br>";
-		Function<Instant,String> f = (fecha) -> (DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.ofInstant(fecha,ZoneId.of("+0"))).toString());
+		Function<LocalDate,String> f = (fecha) -> (DateTimeFormatter.ofPattern("dd/MM/yyyy").format(fecha));
 
 		for (ReservaDTO r : reservas){
 			msg += r.getApellidoResponsable()+", "+r.getNombreResponsable()+"<br>";
@@ -58,6 +58,11 @@ public class Mensaje {
 
 		return JOptionPane.showOptionDialog(null, msg, "¡Reservas existentes!", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[1]);
     }
+
+	public static int mensajeConfirmacionOcupacion() {
+		String opt[] = {"Salir", "Cargar otra habitación","Seguir cargando"};
+		return JOptionPane.showOptionDialog(null, "<html><center>¿Desea continuar operando?</center></html>", "Continuar Operando", JOptionPane.DEFAULT_OPTION, -1, null, opt, opt[2]);
+	}
 
 	
 }

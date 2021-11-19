@@ -1,6 +1,6 @@
 package com.tp.dominio.reserva;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -12,9 +12,9 @@ import com.tp.dominio.pasajero.Pasajero;
 
 public class Reserva {
 	@Column (name = "fecha_ingreso")
-	private Instant fechaIngreso;
+	private LocalDate fechaIngreso;
 	@Column (name = "fecha_egreso")
-	private Instant fechaEgreso;
+	private LocalDate fechaEgreso;
 	@Enumerated(EnumType.STRING)
 	@Column (name = "estado")
 	private EstadoReserva estado;
@@ -30,10 +30,10 @@ public class Reserva {
 	private ResponsableReserva responsable;
 	
 	
-	public Instant getFechaIngreso() {
+	public LocalDate getFechaIngreso() {
 		return fechaIngreso;
 	}
-	public Instant getFechaEgreso() {
+	public LocalDate getFechaEgreso() {
 		return fechaEgreso;
 	}
 	public Habitacion getHabitacion() {
@@ -45,6 +45,12 @@ public class Reserva {
     public ResponsableReserva getResponsable() {
         return responsable;
     }
+	public void setHabitacion(Habitacion habitacion) {
+		this.habitacion = habitacion;
+	}
+	public void setEstado(EstadoReserva estado) {
+		this.estado = estado;
+	}
 	
 	
 }

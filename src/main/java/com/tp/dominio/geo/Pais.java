@@ -35,6 +35,6 @@ public class Pais {
 
 	@Override
 	public boolean equals(Object p){
-		return this.idPais.equals(((Pais) p).getIdPais());
+		return p instanceof Pais && this.idPais.equals(((Pais) p).idPais);
 	}
 }

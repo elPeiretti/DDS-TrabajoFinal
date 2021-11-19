@@ -1,6 +1,7 @@
 package com.tp.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Vector;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,13 +12,15 @@ import com.tp.dominio.direccion.Direccion;
 import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
 
+
+
 public class PasajeroDTO {
 	private Integer idPasajero;
 	private String nombres;
 	private String apellido;
 	private String cuit;
 	private String nroDocumento;
-	private Instant fechaDeNacimiento;
+	private LocalDate fechaDeNacimiento;
 	private Integer nacionalidad; 
 	private String email;
 	private String telefono;
@@ -27,7 +30,7 @@ public class PasajeroDTO {
 	private DireccionDTO direccionDTO; 
 	
 	public PasajeroDTO(Integer idPasajero, String nombre, String apellido, String cuit, String nroDocumento,
-			Instant fechaDeNacimiento, Integer nacionalidad, String email, String telefono, String ocupacion,
+			LocalDate fechaDeNacimiento, Integer nacionalidad, String email, String telefono, String ocupacion,
 			TipoDocumentoDTO tipoDocumentoDTO, Integer idPosicionIVA, DireccionDTO direccionDTO) {
 		super();
 		this.idPasajero = idPasajero;
@@ -76,10 +79,10 @@ public class PasajeroDTO {
 	public void setNroDocumento(String nroDocumento) {
 		this.nroDocumento = nroDocumento;
 	}
-	public Instant getFechaDeNacimiento() {
+	public LocalDate getFechaDeNacimiento() {
 		return fechaDeNacimiento;
 	}
-	public void setFechaDeNacimiento(Instant fechaDeNacimiento) {
+	public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
 	public Integer getNacionalidad() {
@@ -123,6 +126,21 @@ public class PasajeroDTO {
 	}
 	public void setDireccionDTO(DireccionDTO direccionDTO) {
 		this.direccionDTO = direccionDTO;
+	}
+	
+	public Vector<Object> asVector() {
+		Vector<Object> resultado = new Vector<Object>();
+		
+		resultado.add(apellido);
+		resultado.add(nombres);
+		resultado.add(tipoDocumentoDTO.getTipo());
+		resultado.add(nroDocumento);
+		
+		return resultado;
+	}
+	
+	public boolean equals(Object o2) {
+		return o2 instanceof PasajeroDTO && ((PasajeroDTO) o2).idPasajero.equals(idPasajero);
 	}
 	
 	

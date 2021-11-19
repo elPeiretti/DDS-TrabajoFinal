@@ -1,6 +1,6 @@
 package com.tp.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -9,11 +9,11 @@ import java.util.Vector;
 
 public class FechaDTO {
 
-	private Instant fecha;
+	private LocalDate fecha;
 	
 	private Map<String, HabitacionDTO> habitaciones;
 	
-	public FechaDTO(Instant fecha, Map<String,HabitacionDTO> habitaciones) {
+	public FechaDTO(LocalDate fecha, Map<String,HabitacionDTO> habitaciones) {
 		this.fecha = fecha;
 		this.habitaciones = habitaciones;
 	}
@@ -24,12 +24,12 @@ public class FechaDTO {
 
     public Vector<String> getDataAsStringVector() {
         Vector<String> data = new Vector<String>();
-		data.add(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.ofInstant(fecha,ZoneId.of("+0"))).toString());
+		data.add(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(fecha));
 		habitaciones.values().stream().sorted().map(h -> h.getEstado().toString()).forEach(e -> data.add(e));
 		return data;
     }
 
-    public Instant getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 }

@@ -39,6 +39,10 @@ public class Habitacion {
 		return estado;
 	}
 	
+	public void setEstado(EstadoHabitacion estado) {
+		this.estado = estado;
+	}
+	
 	public TipoHabitacion getTipoHabitacion(){
 		return tipo;
 	}
