@@ -7,10 +7,13 @@ import javax.swing.event.RowSorterListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import com.tp.dominio.ocupacion.Ocupacion;
 import com.tp.dto.BusqPasajeroDTO;
+import com.tp.dto.HabitacionDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.TipoDocumentoDTO;
+import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
@@ -138,14 +141,18 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 				int col = rp_pasajeros_busqueda.getTable().getSelectedColumn();
 				
 				if(row == -1 || col == -1 || row == Integer.MAX_VALUE || col == Integer.MAX_VALUE) return;
-				
-				
 				if(col != rp_pasajeros_busqueda.getContenido().getColumnCount()-1) return;
 				
 				Boolean check = (Boolean) rp_pasajeros_busqueda.getContenido().getValueAt(row, col);
 				
+				Integer capacidad = nuevaOcupacion.getHabitacion().getTipoHabitacionDTO().getCapacidad();
+				if(!check && rp_pasajeros_agregados.getRowObjects().size() == capacidad-1){
+					Mensaje.mensajeInformacion("<html><center>La capacidad de la habitación "+nuevaOcupacion.getHabitacion().getNumero()
+												+" es de "+ capacidad.toString()+" personas.<br>No se pueden agregar más acompañantes.</center></html>");
+					return;
+				}
+
 				rp_pasajeros_busqueda.getContenido().setValueAt(!check, row, col);
-				
 				check = !check;
 				
 				if(check) {
@@ -251,6 +258,10 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	}
 	
 	private void inicializarCampos() {
+
+		HabitacionDTO h = GestorHabitaciones.getHabitacionByNumero(nuevaOcupacion.getHabitacion().getNumero());
+		nuevaOcupacion.setHabitacion(h);
+
 		rp_pasajeros_busqueda.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento", "Acompañante"), List.of(4));
 		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
 		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros

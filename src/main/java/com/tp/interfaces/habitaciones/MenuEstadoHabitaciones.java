@@ -152,7 +152,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				OcupacionDTO ocupacion = new OcupacionDTO();
 				ocupacion.setFechaIngreso(fechaInicio);
 				ocupacion.setFechaEgreso(fechaFin);
-				ocupacion.setNumeroHabitacion(numeroHabitacion);
+				ocupacion.getHabitacion().setNumero(numeroHabitacion);
 				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,ocupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
 				
 			}

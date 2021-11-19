@@ -7,17 +7,19 @@ import java.util.List;
 public class OcupacionDTO {
 	private Integer idOcupacion;
 
-	private String numeroHabitacion;
-	
 	private Instant fechaIngreso;
 	
 	private Instant fechaEgreso;
 	
-	private Integer idHabitacion;
-	
 	private PasajeroDTO responsable;
 	
 	private List<PasajeroDTO> acompaniantes;
+
+	private HabitacionDTO habitacion;
+
+	public OcupacionDTO(){
+		this.habitacion = new HabitacionDTO();
+	}
 
 	public Integer getIdOcupacion() {
 		return idOcupacion;
@@ -43,14 +45,6 @@ public class OcupacionDTO {
 		this.fechaEgreso = fechaEgreso;
 	}
 
-	public Integer getIdHabitacion() {
-		return idHabitacion;
-	}
-
-	public void setIdHabitacion(Integer idHabitacion) {
-		this.idHabitacion = idHabitacion;
-	}
-
 	public PasajeroDTO getResponsable() {
 		return responsable;
 	}
@@ -67,8 +61,12 @@ public class OcupacionDTO {
 		this.acompaniantes = acompaniantes;
 	}
 
-    public void setNumeroHabitacion(String numeroHabitacion) {
-		this.numeroHabitacion = numeroHabitacion;
+    public HabitacionDTO getHabitacion() {
+        return habitacion;
     }
-	
+
+    public void setHabitacion(HabitacionDTO h) {
+		this.habitacion = h;
+    }
+
 }

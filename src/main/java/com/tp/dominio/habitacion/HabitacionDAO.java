@@ -6,5 +6,6 @@ public interface HabitacionDAO {
 
 	List<Habitacion> getAllHabitaciones();
 
-	//Habitacion getHabitacionByNumero(String numero);
+    Habitacion getHabitacionByNumero(String numero);
+
 }

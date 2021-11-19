@@ -98,5 +98,10 @@ public class GestorHabitaciones {
 		}
         return reservas;
     }
+
+    public static HabitacionDTO getHabitacionByNumero(String numero) {
+        HabitacionDAO hDao= new HabitacionSqlDAO();
+		return new HabitacionDTO(hDao.getHabitacionByNumero(numero));
+    }
 	
 }

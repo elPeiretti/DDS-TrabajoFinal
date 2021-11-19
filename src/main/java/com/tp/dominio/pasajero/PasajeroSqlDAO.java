@@ -1,5 +1,6 @@
 package com.tp.dominio.pasajero;
 
+import java.time.Instant;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import javax.swing.SortOrder;
@@ -358,7 +359,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 			sqlStatement += "AND p.nroDocumento = :documento ";
 		} 
 		
-		//sqlstatement += "and (select date_part('day',current_date - p.fechadenacimiento))/365 >= 18 ";
+		sqlStatement += "AND  (:hoy - p.fechaDeNacimiento)>= 365*18 ";
 		
 		String orderBy = "ORDER BY p.apellido, p.nombres";
 		
@@ -384,6 +385,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		sqlStatement += orderBy;
 		
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
+		hqlQuery.setParameter("hoy", Instant.now());
 		
 		if(criterios.getNombres() != null) {
 			hqlQuery.setParameter("nombres", criterios.getNombres()+"%");
@@ -436,9 +438,10 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 			sqlStatement += "AND p.nroDocumento = :documento ";
 		}
 		
-		//sqlStatement += "AND (SELECT extract(YEAR from (Select AGE(p.fechaDeNacimiento)))) >= 18 ";
+		sqlStatement += "AND  (:hoy - p.fechaDeNacimiento)>= 365*18 ";
 		
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
+		hqlQuery.setParameter("hoy", Instant.now());
 		
 		String aux;
 		if((aux = criterios.getNombres()) != null) {
