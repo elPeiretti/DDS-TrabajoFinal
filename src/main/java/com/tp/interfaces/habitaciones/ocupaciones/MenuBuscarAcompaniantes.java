@@ -199,7 +199,8 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {			
-				
+				nuevaOcupacion.setAcompaniantes(rp_pasajeros_agregados.getRowObjects());
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MensajeConfirmarOcupacion(ventana_contenedora,encabezado,nuevaOcupacion),MensajeConfirmarOcupacion.x_bound,MensajeConfirmarOcupacion.y_bound,MensajeConfirmarOcupacion.titulo);
 			}
 		});
 		
@@ -270,11 +271,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		indice_columnas.put(3, BusqPasajeroDTO.columnaOrden.NRODOC);
 		
 		rp_pasajeros_agregados.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento", "Acompañante"), List.of(4));
-		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
-		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
-		indice_columnas.put(1, BusqPasajeroDTO.columnaOrden.NOMBRES);
-		indice_columnas.put(2, BusqPasajeroDTO.columnaOrden.TIPODOC);
-		indice_columnas.put(3, BusqPasajeroDTO.columnaOrden.NRODOC);
+		
 		
 		jcb_tipo_documento.addItem(null);
 		jcb_tipo_documento.setSelectedItem(null);
