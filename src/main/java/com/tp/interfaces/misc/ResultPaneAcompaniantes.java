@@ -69,8 +69,8 @@ public class ResultPaneAcompaniantes<E> extends JPanel {
 		
 		jtable_contenido = new DefaultTableModel(){
 			public boolean isCellEditable(int row, int column){
-				if(column != 4) return false;
-				return true;
+				return false;
+				//return true;
 			}			
 		};
 		jtable_resultados.setModel(jtable_contenido);

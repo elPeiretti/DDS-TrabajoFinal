@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.OcupacionDTO;
@@ -17,6 +19,9 @@ import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +43,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	private JLabel lbl_apellido;
 	private JLabel lbl_tipo_documento;
 	private ResultPaneAcompaniantes<PasajeroDTO> rp_pasajeros_busqueda;
-	private ResultPane<PasajeroDTO> rp_pasajeros_agregados;
+	private ResultPaneAcompaniantes<PasajeroDTO> rp_pasajeros_agregados;
 	private JButton jb_buscar;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
@@ -103,8 +108,11 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		rp_pasajeros_busqueda.setBounds(10, 244, 620, 180);
 		add(rp_pasajeros_busqueda);
 		
-		rp_pasajeros_agregados = new ResultPane<PasajeroDTO>();
+		rp_pasajeros_agregados = new ResultPaneAcompaniantes<PasajeroDTO>();
 		rp_pasajeros_agregados.setBounds(10, 435, 620, 180);
+		rp_pasajeros_agregados.remove(rp_pasajeros_agregados.getNextBtn());
+		rp_pasajeros_agregados.remove(rp_pasajeros_agregados.getPrevBtn());
+		rp_pasajeros_agregados.remove(rp_pasajeros_agregados.getPageNumbers());
 		add(rp_pasajeros_agregados);
 		
 		jb_siguiente = new JButton("Siguiente");
@@ -121,6 +129,67 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	
 	public void agregarActionListeners() {
 		MenuBuscarAcompaniantes contexto = this;
+		
+		
+		rp_pasajeros_busqueda.getTable().addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				
+				int row = rp_pasajeros_busqueda.getTable().getSelectedRow();
+				int col = rp_pasajeros_busqueda.getTable().getSelectedColumn();
+				
+				if(row == -1 || col == -1 || row == Integer.MAX_VALUE || col == Integer.MAX_VALUE) return;
+				
+				
+				if(col != rp_pasajeros_busqueda.getContenido().getColumnCount()-1) return;
+				
+				Boolean check = (Boolean) rp_pasajeros_busqueda.getContenido().getValueAt(row, col);
+				
+				rp_pasajeros_busqueda.getContenido().setValueAt(!check, row, col);
+				
+				check = !check;
+				
+				if(check) {
+					Vector<Object> v = rp_pasajeros_busqueda.getRowObjects().get(row).asVector();
+					v.add(true);
+					int agregar = rp_pasajeros_agregados.getRowObjects().indexOf(rp_pasajeros_busqueda.getRowObjects().get(row));
+					if(agregar != -1) return;
+					rp_pasajeros_agregados.getRowObjects().add(rp_pasajeros_busqueda.getRowObjects().get(row));
+					rp_pasajeros_agregados.getContenido().addRow(v);
+				} else {
+					int removedRow = rp_pasajeros_agregados.getRowObjects().indexOf(rp_pasajeros_busqueda.getRowObjects().get(row));
+					if(removedRow == -1) return;
+					rp_pasajeros_agregados.getContenido().removeRow(removedRow);
+					rp_pasajeros_agregados.getRowObjects().remove(removedRow);
+				}
+				
+				rp_pasajeros_agregados.getContenido().fireTableDataChanged();
+			}
+		});
+		
+		
+		rp_pasajeros_agregados.getTable().addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				int row = rp_pasajeros_agregados.getTable().getSelectedRow();
+				int col = rp_pasajeros_agregados.getTable().getSelectedColumn();
+				
+				if(row == -1 || col == -1 || row == Integer.MAX_VALUE || col == Integer.MAX_VALUE) return;
+				
+				if(col != rp_pasajeros_agregados.getContenido().getColumnCount()-1) return;
+								
+				int removeTick = rp_pasajeros_busqueda.getRowObjects().indexOf(rp_pasajeros_agregados.getRowObjects().get(row));
+				if(removeTick != -1) {
+					rp_pasajeros_busqueda.getContenido().setValueAt(false, removeTick, rp_pasajeros_busqueda.getContenido().getColumnCount()-1);
+					rp_pasajeros_busqueda.getContenido().fireTableDataChanged();
+				} 
+					
+				rp_pasajeros_agregados.getContenido().removeRow(row);
+				rp_pasajeros_agregados.getRowObjects().remove(row);
+				
+				
+				rp_pasajeros_agregados.getContenido().fireTableDataChanged();
+			}
+		});
+		
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {			
 				
@@ -173,13 +242,9 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosBy(criterios_actuales, (rp_pasajeros_busqueda.getPaginaActual()-1)*8, 8, nuevaOcupacion.getResponsable());
 		
 		for(PasajeroDTO p : lp) {
-			Vector<Object> v = new Vector<Object>();
-			//Vector<String> v = new Vector<String>();
-			v.add(p.getApellido());
-			v.add(p.getNombres());
-			v.add(p.getTipoDocumentoDTO().getTipo());
-			v.add(p.getNroDocumento());
-			v.add(false);
+			Vector<Object> v = p.asVector();
+			if(rp_pasajeros_agregados.getRowObjects().contains(p))	v.add(true);
+			else v.add(false);
 			rp_pasajeros_busqueda.getContenido().addRow(v);
 			rp_pasajeros_busqueda.getRowObjects().add(p);
 		}
@@ -187,6 +252,13 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	
 	private void inicializarCampos() {
 		rp_pasajeros_busqueda.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento", "Acompañante"), List.of(4));
+		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
+		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
+		indice_columnas.put(1, BusqPasajeroDTO.columnaOrden.NOMBRES);
+		indice_columnas.put(2, BusqPasajeroDTO.columnaOrden.TIPODOC);
+		indice_columnas.put(3, BusqPasajeroDTO.columnaOrden.NRODOC);
+		
+		rp_pasajeros_agregados.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento", "Acompañante"), List.of(4));
 		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
 		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
 		indice_columnas.put(1, BusqPasajeroDTO.columnaOrden.NOMBRES);

@@ -52,7 +52,7 @@ public class GestorHabitaciones {
 			Map<String, HabitacionDTO> estadosIniciales = new HashMap<String, HabitacionDTO>();
 			
 			for(Habitacion h : listaHabitaciones) {
-				estadosIniciales.put(h.getNumero(), new HabitacionDTO(h.getNumero(),h.getEstado().equals(EstadoHabitacion.MANTENIMIENTO)? h.getEstado():EstadoHabitacion.LIBRE, h.getTipoHabitacion().getNombre()));
+				estadosIniciales.put(h.getNumero(), new HabitacionDTO(h.getNumero(),EstadoHabitacion.LIBRE, h.getTipoHabitacion().getNombre()));
 			}
 			
 			FechaDTO fechaDTO = new FechaDTO(fechaAux, estadosIniciales);

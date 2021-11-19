@@ -1,6 +1,7 @@
 package com.tp.dto;
 
 import java.time.Instant;
+import java.util.Vector;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.ManyToOne;
 import com.tp.dominio.direccion.Direccion;
 import com.tp.dominio.pasajero.PosicionIVA;
 import com.tp.dominio.pasajero.TipoDocumento;
+
+
 
 public class PasajeroDTO {
 	private Integer idPasajero;
@@ -123,6 +126,21 @@ public class PasajeroDTO {
 	}
 	public void setDireccionDTO(DireccionDTO direccionDTO) {
 		this.direccionDTO = direccionDTO;
+	}
+	
+	public Vector<Object> asVector() {
+		Vector<Object> resultado = new Vector<Object>();
+		
+		resultado.add(apellido);
+		resultado.add(nombres);
+		resultado.add(tipoDocumentoDTO.getTipo());
+		resultado.add(nroDocumento);
+		
+		return resultado;
+	}
+	
+	public boolean equals(Object o2) {
+		return o2 instanceof PasajeroDTO && ((PasajeroDTO) o2).idPasajero.equals(idPasajero);
 	}
 	
 	

@@ -333,4 +333,137 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		return resultado;
 	}
 
+	@Override
+	public List<Pasajero> getPasajerosAdultosByCriteria(BusqPasajeroDTO criterios, Integer li, Integer cant) {
+
+		List<Pasajero> resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE true = true ";
+		
+		if(criterios.getNombres() != null) {
+			sqlStatement += "AND p.nombres LIKE :nombres ";
+		} 
+		
+		if(criterios.getApellido() != null) {
+			sqlStatement += "AND p.apellido LIKE :apellido ";
+		} 
+		
+		if(criterios.getTipoDocumentoDTO() != null) {
+			sqlStatement += "AND td.idTipoDocumento = :id_tipo ";
+		} 
+		
+		if(criterios.getNroDocumento() != null) {
+			sqlStatement += "AND p.nroDocumento = :documento ";
+		} 
+		
+		//sqlstatement += "and (select date_part('day',current_date - p.fechadenacimiento))/365 >= 18 ";
+		
+		String orderBy = "ORDER BY p.apellido, p.nombres";
+		
+		if(criterios.getColumna() != null) {
+			orderBy = "ORDER BY ";
+			BusqPasajeroDTO.columnaOrden aux = criterios.getColumna();
+			switch(aux) {
+				case NOMBRES:
+					orderBy += "p.nombres ";
+					break;
+				case APELLIDO:
+					orderBy += "p.apellido ";
+					break;
+				case TIPODOC:
+					orderBy += "td.tipo ";
+					break;
+				case NRODOC:
+					orderBy += "p.nroDocumento ";
+					break;
+			}
+			if(criterios.getSortOrder() != null) orderBy += criterios.getSortOrder() == SortOrder.ASCENDING ? "ASC" : "DESC";
+		}
+		sqlStatement += orderBy;
+		
+		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
+		
+		if(criterios.getNombres() != null) {
+			hqlQuery.setParameter("nombres", criterios.getNombres()+"%");
+		} 
+		
+		if(criterios.getApellido() != null) {
+			hqlQuery.setParameter("apellido", criterios.getApellido()+"%");
+		} 
+		
+		if(criterios.getTipoDocumentoDTO() != null) {
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento());
+		} 
+		
+		if(criterios.getNroDocumento() != null) {
+			hqlQuery.setParameter("documento", criterios.getNroDocumento());
+		}
+		
+		hqlQuery.setFirstResult(li);
+		hqlQuery.setMaxResults(cant);
+		
+		resultado = hqlQuery.getResultList();
+		
+		session.close();
+		
+		return resultado;
+	}
+
+	@Override
+	public Long getCountPasajerosAdultosByCriteria(BusqPasajeroDTO criterios) {
+		// TODO Auto-generated method stub
+		Long resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		String sqlStatement = "SELECT count(p) FROM Pasajero p JOIN p.tipoDocumento td WHERE true = true ";
+		
+		if(criterios.getNombres() != null) {
+			sqlStatement += "AND p.nombres LIKE :nombres ";
+		} 
+		
+		if(criterios.getApellido() != null) {
+			sqlStatement += "AND p.apellido LIKE :apellido ";
+		} 
+		
+		if(criterios.getTipoDocumentoDTO() != null) {
+			sqlStatement += "AND td.idTipoDocumento = :id_tipo ";
+		} 
+		
+		if(criterios.getNroDocumento() != null) {
+			sqlStatement += "AND p.nroDocumento = :documento ";
+		}
+		
+		//sqlStatement += "AND (SELECT extract(YEAR from (Select AGE(p.fechaDeNacimiento)))) >= 18 ";
+		
+		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
+		
+		String aux;
+		if((aux = criterios.getNombres()) != null) {
+			hqlQuery.setParameter("nombres", aux+"%");
+		} 
+		
+		if((aux = criterios.getApellido()) != null) {
+			hqlQuery.setParameter("apellido", aux+"%");
+		} 
+		
+		if(criterios.getTipoDocumentoDTO() != null) {
+			hqlQuery.setParameter("id_tipo", criterios.getTipoDocumentoDTO().getIdTipoDocumento());
+		} 
+		if((aux = criterios.getNroDocumento()) != null) {
+			hqlQuery.setParameter("documento", aux);
+		}
+		
+		resultado = hqlQuery.getSingleResult();
+		
+		session.close();
+		
+		return resultado;
+		
+		
+		
+	}
+
 }

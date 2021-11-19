@@ -193,6 +193,21 @@ public class GestorPasajeros {
 		
 		if (errores.size()>1) throw new CamposInvalidosException(errores);
 	}
+
+	public static List<PasajeroDTO> getPasajerosAdultosBy(BusqPasajeroDTO criterios, Integer li, Integer cant) {
+		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		List<Pasajero> pasajeros = pasajeroDAO.getPasajerosAdultosByCriteria(criterios, li, cant);
+		
+		return convertToPasajeroDTO(pasajeros);
+	}
+
+	public static double getCountPasajerosAdultosBy(BusqPasajeroDTO criterios) {
+		
+		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		return pasajeroDAO.getCountPasajerosAdultosByCriteria(criterios);
+	}
 	
 	
 	

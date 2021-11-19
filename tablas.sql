@@ -139,7 +139,7 @@ capacidad INTEGER);
 CREATE TABLE tpdds.habitacion
 (id_habitacion SERIAL PRIMARY KEY,
 estado VARCHAR(100),
-numero VARCHAR(5),
+numero VARCHAR(5) UNIQUE,
 id_tipo_habitacion INTEGER);
 
 
@@ -153532,20 +153532,16 @@ INSERT INTO tpdds.habitacion(id_habitacion,estado,numero,id_tipo_habitacion) VAL
 (15,'LIBRE','B06',2),
 (16,'LIBRE','C00',3),
 (17,'LIBRE','C01',3),
-(18,'LIBRE','C00',3),
-(19,'LIBRE','C01',3),
-(20,'LIBRE','C00',3),
-(21,'LIBRE','C01',3),
-(22,'LIBRE','D00',4),
-(23,'LIBRE','D01',4),
-(24,'LIBRE','D02',4),
-(25,'LIBRE','D03',4),
-(26,'LIBRE','D04',4),
-(27,'LIBRE','D05',4),
-(28,'LIBRE','D06',4),
-(29,'LIBRE','D07',4),
-(30,'LIBRE','E00',5),
-(31,'LIBRE','E01',5);
+(18,'LIBRE','D00',4),
+(19,'LIBRE','D01',4),
+(20,'LIBRE','D02',4),
+(21,'LIBRE','D03',4),
+(22,'LIBRE','D04',4),
+(23,'LIBRE','D05',4),
+(24,'LIBRE','D06',4),
+(25,'LIBRE','D07',4),
+(26,'LIBRE','E00',5),
+(27,'LIBRE','E01',5);
  
 
 INSERT INTO tpdds.responsable_reserva(nombre,apellido,telefono) VALUES
