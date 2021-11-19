@@ -18,6 +18,9 @@ public interface PasajeroDAO {
 	
 	public void insertarPasajero(Pasajero pasajero);
 	
+	public Pasajero getPasajeroById(Integer idPasajero);
+	public List<Pasajero> getPasajerosById(List<Integer> idPasajeros);
+	
 	
 	
 	

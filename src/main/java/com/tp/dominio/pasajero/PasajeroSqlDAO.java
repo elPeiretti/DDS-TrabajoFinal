@@ -469,4 +469,44 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		
 	}
 
+	@Override
+	public Pasajero getPasajeroById(Integer idPasajero) {
+		
+		Pasajero resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE p.idPasajero = :id ";
+		
+	
+		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
+		
+		hqlQuery.setParameter("id", idPasajero);
+			
+		resultado = hqlQuery.getSingleResult();
+		
+		session.close();
+		
+		return resultado;
+	}
+
+	@Override
+	public List<Pasajero> getPasajerosById(List<Integer> idPasajeros) {
+		List<Pasajero> resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE p.idPasajero IN :id ";
+		
+		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
+		
+		hqlQuery.setParameter("id", idPasajeros);
+			
+		resultado = hqlQuery.getResultList();
+		
+		session.close();
+		
+		return resultado;
+	}
+
 }

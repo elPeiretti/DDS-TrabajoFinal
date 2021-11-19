@@ -140,19 +140,19 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				Point fin = ((PintableTable)jtable_habitaciones).getCeldaFinal();
 				
 				String numeroHabitacion = (String) jtable_habitaciones.getColumnModel().getColumn(inicio.x).getHeaderValue();
-				Instant fechaInicio = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(inicio.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC);
-				Instant fechaFin = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(fin.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.UTC);
+				Instant fechaInicio = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(inicio.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.of("+0"));
+				Instant fechaFin = LocalDate.parse(((String) fct_habitaciones.getFechasTable().getValueAt(fin.y, 0)),DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay().toInstant(ZoneOffset.of("+0"));
 				List<ReservaDTO> reservas = GestorHabitaciones.getReservasVigentesInRange(fechaInicio,fechaFin,numeroHabitacion);
 				
 				if(!reservas.isEmpty()){
 					if(Mensaje.OcuparIgual(reservas)!=1) return;
 				}
-
-
+								
 				OcupacionDTO ocupacion = new OcupacionDTO();
-				ocupacion.setFechaIngreso(fechaInicio);
-				ocupacion.setFechaEgreso(fechaFin);
+				ocupacion.setFechaIngreso(fechaInicio.truncatedTo(ChronoUnit.DAYS));
+				ocupacion.setFechaEgreso(fechaFin.truncatedTo(ChronoUnit.DAYS));
 				ocupacion.getHabitacion().setNumero(numeroHabitacion);
+				
 				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,ocupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
 				
 			}

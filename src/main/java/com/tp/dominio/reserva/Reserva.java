@@ -45,6 +45,12 @@ public class Reserva {
     public ResponsableReserva getResponsable() {
         return responsable;
     }
+	public void setHabitacion(Habitacion habitacion) {
+		this.habitacion = habitacion;
+	}
+	public void setEstado(EstadoReserva estado) {
+		this.estado = estado;
+	}
 	
 	
 }

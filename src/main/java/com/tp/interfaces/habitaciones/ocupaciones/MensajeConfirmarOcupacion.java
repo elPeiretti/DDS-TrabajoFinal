@@ -5,8 +5,11 @@ import javax.swing.*;
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
+import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.SeteableTab;
+import com.tp.interfaces.VentanaPrincipal;
+import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -81,7 +84,9 @@ public class MensajeConfirmarOcupacion extends JPanel implements SeteableTab {
 	private void agregarActionListeners() {
 		jb_continuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
+						MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
 			}
 		});
 	}

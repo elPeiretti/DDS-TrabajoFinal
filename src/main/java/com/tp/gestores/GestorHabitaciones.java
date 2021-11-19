@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import com.tp.dominio.habitacion.EstadoHabitacion;
 import com.tp.dominio.habitacion.Habitacion;
@@ -17,12 +18,17 @@ import com.tp.dominio.habitacion.HabitacionSqlDAO;
 import com.tp.dominio.ocupacion.Ocupacion;
 import com.tp.dominio.ocupacion.OcupacionDAO;
 import com.tp.dominio.ocupacion.OcupacionSqlDAO;
+import com.tp.dominio.pasajero.Pasajero;
+import com.tp.dominio.pasajero.PasajeroDAO;
+import com.tp.dominio.pasajero.PasajeroSqlDAO;
+import com.tp.dominio.reserva.EstadoReserva;
 import com.tp.dominio.reserva.Reserva;
 import com.tp.dominio.reserva.ReservaDAO;
 import com.tp.dominio.reserva.ReservaSqlDAO;
 
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
+import com.tp.dto.OcupacionDTO;
 import com.tp.dto.ReservaDTO;
 
 public class GestorHabitaciones {
@@ -102,6 +108,48 @@ public class GestorHabitaciones {
     public static HabitacionDTO getHabitacionByNumero(String numero) {
         HabitacionDAO hDao= new HabitacionSqlDAO();
 		return new HabitacionDTO(hDao.getHabitacionByNumero(numero));
+    }
+    
+    public static void ocuparHabitacion(OcupacionDTO ocupacionDto) {
+    	
+    	HabitacionDAO habitacionDao = new HabitacionSqlDAO();
+    	PasajeroDAO pasajeroDao = new PasajeroSqlDAO();
+    	OcupacionDAO ocupacionDao = new OcupacionSqlDAO();
+    	ReservaDAO reservaDao = new ReservaSqlDAO();
+    	
+    	Habitacion habitacion = habitacionDao.getHabitacionByNumero(ocupacionDto.getHabitacion().getNumero());
+    	
+    	if(ocupacionDto.getFechaIngreso().truncatedTo(ChronoUnit.DAYS).equals(Instant.now().truncatedTo(ChronoUnit.DAYS))) {
+    		habitacion.setEstado(EstadoHabitacion.OCUPADA);
+    	}
+    	
+    	Pasajero responsable = pasajeroDao.getPasajeroById(ocupacionDto.getResponsable().getIdPasajero());
+    	
+    	List<Pasajero> acompaniantes = pasajeroDao.getPasajerosById(ocupacionDto.getAcompaniantes().stream().map(p -> p.getIdPasajero()).collect(Collectors.toList()));
+    	
+    	for(Pasajero a : acompaniantes) {
+    		if(a.getPosicionIVA().equals(responsable.getPosicionIVA())) a.setPosicionIVA(responsable.getPosicionIVA());
+    		if(a.getNacionalidad().equals(responsable.getNacionalidad())) a.setNacionalidad(responsable.getNacionalidad());
+    		if(a.getTipoDocumento().equals(responsable.getTipoDocumento())) a.setTipoDocumento(responsable.getTipoDocumento());
+    		if(a.getDireccion().getCiudad().equals(responsable.getDireccion().getCiudad())) a.getDireccion().setCiudad(responsable.getDireccion().getCiudad());
+    	}
+    	
+    	Ocupacion ocupacion = new Ocupacion(ocupacionDto);
+    	
+    	ocupacion.setHabitacion(habitacion);
+    	
+    	ocupacion.setResponsable(responsable);
+    	
+    	ocupacion.setAcompaniantes(acompaniantes);
+    	
+    	List<Reserva> listaReservas = reservaDao.getReservasInRange(ocupacion.getFechaIngreso(), ocupacion.getFechaEgreso(), ocupacion.getHabitacion().getNumero());
+    	
+    	listaReservas.stream().forEach(r -> r.setEstado(EstadoReserva.CANCELADA));
+    	
+    	listaReservas.stream().forEach(r -> r.setHabitacion(ocupacion.getHabitacion()));
+    	
+    	ocupacionDao.insertarOcupacionyCancelarReservas(ocupacion, listaReservas);
+    	
     }
 	
 }

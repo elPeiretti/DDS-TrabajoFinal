@@ -30,6 +30,11 @@ public class TipoDocumento {
 		this.tipo = tipo;
 	}
 	
+	public boolean equals(Object p){
+		return p instanceof TipoDocumento && this.idTipoDocumento.equals(((TipoDocumento) p).idTipoDocumento);
+	}
+	
+	
 	
 	
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import com.tp.dominio.habitacion.Habitacion;
 import com.tp.dominio.pasajero.Pasajero;
+import com.tp.dto.OcupacionDTO;
 
 @Entity
 @Table(name = "tpdds.ocupacion")
@@ -28,12 +29,20 @@ public class Ocupacion {
 	private Pasajero responsable;
 	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable(
-			name = "acompaniante",
+			name = "tpdds.acompaniante",
 			joinColumns =  @JoinColumn(name = "id_ocupacion", referencedColumnName = "id_ocupacion"),
 			inverseJoinColumns =  @JoinColumn(name = "id_pasajero", referencedColumnName = "id_pasajero")
 	)
 	private List<Pasajero> acompaniantes;
 	
+	public Ocupacion() {
+	}
+	
+	public Ocupacion(OcupacionDTO ocupacionDto) {
+		this.fechaIngreso = ocupacionDto.getFechaIngreso();
+		this.fechaEgreso = ocupacionDto.getFechaEgreso();
+	}
+
 	public Habitacion getHabitacion() {
 		return habitacion;
 	}
@@ -44,6 +53,30 @@ public class Ocupacion {
 
 	public Instant getFechaEgreso() {
 		return fechaEgreso;
+	}
+
+	public void setIdOcupacion(Integer idOcupacion) {
+		this.idOcupacion = idOcupacion;
+	}
+
+	public void setFechaIngreso(Instant fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+
+	public void setFechaEgreso(Instant fechaEgreso) {
+		this.fechaEgreso = fechaEgreso;
+	}
+
+	public void setHabitacion(Habitacion habitacion) {
+		this.habitacion = habitacion;
+	}
+
+	public void setResponsable(Pasajero responsable) {
+		this.responsable = responsable;
+	}
+
+	public void setAcompaniantes(List<Pasajero> acompaniantes) {
+		this.acompaniantes = acompaniantes;
 	}
 	
 }

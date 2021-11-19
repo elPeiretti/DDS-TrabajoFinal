@@ -59,4 +59,8 @@ public class HabitacionDTO implements Comparable{
 		this.numero = numero;
 	}
 	
+	public Integer getIdHabitacion() {
+		return idHabitacion;
+	}
+	
 }
