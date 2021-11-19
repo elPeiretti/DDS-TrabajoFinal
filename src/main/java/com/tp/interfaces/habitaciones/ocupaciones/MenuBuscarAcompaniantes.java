@@ -125,9 +125,15 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		jb_cancelar = new JButton("Cancelar");
 		jb_cancelar.setBounds(83, 640, 100, 30);
 		add(jb_cancelar);
+		
 		this.inicializarCampos();
 		this.agregarActionListeners();
 		this.agregarTabOrder();
+		
+		if(nuevaOcupacion.getAcompaniantes() != null) {
+			this.llenarTablaAgregadosAcompaniantes();
+		}
+		
 	}
 	
 	public void agregarActionListeners() {
@@ -255,6 +261,21 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 			else v.add(false);
 			rp_pasajeros_busqueda.getContenido().addRow(v);
 			rp_pasajeros_busqueda.getRowObjects().add(p);
+		}
+	}
+	
+	private void llenarTablaAgregadosAcompaniantes() {
+		rp_pasajeros_agregados.getContenido().setRowCount(0);
+		rp_pasajeros_agregados.getRowObjects().clear();
+		
+		List<PasajeroDTO> lp = nuevaOcupacion.getAcompaniantes();
+		
+		for(PasajeroDTO p : lp) {
+			Vector<Object> v = p.asVector();
+			v.add(true);
+			
+			rp_pasajeros_agregados.getContenido().addRow(v);
+			rp_pasajeros_agregados.getRowObjects().add(p);
 		}
 	}
 	

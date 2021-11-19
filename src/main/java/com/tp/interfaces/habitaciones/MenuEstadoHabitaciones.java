@@ -145,7 +145,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				List<ReservaDTO> reservas = GestorHabitaciones.getReservasVigentesInRange(fechaInicio,fechaFin,numeroHabitacion);
 				
 				if(!reservas.isEmpty()){
-					if(Mensaje.OcuparIgual(reservas)!=1) return;
+					if(Mensaje.mensajeOcuparIgual(reservas)!=1) return;
 				}
 								
 				OcupacionDTO ocupacion = new OcupacionDTO();

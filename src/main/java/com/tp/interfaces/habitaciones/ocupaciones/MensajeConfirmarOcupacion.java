@@ -7,6 +7,7 @@ import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorPasajeros;
+import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
 import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
@@ -84,9 +85,23 @@ public class MensajeConfirmarOcupacion extends JPanel implements SeteableTab {
 	private void agregarActionListeners() {
 		jb_continuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
-						MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
+				
+				int opcion = Mensaje.mensajeConfirmacionOcupacion();
+				
+				if(opcion == 0) {
+					GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),
+							MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);
+				} else if(opcion == 1) {
+					GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
+							MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
+				} else if(opcion == 2) {
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarAcompaniantes(ventana_contenedora,encabezado,nuevaOcupacion),
+							MenuBuscarAcompaniantes.x_bound,MenuBuscarAcompaniantes.y_bound,MenuBuscarAcompaniantes.titulo);
+				}
+				
+				
 			}
 		});
 	}
