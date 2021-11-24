@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.columngroup.GroupableTableHeader;
 
 public class PintableTable extends JTable{
@@ -31,7 +32,7 @@ public class PintableTable extends JTable{
         this.addMouseListener(new MouseListener(){
 
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 int row = getSelectedRow();
                 int column = getSelectedColumn();
 
@@ -40,17 +41,25 @@ public class PintableTable extends JTable{
                 }
 
                 if(!seleccionando){
+                    if(row != 0){
+                        Mensaje.mensajeInformacion("La fecha de inicio de la ocupación debe ser hoy.");
+                        return;
+                    }
                     seleccionando = true;
                     celdaInicial.setLocation(column, row);
                     celdaFinal.setLocation(-1, -1);
                 }
                 else{
                     if(column != celdaInicial.x){
-                        celdaInicial.setLocation(column, row);
+                        if(row != 0){
+                            Mensaje.mensajeInformacion("No se pueden ocupar múltiples habitaciones a la vez.");
+                        }
+                        else{
+                            celdaInicial.setLocation(column, row);
+                        }
                         jtable_habitaciones_contenido.fireTableDataChanged();
                         return;
                     }
-                    
                     int row_aux = row;
                     int inicial_y = celdaInicial.y;
 
@@ -82,7 +91,7 @@ public class PintableTable extends JTable{
                 jtable_habitaciones_contenido.fireTableDataChanged(); 
             }
             public void mousePressed(MouseEvent e) {}
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {}
             public void mouseEntered(MouseEvent e) {}
             public void mouseExited(MouseEvent e) {}
         });
