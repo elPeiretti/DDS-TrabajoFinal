@@ -111,6 +111,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		dc_fecha_desde = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		dc_fecha_desde.setBounds(212, 142, 100, 20);
 		dc_fecha_desde.setMinSelectableDate(new Date());
+		dc_fecha_desde.setEnabled(false);
+		dc_fecha_desde.setDate(new Date());
 		add(dc_fecha_desde);
 		
 		dc_fecha_hasta = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
