@@ -3,6 +3,7 @@ package com.tp.dominio.ocupacion;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import org.hibernate.HibernateException;
@@ -45,10 +46,11 @@ public class OcupacionSqlDAO implements OcupacionDAO {
 		TypedQuery<Ocupacion> hqlQuery = session.createQuery(sqlStatement); 
 		
 		hqlQuery.setParameter("numero", habitacion);
-		resultado = hqlQuery.getSingleResult();
-		
+		List<Ocupacion> aux = hqlQuery.getResultList();
+		resultado = aux == null ? null : aux.get(0);
 		session.close();
 		return resultado;
+	}
 	public void insertarOcupacionyCancelarReservas(Ocupacion ocupacion, List<Reserva> reservas) {
 		Transaction tx = null;
         Session session = HibernateUtil.getSessionFactory().openSession();

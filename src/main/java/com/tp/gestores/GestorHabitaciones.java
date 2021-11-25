@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import javax.swing.SortOrder;
 
 import com.tp.dominio.habitacion.EstadoHabitacion;
 import com.tp.dominio.habitacion.Habitacion;
@@ -24,12 +27,13 @@ import com.tp.dominio.reserva.EstadoReserva;
 import com.tp.dominio.reserva.Reserva;
 import com.tp.dominio.reserva.ReservaDAO;
 import com.tp.dominio.reserva.ReservaSqlDAO;
-
+import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.ReservaDTO;
+import com.tp.interfaces.misc.Mensaje;
 
 public class GestorHabitaciones {
 
@@ -101,10 +105,44 @@ public class GestorHabitaciones {
         return reservas;
     }
 
-	public static List<PasajeroDTO> getUltimosOcupantes(String habitacion) {
+	public static List<PasajeroDTO> getUltimosOcupantes(String habitacion, BusqPasajeroDTO criterios_actuales) {
 		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
-		return GestorPasajeros.convertToPasajeroDTO(ocupacionDAO.getUltimaOcupacion(habitacion).getPasajeros());
+		Ocupacion oc = ocupacionDAO.getUltimaOcupacion(habitacion);
+		if(oc == null) {
+			Mensaje.mensajeError(new String[]{"La habitación seleccionada no existe o nunca fue ocupada"});
+			return null;
+		}
+		if(oc.getHabitacion().getEstado() != EstadoHabitacion.OCUPADA) {
+			Mensaje.mensajeError(new String[]{"La habitación seleccionada no se encuentra ocupada"});
+			return null;
+		}
+		
+		List<PasajeroDTO> lista = GestorPasajeros.convertToPasajeroDTO(ocupacionDAO.getUltimaOcupacion(habitacion).getPasajeros());
+		GestorHabitaciones.ordenarLista(lista,criterios_actuales);
+		return lista;
 	}
+	public static void ordenarLista(List<PasajeroDTO> lista, BusqPasajeroDTO criterios){
+		Comparator<PasajeroDTO> comp;
+		switch(criterios.getColumna()) {
+		case NOMBRES:
+			comp = (p1,p2) -> p1.getNombres().compareTo(p2.getNombres());
+			break;
+		case APELLIDO:
+			comp = (p1,p2) -> p1.getApellido().compareTo(p2.getApellido());
+			break;
+		case NRODOC:
+			comp = (p1,p2) -> p1.getNroDocumento().compareTo(p2.getNroDocumento());
+			break;
+		case TIPODOC:
+			comp = (p1,p2) -> p1.getTipoDocumentoDTO().getTipo().compareTo(p2.getTipoDocumentoDTO().getTipo());
+			break;
+		default:
+			comp = (p1,p2) -> p1.getNombres().compareTo(p2.getNombres());
+		}
+		if(criterios.getSortOrder().equals(SortOrder.DESCENDING)) comp = comp.reversed();
+		lista.sort(comp);
+	}
+	
     public static HabitacionDTO getHabitacionByNumero(String numero) {
         HabitacionDAO hDao= new HabitacionSqlDAO();
 		return new HabitacionDTO(hDao.getHabitacionByNumero(numero));

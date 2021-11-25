@@ -65,6 +65,7 @@ public class Ocupacion {
 		lista.add(responsable);
 		acompaniantes.stream().forEach(a -> lista.add(a));
 		return lista;
+	}
 	public void setIdOcupacion(Integer idOcupacion) {
 		this.idOcupacion = idOcupacion;
 	}

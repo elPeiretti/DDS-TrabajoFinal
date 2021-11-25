@@ -64,6 +64,7 @@ public class ResultPane<E> extends JPanel {
 			}
 		};
 		jtable_resultados.setModel(jtable_contenido);
+		jtable_resultados.getTableHeader().setReorderingAllowed(false);
 		sorter = new TableRowSorter<TableModel>(jtable_contenido);
 		jtable_resultados.setRowSorter(sorter);
 		objetos_en_tabla = new ArrayList<E>();

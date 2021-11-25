@@ -24,6 +24,11 @@ public class BusqPasajeroDTO {
 	private columnaOrden columna;
 	private SortOrder sortOrder;
 	
+	public BusqPasajeroDTO() {
+		columna = columnaOrden.APELLIDO;
+		sortOrder = SortOrder.ASCENDING;
+	}
+	
 	public String getNombres() {
 		return nombres;
 	}

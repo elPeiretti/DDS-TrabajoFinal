@@ -8,14 +8,21 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 import javax.swing.text.MaskFormatter;
 
+import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.gestores.GestorHabitaciones;
+import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
@@ -24,6 +31,8 @@ import com.tp.interfaces.misc.JTextFieldLimit;
 import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.ResultPane;
 import com.tp.interfaces.misc.TabOrder;
+import com.tp.interfaces.pasajeros.MenuAltaPasajero;
+import com.tp.interfaces.pasajeros.MenuModificarPasajero;
 
 public class MenuFacturar extends JPanel implements SeteableTab {
 
@@ -47,7 +56,11 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private JLabel lbl_error_salida;
 	private JLabel lbl_error_num_hab;
 	private HashMap<String,Boolean> campos_validos;
-	private boolean cuitActivo;
+	private BusqPasajeroDTO criterios_actuales;
+	private Map<Integer,BusqPasajeroDTO.columnaOrden> indice_columnas;
+	private boolean cuit_activo;
+	private boolean flag_busq_bd;
+	private boolean tabla_vacia;
 	
 	public MenuFacturar(JFrame ventana_contenedora, Encabezado encabezado)  {
 		setBackground(Color.WHITE);
@@ -55,7 +68,8 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		setLayout(null);
 		
 		this.campos_validos = new HashMap<String,Boolean>();
-		cuitActivo = false;
+		cuit_activo = false;
+		tabla_vacia = true;
 		
 		lbl_num_hab = new JLabel("<html>Número de<br/>Habitación (*):</html>");
 		lbl_num_hab.setHorizontalAlignment(SwingConstants.LEFT);
@@ -169,9 +183,11 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		campos_validos.put("cuit", true);
 		
 		rp_pasajeros.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento"), null);
-		//aca se deberían copiar las lineas que permiten el ordenamiento de columnas con paginación de
-		//MenuBusquedaPasajero (además de implementar la parte del DAO)
-		//como el máximo de resultados es en teoría 5 lo voy a considerar no urgente :).
+		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
+		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
+		indice_columnas.put(1, BusqPasajeroDTO.columnaOrden.NOMBRES);
+		indice_columnas.put(2, BusqPasajeroDTO.columnaOrden.TIPODOC);
+		indice_columnas.put(3, BusqPasajeroDTO.columnaOrden.NRODOC);
 	}
 	private void agregarListenersValidacion() {
 		jftf_cuit.addFocusListener(new FocusListener() {
@@ -208,10 +224,10 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		chbx_tercero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(chbx_tercero.isSelected()) {
-					cuitActivo = true;
+					cuit_activo = true;
 					validarCuit();
 				}else {
-					cuitActivo = false;
+					cuit_activo = false;
 					campos_validos.put("cuit", true);
 					lbl_error_cuit.setText("");
 				}
@@ -220,6 +236,8 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Boolean.TRUE.equals(campos_validos.get("habitacion"))) {//porque .get() puede retornar null
+					flag_busq_bd = true;
+					criterios_actuales = new BusqPasajeroDTO();
 					llenarTabla();
 				}else {
 					validarNum();
@@ -234,6 +252,28 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				}*/
 			}
 		});
+		/*jb_siguiente.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				JPanel m;
+				String nom;
+				int fila = rp_pasajeros.getTable().getSelectedRow();
+				if(fila == -1) {
+					if(chbx_tercero.isSelected() && campos_validos.get("cuit")) {
+						//pasar tercero
+					}else {
+						//mensaje error
+					}
+					
+				}else {
+					//que pasa si hay fila seleccionada y tambien tercero
+					//m = new MenuConsumosPorHabitacion(ventana_contenedora,rp_pasajeros.getRowObjects().get(fila));
+					//nom = MenuConsumosPorHabitacion.titulo;
+				}
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,nom);
+			}
+		});*/
+		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar la facturación?");
@@ -243,18 +283,34 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				}
 			}
 		});
-	}
-	private boolean seleccionResponsable() {
-		
-		return false;
+		rp_pasajeros.agregarRowListener(new RowSorterListener() {
+			public void sorterChanged(RowSorterEvent e) {
+				if(tabla_vacia) return;
+				if(e.getType()  != RowSorterEvent.Type.SORT_ORDER_CHANGED) return;
+				SortKey key = e.getSource().getSortKeys().get(0);
+				criterios_actuales.setColumna(indice_columnas.get(key.getColumn()));
+				criterios_actuales.setSortOrder(key.getSortOrder());
+				e.getSource().setSortKeys(List.of(key));//es necesario eliminar las SortKey viejas manualmente
+				llenarTabla();
+			}
+		});
 	}
 	private void llenarTabla() {
+		List<PasajeroDTO> lista, lp;
+		if(flag_busq_bd) {
+			lista = GestorHabitaciones.getUltimosOcupantes(jtf_num_hab.getText(),criterios_actuales);
+			flag_busq_bd = false;
+			if(lista == null) return;
+		}else {
+			lista = new LinkedList<PasajeroDTO>();
+			rp_pasajeros.getRowObjects().forEach(t -> lista.add(t));
+			GestorHabitaciones.ordenarLista(lista, criterios_actuales);
+		}
+		
 		rp_pasajeros.getContenido().setRowCount(0);
 		rp_pasajeros.getRowObjects().clear();
-		
-		rp_pasajeros.setCantPaginas(1L);
-		List<PasajeroDTO> lp = GestorHabitaciones.getUltimosOcupantes(jtf_num_hab.getText());
-		
+		rp_pasajeros.setCantPaginas((long) Math.ceil(lista.size()/8));
+		lp = paginar(lista,rp_pasajeros.getPaginaActual());
 		for(PasajeroDTO p : lp) {
 			Vector<String> v = new Vector<String>();
 			v.add(p.getApellido());
@@ -264,6 +320,13 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			rp_pasajeros.getContenido().addRow(v);
 			rp_pasajeros.getRowObjects().add(p);
 		}
+		tabla_vacia = false;
+	}
+	private List<PasajeroDTO> paginar(List<PasajeroDTO> lista, Integer pagina) {
+		int pr, ult;
+		ult = (lista.size() < 8 + 8*(pagina - 1)) ? lista.size() : 8 + 8*(pagina - 1);
+		pr = 8*(pagina - 1);
+		return lista.subList(pr, ult);
 	}
 	private void validarNum() {
 		String data = jtf_num_hab.getText();
@@ -280,11 +343,11 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	}
 	private void validarCuit() {
 		String data = jftf_cuit.getText();
-		if(cuitActivo && data.equals("__-________-_")) {
+		if(cuit_activo && data.equals("__-________-_")) {
 			lbl_error_cuit.setText("Este campo no puede estar vacío.");
 			campos_validos.put("cuit", false);
 		}
-		else if(cuitActivo && !data.matches("__-________-_|[0-9][0-9]-[0-9]{8}-[0-9]")) {
+		else if(cuit_activo && !data.matches("__-________-_|[0-9][0-9]-[0-9]{8}-[0-9]")) {
 			lbl_error_cuit.setText("El CUIT ingresado es invalido.");
 			campos_validos.put("cuit", false);
 		}

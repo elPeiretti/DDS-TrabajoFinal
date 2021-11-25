@@ -51,7 +51,6 @@ public class GestorPasajeros {
 		
 	}
 	
-	public static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
 	public static List<PasajeroDTO> getPasajerosBy(BusqPasajeroDTO criterios, Integer li, Integer cant, PasajeroDTO responsable) {
 		
 		PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
@@ -62,7 +61,7 @@ public class GestorPasajeros {
 		
 	}
 		
-	private static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
+	protected static List<PasajeroDTO> convertToPasajeroDTO(List<Pasajero> pasajeros) {
 		List<PasajeroDTO> resultado = new ArrayList<PasajeroDTO>();
 		
 		for(Pasajero p : pasajeros) {

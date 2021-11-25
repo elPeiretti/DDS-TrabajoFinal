@@ -45,12 +45,14 @@ public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 	private JTextField jtf_nombres;
 	private BusqPasajeroDTO criterios_actuales;
 	private Map<Integer,BusqPasajeroDTO.columnaOrden> indice_columnas;
+	private boolean tabla_vacia;
 	
 	public MenuBusquedaPasajero(JFrame ventana_contenedora, Encabezado encabezado) {
 		setBackground(Color.WHITE);
 		setSize(x_bound, y_bound);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
+		tabla_vacia = true;
 		
 		this.encabezado = encabezado;	
 		encabezado.setSize(640, 110);
@@ -192,6 +194,7 @@ public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 		
 		rp_pasajeros.agregarRowListener(new RowSorterListener() {
 			public void sorterChanged(RowSorterEvent e) {
+				if(tabla_vacia) return;
 				if(e.getType() != RowSorterEvent.Type.SORT_ORDER_CHANGED) return;
 				SortKey key = e.getSource().getSortKeys().get(0);
 				criterios_actuales.setColumna(indice_columnas.get(key.getColumn()));
@@ -218,6 +221,7 @@ public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 			rp_pasajeros.getContenido().addRow(v);
 			rp_pasajeros.getRowObjects().add(p);
 		}
+		tabla_vacia = false;
 	}
 
 	@Override

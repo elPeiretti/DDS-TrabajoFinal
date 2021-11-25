@@ -11,6 +11,6 @@ public interface OcupacionDAO {
 
 	public void insertarOcupacionyCancelarReservas(Ocupacion ocupacion, List<Reserva> reservas);
 
-	Ocupacion getUltimaOcupacion(String habitacion);
+	public Ocupacion getUltimaOcupacion(String habitacion);
 
 }
