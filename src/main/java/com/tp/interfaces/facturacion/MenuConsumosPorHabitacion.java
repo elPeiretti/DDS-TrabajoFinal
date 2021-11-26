@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.*;
 
+import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.interfaces.misc.Encabezado;
@@ -30,12 +31,14 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 	private JLabel lbl_total_tag;
 	private ResponsablePagoTerceroDTO responsable;
 	private PasajeroDTO responsable_pasajero;
+	private HabitacionDTO habitacion;
 	
-	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado){
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, HabitacionDTO hab){
 	
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		this.encabezado = encabezado;
+		this.habitacion = hab;
 		setLayout(null);
 		
 		JLabel lbl_nom_resp_tag = new JLabel("Nombre Responsable:");
@@ -96,12 +99,12 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		add(lbl_total_tag);
 	}
 
-	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero){
-		this(ventana_contenedora,encabezado);
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero, HabitacionDTO hab){
+		this(ventana_contenedora,encabezado,hab);
 		this.responsable_pasajero = responsable_pasajero;
 	}
-	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable){
-		this(ventana_contenedora,encabezado);
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable, HabitacionDTO hab){
+		this(ventana_contenedora,encabezado,hab);
 		this.responsable = responsable;
 	}
 

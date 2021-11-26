@@ -34,6 +34,7 @@ import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.ReservaDTO;
+import com.tp.dto.TipoHabitacionDTO;
 import com.tp.excepciones.HabitacionNoExistenteException;
 import com.tp.excepciones.HabitacionNoOcupadaException;
 import com.tp.excepciones.HabitacionSinOcupacionesException;
@@ -132,9 +133,16 @@ public class GestorHabitaciones {
 		return lista;
 	}
 	
-    public static HabitacionDTO getHabitacionByNumero(String numero) {
+    public static HabitacionDTO getHabitacionByNumero(String numero) throws HabitacionNoExistenteException {
         HabitacionDAO hDao= new HabitacionSqlDAO();
-		return new HabitacionDTO(hDao.getHabitacionByNumero(numero));
+		Habitacion h = hDao.getHabitacionByNumero(numero);
+		if(h==null){
+			throw new HabitacionNoExistenteException();
+		}
+		TipoHabitacionDTO tipoDto = new TipoHabitacionDTO(h.getTipoHabitacion().getNombre(), h.getTipoHabitacion().getCapacidad());
+		HabitacionDTO hDto = new HabitacionDTO(numero, h.getEstado(), h.getTipoHabitacion().getNombre(), tipoDto, h.getIdHabitacion());
+		
+		return hDto;
     }
     
     public static void ocuparHabitacion(OcupacionDTO ocupacionDto) {
