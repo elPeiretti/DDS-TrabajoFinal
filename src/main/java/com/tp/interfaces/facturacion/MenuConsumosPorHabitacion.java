@@ -1,14 +1,16 @@
 package com.tp.interfaces.facturacion;
 
 import java.awt.Color;
-
+import java.util.List;
 import javax.swing.*;
-
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
+import com.tp.dto.ServicioDTO;
 import com.tp.interfaces.misc.Encabezado;
-import com.tp.interfaces.misc.ResultPane;
+import com.tp.interfaces.misc.ResultPaneServicios;
+import com.tp.interfaces.misc.SpinnerCellEditor;
+import com.tp.interfaces.misc.SpinnerCellRenderer;
 import com.tp.interfaces.SeteableTab;
 
 public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
@@ -21,7 +23,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 	private Encabezado encabezado;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
-	private ResultPane rp_facturas;
+	private ResultPaneServicios<ServicioDTO> rp_servicios;
 	private JLabel lbl_nom_resp;
 	private JLabel lbl_subtotal_tag;
 	private JLabel lbl_subtotal;
@@ -59,11 +61,11 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		jb_cancelar.setBounds(81, 420, 100, 30);
 		add(jb_cancelar);
 		
-		rp_facturas = new ResultPane();
-		rp_facturas.setBounds(10, 156, 620, 184);
-		add(rp_facturas);
+		rp_servicios = new ResultPaneServicios<ServicioDTO>();
+		rp_servicios.setBounds(10, 156, 620, 184);
+		add(rp_servicios);
 		
-		lbl_nom_resp = new JLabel("<cargar nombre>");
+		lbl_nom_resp = new JLabel("");
 		lbl_nom_resp.setHorizontalAlignment(SwingConstants.LEFT);
 		lbl_nom_resp.setBounds(124, 121, 506, 14);
 		add(lbl_nom_resp);
@@ -73,17 +75,17 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		lbl_subtotal_tag.setBounds(419, 351, 104, 14);
 		add(lbl_subtotal_tag);
 		
-		lbl_subtotal = new JLabel("<cargar nombre>");
+		lbl_subtotal = new JLabel("");
 		lbl_subtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_subtotal.setBounds(533, 351, 98, 14);
 		add(lbl_subtotal);
 		
-		lbl_iva = new JLabel("<cargar nombre>");
+		lbl_iva = new JLabel("");
 		lbl_iva.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_iva.setBounds(532, 371, 98, 14);
 		add(lbl_iva);
 		
-		lbl_total = new JLabel("<cargar nombre>");
+		lbl_total = new JLabel("");
 		lbl_total.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_total.setBounds(533, 395, 98, 14);
 		add(lbl_total);
@@ -97,19 +99,55 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		lbl_total_tag.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_total_tag.setBounds(419, 395, 104, 14);
 		add(lbl_total_tag);
+		
 	}
 
 	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero, HabitacionDTO hab){
 		this(ventana_contenedora,encabezado,hab);
 		this.responsable_pasajero = responsable_pasajero;
+		inicializarCampos();
+		inicializarTabla();
 	}
 	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable, HabitacionDTO hab){
 		this(ventana_contenedora,encabezado,hab);
 		this.responsable = responsable;
+		inicializarCampos();
+		inicializarTabla();
+	}
+
+	private void inicializarCampos(){
+		if(responsable == null){
+			lbl_nom_resp.setText(responsable_pasajero.getApellido()+", "+responsable_pasajero.getNombres());
+		}
+		else{
+			lbl_nom_resp.setText(responsable.getRazonSocial());
+		}
+	}
+
+	private void inicializarTabla(){
+		//List<ServicioDTO> servicios = GestorHabitaciones.getServiciosNoFacturadosByHabitacion(habitacion);
+
+		rp_servicios.agregarColumnas(List.of("Consumos","Precio Unitario","Unidades Consumidas","Unidades a Facturar"), List.of(0,1,2,3));
+		rp_servicios.getContenido().addRow(new Object[]{"SANDIA","30.02","300",1});
+		rp_servicios.getContenido().addRow(new Object[]{"MILANESA","30.02","300",10});
+		rp_servicios.getContenido().addRow(new Object[]{"COCOS","30.02","300",2});
+		rp_servicios.getTable().getColumnModel().getColumn(3).setCellRenderer(new SpinnerCellRenderer());
+		rp_servicios.getTable().getColumnModel().getColumn(3).setCellEditor(new SpinnerCellEditor());
+		rp_servicios.getTable().setRowHeight(30);
+		
+
+		/*for(ServicioDTO s: servicios){
+			Vector<Object> v = s.asVector();
+			v.add(new JSpinner());
+			rp_servicios.getContenido().addRow(v);
+			rp_servicios.getRowObjects().add(s);
+		}*/
+		
+
 	}
 
 	@Override
 	public void setDefaultTab() {
-		jb_siguiente.requestFocus();;
+		jb_siguiente.requestFocus();
 	}
 }
