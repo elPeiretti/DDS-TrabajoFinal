@@ -30,15 +30,15 @@ public class HabitacionSqlDAO implements HabitacionDAO {
 	@Override
 	public Habitacion getHabitacionByNumero(String numero) {
 		Habitacion resultado;
+		List<Habitacion> r;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h WHERE h.numero = :numero");
 		hqlQuery.setParameter("numero", numero);
-		resultado = hqlQuery.getSingleResult();
-		
+		r = hqlQuery.getResultList();
+		resultado = r.size()==0? null : r.get(0);
 		session.close();
-		
 		return resultado;
 	}
 

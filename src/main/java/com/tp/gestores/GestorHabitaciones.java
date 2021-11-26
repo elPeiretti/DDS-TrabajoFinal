@@ -192,16 +192,23 @@ public class GestorHabitaciones {
     }
 
 	public static boolean cargarOcupacionActual(FacturarDTO criterios_actuales) {
+		HabitacionDAO habitacionDAO = new HabitacionSqlDAO();
+		
+		if(habitacionDAO.getHabitacionByNumero(criterios_actuales.getHabitacion()) == null){
+			Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
+			return false;
+		}
+
 		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
 		Ocupacion oc = ocupacionDAO.getUltimaOcupacion(criterios_actuales.getHabitacion());
 		if(oc == null) {
-			Mensaje.mensajeError(new String[]{"La habitación seleccionada no existe o nunca fue ocupada"});
+			Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones.");
 			return false;
-		}/*
+		}
 		if(oc.getHabitacion().getEstado() != EstadoHabitacion.OCUPADA) {
-			Mensaje.mensajeError(new String[]{"La habitación seleccionada no se encuentra ocupada"});
+			Mensaje.mensajeInformacion("La habitación seleccionada no se encuentra ocupada.");
 			return false;
-		}*/
+		}
 		criterios_actuales.setIdOcupacion(oc.getId());
 		criterios_actuales.setCantOcupantes(oc.getPasajeros().size());
 		return true;
