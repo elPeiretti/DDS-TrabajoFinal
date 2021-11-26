@@ -8,6 +8,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -20,13 +22,18 @@ import java.util.stream.Collectors;
 
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
 import javax.swing.text.MaskFormatter;
 
+import com.tp.dominio.factura.ResponsablePagoTercero;
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.FacturarDTO;
 import com.tp.dto.PasajeroDTO;
+import com.tp.dto.ResponsablePagoTerceroDTO;
+import com.tp.gestores.GestorFacturas;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.MenuPrincipal;
@@ -70,6 +77,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private boolean tabla_vacia;
 	private JLabel lbl_cuit;
 	private JLabel lbl_raz_social_tag;
+	private ResponsablePagoTerceroDTO responsable;
 	
 	public MenuFacturar(JFrame ventana_contenedora, Encabezado encabezado)  {
 		setBackground(Color.WHITE);
@@ -134,14 +142,16 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		chbx_tercero.setBounds(84, 421, 172, 23);
 		add(chbx_tercero);
 		
-		lbl_cuit = new JLabel("<html>CUIT:</html>");
+		lbl_cuit = new JLabel("<html>CUIT <font color='red'>(*)</font>:</html>");
 		lbl_cuit.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_cuit.setBounds(356, 425, 48, 14);
+		lbl_cuit.setEnabled(false);
 		add(lbl_cuit);
 		
 		jftf_cuit = new JFormattedTextField();
 		jftf_cuit.setColumns(10);
 		jftf_cuit.setBounds(410, 421, 140, 23);
+		jftf_cuit.setEnabled(false);
 		add(jftf_cuit);
 		try {
 			MaskFormatter mf = new MaskFormatter("##-########-#");
@@ -154,12 +164,14 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		
 		lbl_raz_social_tag = new JLabel("Razón Social:");
 		lbl_raz_social_tag.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_raz_social_tag.setBounds(284, 487, 118, 14);
+		lbl_raz_social_tag.setBounds(284, 467, 118, 14);
+		lbl_raz_social_tag.setEnabled(false);
 		add(lbl_raz_social_tag);
 		
-		lbl_raz_social = new JLabel("<razón social>");
+		lbl_raz_social = new JLabel("");
 		lbl_raz_social.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_raz_social.setBounds(418, 487, 130, 14);
+		lbl_raz_social.setBounds(418, 467, 130, 14);
+		lbl_raz_social.setEnabled(false);
 		add(lbl_raz_social);
 		
 		lbl_error_num_hab = new JLabel("");
@@ -203,12 +215,14 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				validarCuit();
 			}
 		});
+
 		jtf_num_hab.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {}
 			public void focusLost(FocusEvent e) {
 				validarNum();
 			}
 		});
+
 		jftf_salida.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {}
 			public void focusLost(FocusEvent e) {
@@ -233,21 +247,59 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			public void actionPerformed(ActionEvent e) {
 				if(chbx_tercero.isSelected()) {
 					cuit_activo = true;
+					jftf_cuit.setEnabled(true);
+					lbl_cuit.setEnabled(true);
+					lbl_raz_social_tag.setEnabled(true);
+					lbl_raz_social.setEnabled(true);
 					validarCuit();
-					lbl_cuit.setText("<html>CUIT <font color='red'>(*)</font>:</html>");
 
 					rp_pasajeros.getTable().getSelectionModel().clearSelection();
 					rp_pasajeros.setEnabled(false);
 				}else {
 					cuit_activo = false;
+					jftf_cuit.setEnabled(false);
+					lbl_cuit.setEnabled(false);
+					lbl_raz_social_tag.setEnabled(false);
+					lbl_raz_social.setEnabled(false);
 					campos_validos.put("cuit", true);
 					lbl_error_cuit.setText("");
-					lbl_cuit.setText("<html>CUIT:</html>");
 
 					rp_pasajeros.setEnabled(true);
 				}
 			}
 		});
+
+		jftf_cuit.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validarYBuscar();
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validarYBuscar();
+			}
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validarYBuscar();
+			}
+			
+			private void validarYBuscar(){
+				if(cuit_activo && validarCuit()){
+					responsable = GestorFacturas.getResponsableTerceroByCuit(jftf_cuit.getText());
+					if(responsable == null){
+						Mensaje.mensajeInformacion("No existe un responsable con el cuit indicado registrado en el sistema.");
+					}
+					else{
+						lbl_raz_social.setText(responsable.getRazonSocial());
+					}
+				}
+				else{
+					responsable = null;
+					lbl_raz_social.setText("");
+				}
+			}
+		});
+
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!(campos_validos.get("habitacion") && campos_validos.get("salida"))) {
@@ -263,11 +315,13 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 			}
 		});
+
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 			}
 		});
+
 		/*jb_siguiente.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -299,6 +353,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				}
 			}
 		});
+
 		rp_pasajeros.agregarRowListener(new RowSorterListener() {
 			public void sorterChanged(RowSorterEvent e) {
 				if(tabla_vacia) return;
@@ -310,6 +365,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				llenarTabla();
 			}
 		});
+
 		rp_pasajeros.getTable().addMouseListener(new MouseListener(){
 
 			public void mouseClicked(MouseEvent e) {}
@@ -329,6 +385,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 		});
 	}
+
 	private void llenarTabla() {
 		rp_pasajeros.getContenido().setRowCount(0);
 		rp_pasajeros.getRowObjects().clear();
@@ -362,7 +419,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		}
 	}
 
-	private void validarCuit() {
+	private boolean validarCuit() {
 		String data = jftf_cuit.getText();
 		if(cuit_activo && data.equals("__-________-_")) {
 			lbl_error_cuit.setText("Este campo no puede estar vacío.");
@@ -376,6 +433,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			campos_validos.put("cuit", true);
 			lbl_error_cuit.setText("");
 		}
+		return campos_validos.get("cuit");
 	}
 
 	private void agregarTabOrder() {
