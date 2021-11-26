@@ -161,4 +161,11 @@ public class ResultPane<E> extends JPanel {
 		return objetos_en_tabla.get(row);
 	}
 
+	@Override
+	public void setEnabled(boolean b){
+		jtable_resultados.setEnabled(b);
+		btn_next.setEnabled(b);
+		btn_prev.setEnabled(b);
+	}
+
 }

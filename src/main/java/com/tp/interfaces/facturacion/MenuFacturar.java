@@ -6,7 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +40,8 @@ import com.tp.interfaces.misc.TabOrder;
 import com.tp.interfaces.pasajeros.MenuAltaPasajero;
 import com.tp.interfaces.pasajeros.MenuModificarPasajero;
 
+import net.bytebuddy.asm.Advice.Local;
+
 public class MenuFacturar extends JPanel implements SeteableTab {
 
 	public static String titulo = "Facturar";
@@ -62,6 +68,8 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private Map<Integer,FacturarDTO.columnaOrden> indice_columnas;
 	private boolean cuit_activo;
 	private boolean tabla_vacia;
+	private JLabel lbl_cuit;
+	private JLabel lbl_raz_social_tag;
 	
 	public MenuFacturar(JFrame ventana_contenedora, Encabezado encabezado)  {
 		setBackground(Color.WHITE);
@@ -126,7 +134,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		chbx_tercero.setBounds(84, 421, 172, 23);
 		add(chbx_tercero);
 		
-		JLabel lbl_cuit = new JLabel("CUIT (*)");
+		lbl_cuit = new JLabel("<html>CUIT:</html>");
 		lbl_cuit.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_cuit.setBounds(356, 425, 48, 14);
 		add(lbl_cuit);
@@ -144,7 +152,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			e.printStackTrace();
 		}
 		
-		JLabel lbl_raz_social_tag = new JLabel("Razón Social:");
+		lbl_raz_social_tag = new JLabel("Razón Social:");
 		lbl_raz_social_tag.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_raz_social_tag.setBounds(284, 487, 118, 14);
 		add(lbl_raz_social_tag);
@@ -226,16 +234,23 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				if(chbx_tercero.isSelected()) {
 					cuit_activo = true;
 					validarCuit();
+					lbl_cuit.setText("<html>CUIT <font color='red'>(*)</font>:</html>");
+
+					rp_pasajeros.getTable().getSelectionModel().clearSelection();
+					rp_pasajeros.setEnabled(false);
 				}else {
 					cuit_activo = false;
 					campos_validos.put("cuit", true);
 					lbl_error_cuit.setText("");
+					lbl_cuit.setText("<html>CUIT:</html>");
+
+					rp_pasajeros.setEnabled(true);
 				}
 			}
 		});
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (campos_validos.values().stream().filter(t->!t).collect(Collectors.toList()).size() != 0) {
+				if (!(campos_validos.get("habitacion") && campos_validos.get("salida"))) {
 					indicarCamposIncompletos();
 					return;
 				}
@@ -294,6 +309,24 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				e.getSource().setSortKeys(List.of(key));//es necesario eliminar las SortKey viejas manualmente
 				llenarTabla();
 			}
+		});
+		rp_pasajeros.getTable().addMouseListener(new MouseListener(){
+
+			public void mouseClicked(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int row = rp_pasajeros.getTable().getSelectedRow();
+				if(row==-1) return;
+				if (Period.between(rp_pasajeros.getRowObjects().get(row).getFechaDeNacimiento(), LocalDate.now()).getYears() < 18){
+					Mensaje.mensajeInformacion("La persona seleccionada es menor de edad. Por favor elija otra.");
+					rp_pasajeros.getTable().getSelectionModel().clearSelection();
+				}
+			}
+
 		});
 	}
 	private void llenarTabla() {
