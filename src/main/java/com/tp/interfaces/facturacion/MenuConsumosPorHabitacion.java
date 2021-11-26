@@ -4,17 +4,20 @@ import java.awt.Color;
 
 import javax.swing.*;
 
+import com.tp.dto.PasajeroDTO;
+import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.ResultPane;
+import com.tp.interfaces.SeteableTab;
 
-public class MenuConsumosPorHabitacion extends JPanel {
+public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 
 	public static String titulo = "Facturar";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
 
 	private JFrame ventana_contenedora;
-	private JPanel encabezado;
+	private Encabezado encabezado;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
 	private ResultPane rp_facturas;
@@ -25,11 +28,14 @@ public class MenuConsumosPorHabitacion extends JPanel {
 	private JLabel lbl_total;
 	private JLabel lbl_iva_tag;
 	private JLabel lbl_total_tag;
+	private ResponsablePagoTerceroDTO responsable;
+	private PasajeroDTO responsable_pasajero;
 	
-	public MenuConsumosPorHabitacion(JFrame ventana_contenedora) {
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado){
 	
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
+		this.encabezado = encabezado;
 		setLayout(null);
 		
 		JLabel lbl_nom_resp_tag = new JLabel("Nombre Responsable:");
@@ -88,5 +94,19 @@ public class MenuConsumosPorHabitacion extends JPanel {
 		lbl_total_tag.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_total_tag.setBounds(419, 395, 104, 14);
 		add(lbl_total_tag);
+	}
+
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero){
+		this(ventana_contenedora,encabezado);
+		this.responsable_pasajero = responsable_pasajero;
+	}
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable){
+		this(ventana_contenedora,encabezado);
+		this.responsable = responsable;
+	}
+
+	@Override
+	public void setDefaultTab() {
+		jb_siguiente.requestFocus();;
 	}
 }

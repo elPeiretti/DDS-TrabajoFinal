@@ -33,13 +33,18 @@ import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.FacturarDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
+import com.tp.excepciones.HabitacionNoExistenteException;
+import com.tp.excepciones.HabitacionNoOcupadaException;
+import com.tp.excepciones.HabitacionSinOcupacionesException;
 import com.tp.gestores.GestorFacturas;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
+import com.tp.interfaces.habitaciones.ocupaciones.MenuBuscarResponsable;
 import com.tp.interfaces.misc.Encabezado;
+import com.tp.interfaces.misc.EnterActionAssigner;
 import com.tp.interfaces.misc.JTextFieldLimit;
 import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.ResultPane;
@@ -192,6 +197,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		lbl_error_cuit.setBounds(410, 450, 164, 14);
 		add(lbl_error_cuit);
 		
+		EnterActionAssigner.setEnterAction(List.of(jb_buscar,jb_cancelar,jb_siguiente));
 		this.inicializarMapa();
 		this.inicializarCampos();
 		this.agregarTabOrder();
@@ -294,7 +300,9 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 					}
 				}
 				else{
-					responsable = null;
+					if(cuit_activo){
+						responsable = null;
+					}
 					lbl_raz_social.setText("");
 				}
 			}
@@ -302,8 +310,9 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!(campos_validos.get("habitacion") && campos_validos.get("salida"))) {
-					indicarCamposIncompletos();
+				if (!campos_validos.get("habitacion")) {
+					if (jtf_num_hab.getText().isBlank())
+						lbl_error_num_hab.setText("Este campo no puede estar vacío.");
 					return;
 				}
 
@@ -311,38 +320,64 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				criterios_actuales.setHabitacion(jtf_num_hab.getText());
 				criterios_actuales.setIdOcupacion(null);
 				criterios_actuales.setCantOcupantes(0);
-				if(GestorHabitaciones.cargarOcupacionActual(criterios_actuales)) llenarTabla();
+				try{
+					GestorHabitaciones.cargarOcupacionActual(criterios_actuales);
+					llenarTabla();
+				}
+				catch(HabitacionNoExistenteException exc){
+					Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
+					rp_pasajeros.limpiarTabla();
+				}
+				catch(HabitacionSinOcupacionesException exc){
+					Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones.");
+					rp_pasajeros.limpiarTabla();
+				}
+				catch(HabitacionNoOcupadaException exc){
+					Mensaje.mensajeInformacion("La habitación seleccionada no se encuentra ocupada.");
+					rp_pasajeros.limpiarTabla();
+				}
 
 			}
 		});
 
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
+				if(!(campos_validos.get("habitacion") && campos_validos.get("salida"))){
+					indicarCamposIncompletos();
+					return;
+				}
+				if(GestorHabitaciones.getHabitacionByNumero(jtf_num_hab.getText()) == null){
+					Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
+					return;
+				}
 
-		/*jb_siguiente.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				JPanel m;
-				String nom;
-				int fila = rp_pasajeros.getTable().getSelectedRow();
-				if(fila == -1) {
-					if(chbx_tercero.isSelected() && campos_validos.get("cuit")) {
-						//pasar tercero
-					}else {
-						//mensaje error
+				JPanel m=null;
+				String nom=null;
+				if(cuit_activo){
+
+					if(responsable == null){
+						Mensaje.mensajeInformacion("AQUI DEBERIA EJECUTARSE CU14");
+					}
+					else{
+						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,responsable);
+						nom = MenuConsumosPorHabitacion.titulo;
 					}
 					
-				}else {
-					//que pasa si hay fila seleccionada y tambien tercero
-					//m = new MenuConsumosPorHabitacion(ventana_contenedora,rp_pasajeros.getRowObjects().get(fila));
-					//nom = MenuConsumosPorHabitacion.titulo;
 				}
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,nom);
+				else{ // debe seleccionar de la tabla
+					int fila = rp_pasajeros.getTable().getSelectedRow();
+					if(fila != -1) {
+						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,rp_pasajeros.getRowObjects().get(fila));
+						nom = MenuConsumosPorHabitacion.titulo;
+					}
+					else{
+						Mensaje.mensajeInformacion("Debe seleccionar un responsable para poder facturar.");
+					}
+				}
+				if(m!=null)
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,nom);
 			}
-		});*/
+		});
 		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -454,6 +489,8 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	}
 
 	private void indicarCamposIncompletos() {
+		if(cuit_activo && jftf_cuit.getText().equals("__-________-_"))
+		lbl_error_cuit.setText("Este campo no puede estar vacío.");
 		if (jtf_num_hab.getText().isBlank())
 			lbl_error_num_hab.setText("Este campo no puede estar vacío.");
 		if (jftf_salida.getText().equals("__:__"))

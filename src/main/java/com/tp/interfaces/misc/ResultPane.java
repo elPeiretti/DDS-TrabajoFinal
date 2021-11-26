@@ -168,4 +168,11 @@ public class ResultPane<E> extends JPanel {
 		btn_prev.setEnabled(b);
 	}
 
+	public void limpiarTabla(){
+		jtable_contenido.setRowCount(0);
+		objetos_en_tabla.clear();
+		pagina_actual = 1;
+		cant_paginas = 1L;
+	}
+
 }

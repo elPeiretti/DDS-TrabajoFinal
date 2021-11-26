@@ -34,6 +34,9 @@ import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.ReservaDTO;
+import com.tp.excepciones.HabitacionNoExistenteException;
+import com.tp.excepciones.HabitacionNoOcupadaException;
+import com.tp.excepciones.HabitacionSinOcupacionesException;
 import com.tp.interfaces.misc.Mensaje;
 
 public class GestorHabitaciones {
@@ -191,27 +194,23 @@ public class GestorHabitaciones {
     	
     }
 
-	public static boolean cargarOcupacionActual(FacturarDTO criterios_actuales) {
+	public static void cargarOcupacionActual(FacturarDTO criterios_actuales) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, HabitacionNoOcupadaException {
 		HabitacionDAO habitacionDAO = new HabitacionSqlDAO();
 		
 		if(habitacionDAO.getHabitacionByNumero(criterios_actuales.getHabitacion()) == null){
-			Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
-			return false;
+			throw new HabitacionNoExistenteException();
 		}
 
 		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
 		Ocupacion oc = ocupacionDAO.getUltimaOcupacion(criterios_actuales.getHabitacion());
 		if(oc == null) {
-			Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones.");
-			return false;
+			throw new HabitacionSinOcupacionesException();
 		}
 		if(oc.getHabitacion().getEstado() != EstadoHabitacion.OCUPADA) {
-			Mensaje.mensajeInformacion("La habitación seleccionada no se encuentra ocupada.");
-			return false;
+			throw new HabitacionNoOcupadaException();
 		}
 		criterios_actuales.setIdOcupacion(oc.getId());
 		criterios_actuales.setCantOcupantes(oc.getPasajeros().size());
-		return true;
 	}
 
 	public static List<PasajeroDTO> getOcupantesBy(FacturarDTO criterios_actuales, Integer li, Integer cant) {
