@@ -6,30 +6,14 @@ public class FacturarDTO {
 	public enum columnaOrden {NOMBRES,APELLIDO,NRODOC,TIPODOC}
 	private columnaOrden columna;
 	private SortOrder sortOrder;
-	private String habitacion;
-	private Integer idOcupacion;
-	private Integer cantOcupantes;
+	private String idHabitacion;
+	private OcupacionDTO ocupacion;
+	private String horaSalida;
+	private ResponsablePagoTerceroDTO responsable;
 	public FacturarDTO() {
 		setColumna(columnaOrden.APELLIDO);
 		setSortOrder(SortOrder.ASCENDING);
 	}
-
-	public String getHabitacion() {
-		return habitacion;
-	}
-
-	public void setHabitacion(String habitacion) {
-		this.habitacion = habitacion;
-	}
-
-	public Integer getIdOcupacion() {
-		return idOcupacion;
-	}
-
-	public void setIdOcupacion(Integer idOcupacion) {
-		this.idOcupacion = idOcupacion;
-	}
-
 	public SortOrder getSortOrder() {
 		return sortOrder;
 	}
@@ -45,12 +29,28 @@ public class FacturarDTO {
 	public void setColumna(columnaOrden columna) {
 		this.columna = columna;
 	}
-
-	public Integer getCantOcupantes() {
-		return cantOcupantes;
+	public OcupacionDTO getOcupacion() {
+		return ocupacion;
 	}
-
-	public void setCantOcupantes(Integer cantOcupantes) {
-		this.cantOcupantes = cantOcupantes;
+	public void setOcupacion(OcupacionDTO ocupacion) {
+		this.ocupacion = ocupacion;
+	}
+	public String getHoraSalida() {
+		return horaSalida;
+	}
+	public void setHoraSalida(String hora_salida) {
+		this.horaSalida = hora_salida;
+	}
+	public ResponsablePagoTerceroDTO getResponsable() {
+		return responsable;
+	}
+	public void setResponsable(ResponsablePagoTerceroDTO responsable) {
+		this.responsable = responsable;
+	}
+	public String getIdHabitacion() {
+		return idHabitacion;
+	}
+	public void setIdHabitacion(String idHabitacion) {
+		this.idHabitacion = idHabitacion;
 	}
 }

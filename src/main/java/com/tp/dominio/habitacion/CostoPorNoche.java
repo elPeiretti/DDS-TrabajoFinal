@@ -16,6 +16,14 @@ public class CostoPorNoche {
 	private LocalDate fechaFinVigencia;
 	@Column (name = "costo")
 	private Double costo;
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id_costo_por_noche")

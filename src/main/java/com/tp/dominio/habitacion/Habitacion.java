@@ -50,4 +50,8 @@ public class Habitacion {
     public Integer getIdHabitacion() {
         return idHabitacion;
     }
+
+	public void addServicio(Servicio estadia) {
+		servicios.add(estadia);
+	}
 }

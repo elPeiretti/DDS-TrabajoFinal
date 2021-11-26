@@ -1,7 +1,10 @@
 package com.tp.dto;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
+
+import com.tp.dominio.pasajero.Pasajero;
 
 
 public class OcupacionDTO {
@@ -68,5 +71,10 @@ public class OcupacionDTO {
     public void setHabitacion(HabitacionDTO h) {
 		this.habitacion = h;
     }
-
+	public List<PasajeroDTO> getPasajeros() {
+		List<PasajeroDTO> lista = new LinkedList<PasajeroDTO>();
+		lista.add(responsable);
+		acompaniantes.stream().forEach(a -> lista.add(a));
+		return lista;
+	}
 }

@@ -1,6 +1,8 @@
 package com.tp.gestores;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.SortOrder;
 
+import com.tp.dominio.factura.items.Servicio;
 import com.tp.dominio.habitacion.EstadoHabitacion;
 import com.tp.dominio.habitacion.Habitacion;
 import com.tp.dominio.habitacion.HabitacionDAO;
@@ -194,32 +197,59 @@ public class GestorHabitaciones {
     	
     }
 
-	public static void cargarOcupacionActual(FacturarDTO criterios_actuales) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, HabitacionNoOcupadaException {
+	public static OcupacionDTO buscarOcupantesHabitacion(String numero) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, HabitacionNoOcupadaException {
 		HabitacionDAO habitacionDAO = new HabitacionSqlDAO();
 		
-		if(habitacionDAO.getHabitacionByNumero(criterios_actuales.getHabitacion()) == null){
+		if(habitacionDAO.getHabitacionByNumero(numero) == null){
 			throw new HabitacionNoExistenteException();
 		}
 
 		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
-		Ocupacion oc = ocupacionDAO.getUltimaOcupacion(criterios_actuales.getHabitacion());
+		Ocupacion oc = ocupacionDAO.getUltimaOcupacion(numero);
 		if(oc == null) {
 			throw new HabitacionSinOcupacionesException();
 		}
 		if(oc.getHabitacion().getEstado() != EstadoHabitacion.OCUPADA) {
 			throw new HabitacionNoOcupadaException();
 		}
-		criterios_actuales.setIdOcupacion(oc.getId());
-		criterios_actuales.setCantOcupantes(oc.getPasajeros().size());
+		return convertToOcupacionDTO(oc);
 	}
 
-	public static List<PasajeroDTO> getOcupantesBy(FacturarDTO criterios_actuales, Integer li, Integer cant) {
-		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
-		Ocupacion oc = ocupacionDAO.getOcupacionById(criterios_actuales.getIdOcupacion());
-		List<Pasajero> ocupantes = oc.getPasajeros();
-		List<PasajeroDTO> ocupantesDTO = ordenarLista(GestorPasajeros.convertToPasajeroDTO(ocupantes),criterios_actuales);
-		Integer ult = (ocupantesDTO.size() < 8 + li) ? ocupantesDTO.size() : 8 + li;
-		return ocupantesDTO.subList(li, ult);
+	private static OcupacionDTO convertToOcupacionDTO(Ocupacion oc) {
+		OcupacionDTO ocDTO = new OcupacionDTO();
+		ocDTO.setIdOcupacion(oc.getId());
+		ocDTO.setFechaEgreso(oc.getFechaEgreso());
+		ocDTO.setFechaIngreso(oc.getFechaIngreso());
+		ocDTO.setResponsable(GestorPasajeros.convertToPasajeroDTO(List.of(oc.getResponsable())).get(0));
+		ocDTO.setAcompaniantes(GestorPasajeros.convertToPasajeroDTO(oc.getAcompaniantes()));
+		ocDTO.setHabitacion(convertToHabitacionDTO(oc.getHabitacion()));
+		return ocDTO;
+	}
+
+	private static HabitacionDTO convertToHabitacionDTO(Habitacion habitacion) {
+		HabitacionDTO habDTO = new HabitacionDTO();
+		habDTO.setEstado(habitacion.getEstado());
+		habDTO.setNumero(habitacion.getNumero());
+		return habDTO;
+	}
+	public static void calcularEstadia(String hora_salida, OcupacionDTO ocupacion_actual) {
+		Habitacion hab = getHabitacionWithCostoVigenteEn(ocupacion_actual.getHabitacion().getIdHabitacion(),ocupacion_actual.getFechaIngreso());
+		Servicio estadia = GestorServicios.generarServicioEstadia(hab,ocupacion_actual);
+		hab.addServicio(estadia);
+		LocalTime localTimeSalida = LocalTime.parse(hora_salida, DateTimeFormatter.ofPattern("HH:mm"));
+		if(localTimeSalida.isAfter(LocalTime.of(11, 0)) && localTimeSalida.isBefore(LocalTime.of(18, 0))) {
+			Servicio recargo = GestorServicios.generarServicioRecargo(hab,ocupacion_actual);
+			hab.addServicio(recargo);
+		}
+		actualizarHabitacion(hab);
+	}
+	private static void actualizarHabitacion(Habitacion hab) {
+		new HabitacionSqlDAO().insertarHabitacion(hab);
+	}
+
+	private static Habitacion getHabitacionWithCostoVigenteEn(Integer idHabitacion,LocalDate fechaEgreso) {
+		Habitacion hab = new HabitacionSqlDAO().getHabitacionByIdWithCostoVigenteEn(idHabitacion, fechaEgreso);
+		return hab;
 	}
 	
 }

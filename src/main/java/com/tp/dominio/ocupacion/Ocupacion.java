@@ -59,7 +59,12 @@ public class Ocupacion {
 	public LocalDate getFechaEgreso() {
 		return fechaEgreso;
 	}
-
+	public Pasajero getResponsable() {
+		return responsable;
+	}
+	public List<Pasajero> getAcompaniantes() {
+		return acompaniantes;
+	}
 	public List<Pasajero> getPasajeros() {
 		List<Pasajero> lista = new LinkedList<Pasajero>();
 		lista.add(responsable);

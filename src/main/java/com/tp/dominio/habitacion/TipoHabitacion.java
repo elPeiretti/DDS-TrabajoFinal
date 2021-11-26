@@ -1,6 +1,6 @@
 package com.tp.dominio.habitacion;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -17,8 +17,14 @@ public class TipoHabitacion {
 	private Integer idTipoHabitacion;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_tipo_habitacion", referencedColumnName = "id_tipo_habitacion")
-	private Collection<CostoPorNoche> costo;
+	private List<CostoPorNoche> costo;
 
+	public List<CostoPorNoche> getCosto() {
+		return costo;
+	}
+	public void setCosto(List<CostoPorNoche> costo) {
+		this.costo = costo;
+	}
 	public String getNombre(){
 		return nombre;
 	}

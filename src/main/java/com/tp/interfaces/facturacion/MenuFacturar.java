@@ -31,6 +31,7 @@ import javax.swing.text.MaskFormatter;
 import com.tp.dominio.factura.ResponsablePagoTercero;
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.FacturarDTO;
+import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.excepciones.HabitacionNoExistenteException;
@@ -76,19 +77,18 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private JLabel lbl_error_salida;
 	private JLabel lbl_error_num_hab;
 	private HashMap<String,Boolean> campos_validos;
-	private FacturarDTO criterios_actuales;
 	private Map<Integer,FacturarDTO.columnaOrden> indice_columnas;
 	private boolean cuit_activo;
 	private boolean tabla_vacia;
 	private JLabel lbl_cuit;
 	private JLabel lbl_raz_social_tag;
-	private ResponsablePagoTerceroDTO responsable;
+	private FacturarDTO criterios_actuales;
 	
 	public MenuFacturar(JFrame ventana_contenedora, Encabezado encabezado)  {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		setLayout(null);
-		
+		criterios_actuales = new FacturarDTO();		
 		this.campos_validos = new HashMap<String,Boolean>();
 		cuit_activo = false;
 		tabla_vacia = true;
@@ -291,17 +291,17 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			
 			private void validarYBuscar(){
 				if(cuit_activo && validarCuit()){
-					responsable = GestorFacturas.getResponsableTerceroByCuit(jftf_cuit.getText());
-					if(responsable == null){
+					criterios_actuales.setResponsable(GestorFacturas.getResponsableTerceroByCuit(jftf_cuit.getText()));
+					if(criterios_actuales.getResponsable() == null){
 						Mensaje.mensajeInformacion("No existe un responsable con el cuit indicado registrado en el sistema.");
 					}
 					else{
-						lbl_raz_social.setText(responsable.getRazonSocial());
+						lbl_raz_social.setText(criterios_actuales.getResponsable().getRazonSocial());
 					}
 				}
 				else{
 					if(cuit_activo){
-						responsable = null;
+						criterios_actuales.setResponsable(null);
 					}
 					lbl_raz_social.setText("");
 				}
@@ -310,18 +310,16 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!campos_validos.get("habitacion")) {
-					if (jtf_num_hab.getText().isBlank())
-						lbl_error_num_hab.setText("Este campo no puede estar vacío.");
+				if (!campos_validos.get("habitacion") || !campos_validos.get("salida")) {
+					indicarCamposIncompletos();
 					return;
 				}
-
-				criterios_actuales = new FacturarDTO();
-				criterios_actuales.setHabitacion(jtf_num_hab.getText());
-				criterios_actuales.setIdOcupacion(null);
-				criterios_actuales.setCantOcupantes(0);
+				
+				criterios_actuales.setIdHabitacion(jtf_num_hab.getText());
+				criterios_actuales.setHoraSalida(jftf_salida.getText());
 				try{
-					GestorHabitaciones.cargarOcupacionActual(criterios_actuales);
+					criterios_actuales.setOcupacion(GestorHabitaciones.buscarOcupantesHabitacion(criterios_actuales.getIdHabitacion()));
+					GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
 					llenarTabla();
 				}
 				catch(HabitacionNoExistenteException exc){
@@ -355,11 +353,11 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				String nom=null;
 				if(cuit_activo){
 
-					if(responsable == null){
+					if(criterios_actuales.getResponsable() == null){
 						Mensaje.mensajeInformacion("AQUI DEBERIA EJECUTARSE CU14");
 					}
 					else{
-						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,responsable);
+						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable());
 						nom = MenuConsumosPorHabitacion.titulo;
 					}
 					
@@ -425,8 +423,9 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		rp_pasajeros.getContenido().setRowCount(0);
 		rp_pasajeros.getRowObjects().clear();
 		
-		rp_pasajeros.setCantPaginas((long) Math.ceil(criterios_actuales.getCantOcupantes()/8.0));
-		List<PasajeroDTO> lp = GestorHabitaciones.getOcupantesBy(criterios_actuales,(rp_pasajeros.getPaginaActual()-1)*8,8);
+		rp_pasajeros.setCantPaginas(1L);
+		List<PasajeroDTO> lp = criterios_actuales.getOcupacion().getPasajeros();
+		GestorHabitaciones.ordenarLista(lp, criterios_actuales);
 		
 		for(PasajeroDTO p : lp) {
 			Vector<String> v = new Vector<String>();
