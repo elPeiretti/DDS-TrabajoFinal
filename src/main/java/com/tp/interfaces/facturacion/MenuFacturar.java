@@ -20,6 +20,7 @@ import javax.swing.event.RowSorterListener;
 import javax.swing.text.MaskFormatter;
 
 import com.tp.dto.BusqPasajeroDTO;
+import com.tp.dto.FacturarDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorPasajeros;
@@ -56,10 +57,9 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private JLabel lbl_error_salida;
 	private JLabel lbl_error_num_hab;
 	private HashMap<String,Boolean> campos_validos;
-	private BusqPasajeroDTO criterios_actuales;
-	private Map<Integer,BusqPasajeroDTO.columnaOrden> indice_columnas;
+	private FacturarDTO criterios_actuales;
+	private Map<Integer,FacturarDTO.columnaOrden> indice_columnas;
 	private boolean cuit_activo;
-	private boolean flag_busq_bd;
 	private boolean tabla_vacia;
 	
 	public MenuFacturar(JFrame ventana_contenedora, Encabezado encabezado)  {
@@ -183,11 +183,11 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		campos_validos.put("cuit", true);
 		
 		rp_pasajeros.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento"), null);
-		indice_columnas = new HashMap<Integer,BusqPasajeroDTO.columnaOrden>();
-		indice_columnas.put(0, BusqPasajeroDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
-		indice_columnas.put(1, BusqPasajeroDTO.columnaOrden.NOMBRES);
-		indice_columnas.put(2, BusqPasajeroDTO.columnaOrden.TIPODOC);
-		indice_columnas.put(3, BusqPasajeroDTO.columnaOrden.NRODOC);
+		indice_columnas = new HashMap<Integer,FacturarDTO.columnaOrden>();
+		indice_columnas.put(0, FacturarDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
+		indice_columnas.put(1, FacturarDTO.columnaOrden.NOMBRES);
+		indice_columnas.put(2, FacturarDTO.columnaOrden.TIPODOC);
+		indice_columnas.put(3, FacturarDTO.columnaOrden.NRODOC);
 	}
 	private void agregarListenersValidacion() {
 		jftf_cuit.addFocusListener(new FocusListener() {
@@ -236,9 +236,11 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Boolean.TRUE.equals(campos_validos.get("habitacion"))) {//porque .get() puede retornar null
-					flag_busq_bd = true;
-					criterios_actuales = new BusqPasajeroDTO();
-					llenarTabla();
+					criterios_actuales = new FacturarDTO();
+					criterios_actuales.setHabitacion(jtf_num_hab.getText());
+					criterios_actuales.setIdOcupacion(null);
+					criterios_actuales.setCantOcupantes(0);
+					if(GestorHabitaciones.cargarOcupacionActual(criterios_actuales)) llenarTabla();
 				}else {
 					validarNum();
 				}
@@ -296,21 +298,12 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		});
 	}
 	private void llenarTabla() {
-		List<PasajeroDTO> lista, lp;
-		if(flag_busq_bd) {
-			lista = GestorHabitaciones.getUltimosOcupantes(jtf_num_hab.getText(),criterios_actuales);
-			flag_busq_bd = false;
-			if(lista == null) return;
-		}else {
-			lista = new LinkedList<PasajeroDTO>();
-			rp_pasajeros.getRowObjects().forEach(t -> lista.add(t));
-			GestorHabitaciones.ordenarLista(lista, criterios_actuales);
-		}
-		
 		rp_pasajeros.getContenido().setRowCount(0);
 		rp_pasajeros.getRowObjects().clear();
-		rp_pasajeros.setCantPaginas((long) Math.ceil(lista.size()/8));
-		lp = paginar(lista,rp_pasajeros.getPaginaActual());
+		
+		rp_pasajeros.setCantPaginas((long) Math.ceil(criterios_actuales.getCantOcupantes()/8.0));
+		List<PasajeroDTO> lp = GestorHabitaciones.getOcupantesBy(criterios_actuales,(rp_pasajeros.getPaginaActual()-1)*8,8);
+		
 		for(PasajeroDTO p : lp) {
 			Vector<String> v = new Vector<String>();
 			v.add(p.getApellido());
@@ -321,12 +314,6 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			rp_pasajeros.getRowObjects().add(p);
 		}
 		tabla_vacia = false;
-	}
-	private List<PasajeroDTO> paginar(List<PasajeroDTO> lista, Integer pagina) {
-		int pr, ult;
-		ult = (lista.size() < 8 + 8*(pagina - 1)) ? lista.size() : 8 + 8*(pagina - 1);
-		pr = 8*(pagina - 1);
-		return lista.subList(pr, ult);
 	}
 	private void validarNum() {
 		String data = jtf_num_hab.getText();

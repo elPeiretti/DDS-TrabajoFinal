@@ -5,12 +5,16 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.swing.SortOrder;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.tp.dominio.pasajero.Pasajero;
 import com.tp.dominio.reserva.Reserva;
+import com.tp.dto.BusqPasajeroDTO;
+import com.tp.dto.FacturarDTO;
 import com.tp.hibernate.HibernateUtil;
 import com.tp.interfaces.misc.Mensaje;
 
@@ -72,4 +76,19 @@ public class OcupacionSqlDAO implements OcupacionDAO {
         }
 	}
 
+	@Override
+	public Ocupacion getOcupacionById(Integer idOcupacion) {
+		Ocupacion resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		String sqlStatement = "SELECT o FROM Ocupacion o WHERE o.idOcupacion = :id";	
+
+		TypedQuery<Ocupacion> hqlQuery = session.createQuery(sqlStatement); 
+		
+		hqlQuery.setParameter("id", idOcupacion);
+		List<Ocupacion> aux = hqlQuery.getResultList();
+		resultado = aux == null ? null : aux.get(0);
+		session.close();
+		return resultado;
+	}
 }

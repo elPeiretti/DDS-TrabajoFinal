@@ -28,6 +28,7 @@ import com.tp.dominio.reserva.Reserva;
 import com.tp.dominio.reserva.ReservaDAO;
 import com.tp.dominio.reserva.ReservaSqlDAO;
 import com.tp.dto.BusqPasajeroDTO;
+import com.tp.dto.FacturarDTO;
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
@@ -105,23 +106,7 @@ public class GestorHabitaciones {
         return reservas;
     }
 
-	public static List<PasajeroDTO> getUltimosOcupantes(String habitacion, BusqPasajeroDTO criterios_actuales) {
-		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
-		Ocupacion oc = ocupacionDAO.getUltimaOcupacion(habitacion);
-		if(oc == null) {
-			Mensaje.mensajeError(new String[]{"La habitación seleccionada no existe o nunca fue ocupada"});
-			return null;
-		}
-		if(oc.getHabitacion().getEstado() != EstadoHabitacion.OCUPADA) {
-			Mensaje.mensajeError(new String[]{"La habitación seleccionada no se encuentra ocupada"});
-			return null;
-		}
-		
-		List<PasajeroDTO> lista = GestorPasajeros.convertToPasajeroDTO(ocupacionDAO.getUltimaOcupacion(habitacion).getPasajeros());
-		GestorHabitaciones.ordenarLista(lista,criterios_actuales);
-		return lista;
-	}
-	public static void ordenarLista(List<PasajeroDTO> lista, BusqPasajeroDTO criterios){
+	public static List<PasajeroDTO> ordenarLista(List<PasajeroDTO> lista, FacturarDTO criterios){
 		Comparator<PasajeroDTO> comp;
 		switch(criterios.getColumna()) {
 		case NOMBRES:
@@ -141,6 +126,7 @@ public class GestorHabitaciones {
 		}
 		if(criterios.getSortOrder().equals(SortOrder.DESCENDING)) comp = comp.reversed();
 		lista.sort(comp);
+		return lista;
 	}
 	
     public static HabitacionDTO getHabitacionByNumero(String numero) {
@@ -204,5 +190,30 @@ public class GestorHabitaciones {
     	ocupacionDao.insertarOcupacionyCancelarReservas(ocupacion, listaReservas);
     	
     }
+
+	public static boolean cargarOcupacionActual(FacturarDTO criterios_actuales) {
+		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
+		Ocupacion oc = ocupacionDAO.getUltimaOcupacion(criterios_actuales.getHabitacion());
+		if(oc == null) {
+			Mensaje.mensajeError(new String[]{"La habitación seleccionada no existe o nunca fue ocupada"});
+			return false;
+		}/*
+		if(oc.getHabitacion().getEstado() != EstadoHabitacion.OCUPADA) {
+			Mensaje.mensajeError(new String[]{"La habitación seleccionada no se encuentra ocupada"});
+			return false;
+		}*/
+		criterios_actuales.setIdOcupacion(oc.getId());
+		criterios_actuales.setCantOcupantes(oc.getPasajeros().size());
+		return true;
+	}
+
+	public static List<PasajeroDTO> getOcupantesBy(FacturarDTO criterios_actuales, Integer li, Integer cant) {
+		OcupacionDAO ocupacionDAO = new OcupacionSqlDAO();
+		Ocupacion oc = ocupacionDAO.getOcupacionById(criterios_actuales.getIdOcupacion());
+		List<Pasajero> ocupantes = oc.getPasajeros();
+		List<PasajeroDTO> ocupantesDTO = ordenarLista(GestorPasajeros.convertToPasajeroDTO(ocupantes),criterios_actuales);
+		Integer ult = (ocupantesDTO.size() < 8 + li) ? ocupantesDTO.size() : 8 + li;
+		return ocupantesDTO.subList(li, ult);
+	}
 	
 }
