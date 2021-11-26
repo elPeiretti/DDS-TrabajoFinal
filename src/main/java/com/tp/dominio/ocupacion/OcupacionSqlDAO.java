@@ -51,7 +51,7 @@ public class OcupacionSqlDAO implements OcupacionDAO {
 		
 		hqlQuery.setParameter("numero", habitacion);
 		List<Ocupacion> aux = hqlQuery.getResultList();
-		resultado = aux == null ? null : aux.get(0);
+		resultado = aux.size()==0 ? null : aux.get(0);
 		session.close();
 		return resultado;
 	}
