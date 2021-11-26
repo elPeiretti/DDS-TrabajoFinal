@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
@@ -71,7 +72,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		cuit_activo = false;
 		tabla_vacia = true;
 		
-		lbl_num_hab = new JLabel("<html>Número de<br/>Habitación (*):</html>");
+		lbl_num_hab = new JLabel("<html>Número de<br/>Habitación <font color='red'>(*)</font>: </html>");
 		lbl_num_hab.setHorizontalAlignment(SwingConstants.LEFT);
 		lbl_num_hab.setBounds(82, 133, 80, 30);
 		add(lbl_num_hab);
@@ -116,7 +117,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			e.printStackTrace();
 		}
 		
-		JLabel lbl_hora_salida = new JLabel("<html>Hora de<br/>Salida (*):</html>");
+		JLabel lbl_hora_salida = new JLabel("<html>Hora de<br/>Salida <font color='red'>(*)</font>:</html>");
 		lbl_hora_salida.setHorizontalAlignment(SwingConstants.LEFT);
 		lbl_hora_salida.setBounds(334, 133, 67, 30);
 		add(lbl_hora_salida);
@@ -171,17 +172,14 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		lbl_error_cuit.setBounds(410, 450, 164, 14);
 		add(lbl_error_cuit);
 		
-
+		this.inicializarMapa();
 		this.inicializarCampos();
 		this.agregarTabOrder();
 		this.agregarActionListeners();
 		this.agregarListenersValidacion();
 	}
+
 	private void inicializarCampos() {
-		campos_validos.put("habitacion", false);
-		campos_validos.put("salida", false);
-		campos_validos.put("cuit", true);
-		
 		rp_pasajeros.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento"), null);
 		indice_columnas = new HashMap<Integer,FacturarDTO.columnaOrden>();
 		indice_columnas.put(0, FacturarDTO.columnaOrden.APELLIDO);//la clave debe coincidir con el orden en rp_pasajeros
@@ -189,6 +187,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		indice_columnas.put(2, FacturarDTO.columnaOrden.TIPODOC);
 		indice_columnas.put(3, FacturarDTO.columnaOrden.NRODOC);
 	}
+
 	private void agregarListenersValidacion() {
 		jftf_cuit.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {}
@@ -220,6 +219,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		});
 		
 	}
+
 	private void agregarActionListeners() {
 		chbx_tercero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -235,23 +235,22 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		});
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Boolean.TRUE.equals(campos_validos.get("habitacion"))) {//porque .get() puede retornar null
-					criterios_actuales = new FacturarDTO();
-					criterios_actuales.setHabitacion(jtf_num_hab.getText());
-					criterios_actuales.setIdOcupacion(null);
-					criterios_actuales.setCantOcupantes(0);
-					if(GestorHabitaciones.cargarOcupacionActual(criterios_actuales)) llenarTabla();
-				}else {
-					validarNum();
+				if (campos_validos.values().stream().filter(t->!t).collect(Collectors.toList()).size() != 0) {
+					indicarCamposIncompletos();
+					return;
 				}
+
+				criterios_actuales = new FacturarDTO();
+				criterios_actuales.setHabitacion(jtf_num_hab.getText());
+				criterios_actuales.setIdOcupacion(null);
+				criterios_actuales.setCantOcupantes(0);
+				if(GestorHabitaciones.cargarOcupacionActual(criterios_actuales)) llenarTabla();
+
 			}
 		});
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*if(seleccionResponsable()) {
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuConsumosPorHabitacion(ventana_contenedora,responsableDTO),
-							MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,MenuConsumosPorHabitacion.titulo);
-				}*/
+				
 			}
 		});
 		/*jb_siguiente.addActionListener(new ActionListener() {
@@ -315,6 +314,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		}
 		tabla_vacia = false;
 	}
+
 	private void validarNum() {
 		String data = jtf_num_hab.getText();
 		if(data.equals("")) {
@@ -328,6 +328,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			lbl_error_num_hab.setText("");
 		}
 	}
+
 	private void validarCuit() {
 		String data = jftf_cuit.getText();
 		if(cuit_activo && data.equals("__-________-_")) {
@@ -343,6 +344,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 			lbl_error_cuit.setText("");
 		}
 	}
+
 	private void agregarTabOrder() {
 		this.setFocusTraversalPolicy(new TabOrder(List.of(
 				jtf_num_hab,
@@ -359,4 +361,18 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	public void setDefaultTab() {
 		jtf_num_hab.requestFocus();
 	}
+
+	private void indicarCamposIncompletos() {
+		if (jtf_num_hab.getText().isBlank())
+			lbl_error_num_hab.setText("Este campo no puede estar vacío.");
+		if (jftf_salida.getText().equals("__:__"))
+			lbl_error_salida.setText("Este campo no puede estar vacío.");
+	}
+	
+	private void inicializarMapa() {
+		campos_validos.put("habitacion", false);
+		campos_validos.put("salida", false);
+		campos_validos.put("cuit",true);
+	}
+	
 }
