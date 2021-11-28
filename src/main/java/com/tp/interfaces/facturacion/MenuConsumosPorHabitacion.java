@@ -1,6 +1,7 @@
 package com.tp.interfaces.facturacion;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import com.tp.dto.HabitacionDTO;
@@ -8,9 +9,7 @@ import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.dto.ServicioDTO;
 import com.tp.interfaces.misc.Encabezado;
-import com.tp.interfaces.misc.ResultPaneServicios;
-import com.tp.interfaces.misc.SpinnerCellEditor;
-import com.tp.interfaces.misc.SpinnerCellRenderer;
+import com.tp.interfaces.misc.spinner.*;
 import com.tp.interfaces.SeteableTab;
 
 public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
@@ -23,7 +22,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 	private Encabezado encabezado;
 	private JButton jb_siguiente;
 	private JButton jb_cancelar;
-	private ResultPaneServicios<ServicioDTO> rp_servicios;
+	private ResultPaneServicios rp_servicios;
 	private JLabel lbl_nom_resp;
 	private JLabel lbl_subtotal_tag;
 	private JLabel lbl_subtotal;
@@ -34,6 +33,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 	private ResponsablePagoTerceroDTO responsable;
 	private PasajeroDTO responsable_pasajero;
 	private HabitacionDTO habitacion;
+	
 	
 	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, HabitacionDTO hab){
 	
@@ -61,7 +61,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		jb_cancelar.setBounds(81, 420, 100, 30);
 		add(jb_cancelar);
 		
-		rp_servicios = new ResultPaneServicios<ServicioDTO>();
+		rp_servicios = new ResultPaneServicios();
 		rp_servicios.setBounds(10, 156, 620, 184);
 		add(rp_servicios);
 		
@@ -106,13 +106,15 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		this(ventana_contenedora,encabezado,hab);
 		this.responsable_pasajero = responsable_pasajero;
 		inicializarCampos();
-		inicializarTabla();
+		rp_servicios.agregarColumnas(List.of("Consumos","Precio Unitario","Unidades Consumidas","Unidades a Facturar"), List.of(0,1,2,3));
+		llenarTabla();
 	}
 	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable, HabitacionDTO hab){
 		this(ventana_contenedora,encabezado,hab);
 		this.responsable = responsable;
 		inicializarCampos();
-		inicializarTabla();
+		rp_servicios.agregarColumnas(List.of("Consumos","Precio Unitario","Unidades Consumidas","Unidades a Facturar"), List.of(0,1,2,3));
+		llenarTabla();
 	}
 
 	private void inicializarCampos(){
@@ -124,25 +126,21 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		}
 	}
 
-	private void inicializarTabla(){
+	private void llenarTabla(){
 		//List<ServicioDTO> servicios = GestorHabitaciones.getServiciosNoFacturadosByHabitacion(habitacion);
 
-		rp_servicios.agregarColumnas(List.of("Consumos","Precio Unitario","Unidades Consumidas","Unidades a Facturar"), List.of(0,1,2,3));
-		rp_servicios.getContenido().addRow(new Object[]{"SANDIA","30.02","300",1});
-		rp_servicios.getContenido().addRow(new Object[]{"MILANESA","30.02","300",10});
-		rp_servicios.getContenido().addRow(new Object[]{"COCOS","30.02","300",2});
+		rp_servicios.agregarFila("SANDIA",30.02,300);
+		rp_servicios.agregarFila("MILANESA",120.0,6);
+		rp_servicios.agregarFila("COCOS",10.50,20);
+
+		/*for(ServicioDTO s: servicios){
+			rp_servicios.agregarFila(s);
+		}*/
+		
+		//si o si debe hacerse despues de agregar las filas :(
 		rp_servicios.getTable().getColumnModel().getColumn(3).setCellRenderer(new SpinnerCellRenderer());
 		rp_servicios.getTable().getColumnModel().getColumn(3).setCellEditor(new SpinnerCellEditor());
 		rp_servicios.getTable().setRowHeight(30);
-		
-
-		/*for(ServicioDTO s: servicios){
-			Vector<Object> v = s.asVector();
-			v.add(new JSpinner());
-			rp_servicios.getContenido().addRow(v);
-			rp_servicios.getRowObjects().add(s);
-		}*/
-		
 
 	}
 

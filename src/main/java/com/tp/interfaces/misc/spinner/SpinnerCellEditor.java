@@ -1,4 +1,4 @@
-package com.tp.interfaces.misc;
+package com.tp.interfaces.misc.spinner;
 
 import java.awt.Component;
 
@@ -36,10 +36,16 @@ public class SpinnerCellEditor extends SpinnerPanel implements TableCellEditor {
     public Component getTableCellEditorComponent(JTable table, Object value,
             boolean isSelected, int row, int column) {
         this.setBackground(table.getSelectionBackground());
-        spinner.setValue(value);
-        if(!seteado){
-            spinner.setModel(new SpinnerNumberModel((int)value,0,(int)value,1));
-            seteado=true;
+        if((int)value>0){
+            int max = ((SpinnerTable) table).getJspinnersMaxList().get(row);
+            if((int)value < max)
+                spinner.setValue(value);
+            else{
+                spinner.setValue(max);
+            }
+        }
+        else{
+            spinner.setValue(0);
         }
         
         return this;
