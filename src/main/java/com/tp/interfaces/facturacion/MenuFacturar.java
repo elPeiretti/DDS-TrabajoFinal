@@ -32,6 +32,7 @@ import com.tp.dominio.factura.ResponsablePagoTercero;
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.FacturarDTO;
 import com.tp.dto.OcupacionDTO;
+import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.excepciones.HabitacionNoExistenteException;
@@ -341,10 +342,15 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 					indicarCamposIncompletos();
 					return;
 				}
-				if(GestorHabitaciones.getHabitacionByNumero(jtf_num_hab.getText()) == null){
+
+				HabitacionDTO hDto = null;
+				try{
+					hDto = GestorHabitaciones.getHabitacionByNumero(jtf_num_hab.getText());
+				}
+				catch(HabitacionNoExistenteException exc){
 					Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
 					return;
-				}
+				}				
 
 				JPanel m=null;
 				String nom=null;
@@ -354,7 +360,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 						Mensaje.mensajeInformacion("AQUI DEBERIA EJECUTARSE CU14");
 					}
 					else{
-						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable());
+						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable(),hDto);
 						nom = MenuConsumosPorHabitacion.titulo;
 					}
 					
@@ -362,7 +368,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				else{ // debe seleccionar de la tabla
 					int fila = rp_pasajeros.getTable().getSelectedRow();
 					if(fila != -1) {
-						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,rp_pasajeros.getRowObjects().get(fila));
+						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,rp_pasajeros.getRowObjects().get(fila),hDto);
 						nom = MenuConsumosPorHabitacion.titulo;
 					}
 					else{

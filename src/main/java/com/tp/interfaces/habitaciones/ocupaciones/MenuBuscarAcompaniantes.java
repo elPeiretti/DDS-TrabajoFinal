@@ -13,8 +13,10 @@ import com.tp.dto.HabitacionDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.TipoDocumentoDTO;
+import com.tp.excepciones.HabitacionNoExistenteException;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorPasajeros;
+import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
 import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
@@ -280,8 +282,15 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	}
 	
 	private void inicializarCampos() {
-
-		HabitacionDTO h = GestorHabitaciones.getHabitacionByNumero(nuevaOcupacion.getHabitacion().getNumero());
+		
+		HabitacionDTO h=null;
+		try {
+			h = GestorHabitaciones.getHabitacionByNumero(nuevaOcupacion.getHabitacion().getNumero());
+		} catch (HabitacionNoExistenteException e) {
+			Mensaje.mensajeError(new String[]{"La habitación seleccionada no existe en el sistema."});
+			((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora, encabezado), MenuPrincipal.x_bound, MenuPrincipal.y_bound, MenuPrincipal.titulo);
+			return;
+		}
 		nuevaOcupacion.setHabitacion(h);
 
 		rp_pasajeros_busqueda.agregarColumnas(List.of("Apellido","Nombres","Tipo Documento","Número de Documento", "Acompañante"), List.of(4));

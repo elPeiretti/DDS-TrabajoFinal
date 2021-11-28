@@ -14,12 +14,12 @@ public class HabitacionDTO implements Comparable{
 	
 	public HabitacionDTO(){}
 
-	public HabitacionDTO(Habitacion h){
-		this.numero = h.getNumero();
-		this.estado = h.getEstado();
-		this.tipoHabitacion = h.getTipoHabitacion().getNombre();
-		this.tipoHabitacionDTO = new TipoHabitacionDTO(tipoHabitacion, h.getTipoHabitacion().getCapacidad());
-		this.idHabitacion = h.getIdHabitacion();
+	public HabitacionDTO(String numero, EstadoHabitacion estado, String tipoHab, TipoHabitacionDTO tipoHabDTO, Integer id){
+		this.numero = numero;
+		this.estado = estado;
+		this.tipoHabitacion = tipoHab;
+		this.tipoHabitacionDTO = tipoHabDTO;
+		this.idHabitacion = id;
 	}
 
 	public HabitacionDTO(String numero, EstadoHabitacion estado, String tipoHabitacion) {
