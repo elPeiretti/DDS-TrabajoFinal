@@ -310,16 +310,13 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 		jb_buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!campos_validos.get("habitacion") || !campos_validos.get("salida")) {
+				if (!campos_validos.get("habitacion")) {
 					indicarCamposIncompletos();
 					return;
 				}
-				
 				criterios_actuales.setIdHabitacion(jtf_num_hab.getText());
-				criterios_actuales.setHoraSalida(jftf_salida.getText());
 				try{
-					criterios_actuales.setOcupacion(GestorHabitaciones.buscarOcupantesHabitacion(criterios_actuales.getIdHabitacion()));
-					GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
+					criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(criterios_actuales.getIdHabitacion()));
 					llenarTabla();
 				}
 				catch(HabitacionNoExistenteException exc){
@@ -372,8 +369,12 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 						Mensaje.mensajeInformacion("Debe seleccionar un responsable para poder facturar.");
 					}
 				}
-				if(m!=null)
+				if(m!=null) {
+					criterios_actuales.setHoraSalida(jftf_salida.getText());
+					GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,nom);
+				}
+					
 			}
 		});
 		

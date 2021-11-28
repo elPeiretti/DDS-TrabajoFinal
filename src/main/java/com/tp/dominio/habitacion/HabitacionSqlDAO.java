@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -22,7 +23,7 @@ public class HabitacionSqlDAO implements HabitacionDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h");
+		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h ");
 		resultado = hqlQuery.getResultList();
 		
 		session.close();
@@ -74,25 +75,21 @@ public class HabitacionSqlDAO implements HabitacionDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h WHERE h.idHabitacion = :id");
+		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h JOIN FETCH h.tipo t JOIN FETCH t.costo c WHERE h.idHabitacion = :id "
+				+ "AND ((:fecha BETWEEN c.fechaInicioVigencia AND c.fechaFinVigencia) "
+				+ "OR (c.fechaFinVigencia IS NULL AND :fecha >= c.fechaInicioVigencia))");
+		
 		hqlQuery.setParameter("id", id);
+		hqlQuery.setParameter("fecha", fechaIngreso);
 		r = hqlQuery.getResultList();
 		resultado = r.size()==0? null : r.get(0);
-		
-		TypedQuery<CostoPorNoche> hqlQuery2 = session.createQuery("SELECT c FROM CostoPorNoche AS c WHERE c IN "
-				+ "(SELECT t.costo FROM TipoHabitacion AS t JOIN Habitacion AS h WHERE h.idHabitacion = :id) "
-				+ "AND :fecha BETWEEN c.FechaInicioVigencia AND c.FechaFinVigencia");
-		
-		hqlQuery2.setParameter("id", id);
-		hqlQuery2.setParameter("fecha", fechaIngreso);
-		List<CostoPorNoche> aux = hqlQuery2.getResultList();
-		if(aux.size() != 0) {
-			resultado.getTipoHabitacion().setCosto(List.of(aux.get(0)));
-		}else {
-			resultado = null;
-		}
+		Hibernate.initialize(resultado.getServicios());
 		session.close();
 		return resultado;
 	}
-
+	public void cargarServicios(Habitacion hab) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Hibernate.initialize(hab.getServicios());
+		session.close();
+	}
 }

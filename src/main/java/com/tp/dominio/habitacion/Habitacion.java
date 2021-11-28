@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.Hibernate;
+
 import com.tp.dominio.factura.items.Servicio;
 import com.tp.dominio.reserva.Reserva;
 
@@ -29,6 +31,7 @@ public class Habitacion {
 	private List<Reserva> reservas;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
+
 	private List<Servicio> servicios;
 	
 	public String getNumero() {
@@ -53,5 +56,8 @@ public class Habitacion {
 
 	public void addServicio(Servicio estadia) {
 		servicios.add(estadia);
+	} 
+	public List<Servicio> getServicios() {
+		return servicios;
 	}
 }

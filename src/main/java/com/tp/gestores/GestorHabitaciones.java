@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 import javax.swing.SortOrder;
 
+import org.hibernate.Hibernate;
+
 import com.tp.dominio.factura.items.Servicio;
 import com.tp.dominio.habitacion.EstadoHabitacion;
 import com.tp.dominio.habitacion.Habitacion;
@@ -197,7 +199,7 @@ public class GestorHabitaciones {
     	
     }
 
-	public static OcupacionDTO buscarOcupantesHabitacion(String numero) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, HabitacionNoOcupadaException {
+	public static OcupacionDTO buscarUltimaOcupacion(String numero) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, HabitacionNoOcupadaException {
 		HabitacionDAO habitacionDAO = new HabitacionSqlDAO();
 		
 		if(habitacionDAO.getHabitacionByNumero(numero) == null){
@@ -228,6 +230,7 @@ public class GestorHabitaciones {
 
 	private static HabitacionDTO convertToHabitacionDTO(Habitacion habitacion) {
 		HabitacionDTO habDTO = new HabitacionDTO();
+		habDTO.setIdHabitacion(habitacion.getIdHabitacion());
 		habDTO.setEstado(habitacion.getEstado());
 		habDTO.setNumero(habitacion.getNumero());
 		return habDTO;
@@ -235,7 +238,9 @@ public class GestorHabitaciones {
 	public static void calcularEstadia(String hora_salida, OcupacionDTO ocupacion_actual) {
 		Habitacion hab = getHabitacionWithCostoVigenteEn(ocupacion_actual.getHabitacion().getIdHabitacion(),ocupacion_actual.getFechaIngreso());
 		Servicio estadia = GestorServicios.generarServicioEstadia(hab,ocupacion_actual);
+		//new HabitacionSqlDAO().cargarServicios(hab);
 		hab.addServicio(estadia);
+		System.out.println(hora_salida);
 		LocalTime localTimeSalida = LocalTime.parse(hora_salida, DateTimeFormatter.ofPattern("HH:mm"));
 		if(localTimeSalida.isAfter(LocalTime.of(11, 0)) && localTimeSalida.isBefore(LocalTime.of(18, 0))) {
 			Servicio recargo = GestorServicios.generarServicioRecargo(hab,ocupacion_actual);

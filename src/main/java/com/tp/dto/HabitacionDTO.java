@@ -62,5 +62,9 @@ public class HabitacionDTO implements Comparable{
 	public Integer getIdHabitacion() {
 		return idHabitacion;
 	}
+
+	public void setIdHabitacion(Integer id) {
+		idHabitacion = id;
+	}
 	
 }
