@@ -127,7 +127,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	}
 
 	private void inicializarMapa() {
-		campos_validos.put("fecha desde", false);
+		campos_validos.put("fecha desde", true);
 		campos_validos.put("fecha hasta", false);
 	}
 
@@ -351,7 +351,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
 	@Override
 	public void setDefaultTab() {
-		dc_fecha_desde.getDateEditor().getUiComponent().requestFocus();
+		dc_fecha_hasta.getDateEditor().getUiComponent().requestFocus();
 	}
 	
 	

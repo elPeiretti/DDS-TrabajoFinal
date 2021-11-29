@@ -4,10 +4,6 @@ import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-
-import com.tp.dominio.ocupacion.Ocupacion;
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.OcupacionDTO;
@@ -19,14 +15,12 @@ import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
-import com.tp.interfaces.habitaciones.MenuEstadoHabitaciones;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,7 +148,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 				Boolean check = (Boolean) rp_pasajeros_busqueda.getContenido().getValueAt(row, col);
 				
 				Integer capacidad = nuevaOcupacion.getHabitacion().getTipoHabitacionDTO().getCapacidad();
-				if(!check && rp_pasajeros_agregados.getRowObjects().size() == capacidad-1){
+				if(!check && rp_pasajeros_agregados.getRowObjects().size() == capacidad){
 					Mensaje.mensajeInformacion("<html><center>La capacidad de la habitación "+nuevaOcupacion.getHabitacion().getNumero()
 												+" es de "+ capacidad.toString()+" personas.<br>No se pueden agregar más acompañantes.</center></html>");
 					return;
@@ -254,8 +248,8 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		rp_pasajeros_busqueda.getContenido().setRowCount(0);
 		rp_pasajeros_busqueda.getRowObjects().clear();
 		
-		rp_pasajeros_busqueda.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosBy(criterios_actuales, nuevaOcupacion.getResponsable())/8.0));
-		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosBy(criterios_actuales, (rp_pasajeros_busqueda.getPaginaActual()-1)*8, 8, nuevaOcupacion.getResponsable());
+		rp_pasajeros_busqueda.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosQueNoEstenOcupandoBy(criterios_actuales)/8.0));
+		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosQueNoEstenOcupandoBy(criterios_actuales, (rp_pasajeros_busqueda.getPaginaActual()-1)*8, 8);
 		
 		for(PasajeroDTO p : lp) {
 			Vector<Object> v = p.asVector();

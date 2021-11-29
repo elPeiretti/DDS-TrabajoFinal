@@ -208,6 +208,20 @@ public class GestorPasajeros {
 		
 		return pasajeroDAO.getCountPasajerosAdultosByCriteria(criterios);
 	}
+
+    public static List<PasajeroDTO> getPasajerosQueNoEstenOcupandoBy(BusqPasajeroDTO criterios_actuales, int li, int cant) {
+        PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		List<Pasajero> pasajeros = pasajeroDAO.getPasajerosQueNoEstenOcupandoByCriteria(criterios_actuales, li, cant);
+		
+		return convertToPasajeroDTO(pasajeros);
+    }
+
+    public static double getCountPasajerosQueNoEstenOcupandoBy(BusqPasajeroDTO criterios_actuales) {
+        PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		return pasajeroDAO.getCountPasajerosQueNoEstenOcupandoByCriteria(criterios_actuales);
+    }
 	
 	
 	
