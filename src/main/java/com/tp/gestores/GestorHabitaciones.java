@@ -67,7 +67,8 @@ public class GestorHabitaciones {
 			Map<String, HabitacionDTO> estadosIniciales = new HashMap<String, HabitacionDTO>();
 			
 			for(Habitacion h : listaHabitaciones) {
-				estadosIniciales.put(h.getNumero(), new HabitacionDTO(h.getNumero(),EstadoHabitacion.LIBRE, h.getTipoHabitacion().getNombre()));
+				EstadoHabitacion estado = h.getEstado().equals(EstadoHabitacion.MANTENIMIENTO)? EstadoHabitacion.MANTENIMIENTO : EstadoHabitacion.LIBRE;
+				estadosIniciales.put(h.getNumero(), new HabitacionDTO(h.getNumero(), estado, h.getTipoHabitacion().getNombre()));
 			}
 			
 			FechaDTO fechaDTO = new FechaDTO(fechaAux, estadosIniciales);
@@ -76,23 +77,27 @@ public class GestorHabitaciones {
 		}
 		
 		for(Reserva r : listaReservas) {
-			
+
 			fechaAux = fecha_desde.isBefore(r.getFechaIngreso())? r.getFechaIngreso():fecha_desde.plus(0,ChronoUnit.DAYS);
 			int i = (int) ChronoUnit.DAYS.between(fecha_desde,fechaAux);
 			while(ChronoUnit.DAYS.between(fechaAux,r.getFechaEgreso()) >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
 				Map<String, HabitacionDTO> habitaciones = resultado.get(i++).getHabitaciones();
-				habitaciones.get(r.getHabitacion().getNumero()).setEstado(EstadoHabitacion.RESERVADA);
+				if(!habitaciones.get(r.getHabitacion().getNumero()).getEstado().equals(EstadoHabitacion.MANTENIMIENTO))
+					habitaciones.get(r.getHabitacion().getNumero()).setEstado(EstadoHabitacion.RESERVADA);
+
 				fechaAux = fechaAux.plus(1, ChronoUnit.DAYS);
 			}
 		}
 		
 		for(Ocupacion o : listaOcupaciones) {
-			
+
 			fechaAux = fecha_desde.isBefore(o.getFechaIngreso())? o.getFechaIngreso():fecha_desde.plus(0,ChronoUnit.DAYS);
 			int i = (int) ChronoUnit.DAYS.between(fecha_desde,fechaAux);
 			while(ChronoUnit.DAYS.between(fechaAux,o.getFechaEgreso()) >= 0 && !(fechaAux.isAfter(fecha_hasta))) {
 				Map<String, HabitacionDTO> habitaciones = resultado.get(i++).getHabitaciones();
-				habitaciones.get(o.getHabitacion().getNumero()).setEstado(EstadoHabitacion.OCUPADA);
+				if(!habitaciones.get(o.getHabitacion().getNumero()).getEstado().equals(EstadoHabitacion.MANTENIMIENTO))
+					habitaciones.get(o.getHabitacion().getNumero()).setEstado(EstadoHabitacion.OCUPADA);
+				
 				fechaAux = fechaAux.plus(1, ChronoUnit.DAYS);
 			}
 		}

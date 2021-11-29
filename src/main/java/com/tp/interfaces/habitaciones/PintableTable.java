@@ -37,6 +37,13 @@ public class PintableTable extends JTable{
                 int column = getSelectedColumn();
 
                 if(getValueAt(row, column) == "OCUPADA"){
+                    Mensaje.mensajeInformacion("No se puede ocupar una habitación que ya se encuentra ocupada.");
+                    seleccionando=false;
+                    return;
+                }
+                if(getValueAt(row, column) == "MANTENIMIENTO"){
+                    Mensaje.mensajeInformacion("No se puede ocupar una habitación que se encuentra en mantenimiento.");
+                    seleccionando=false;
                     return;
                 }
 
@@ -53,6 +60,7 @@ public class PintableTable extends JTable{
                     if(column != celdaInicial.x){
                         if(row != 0){
                             Mensaje.mensajeInformacion("No se pueden ocupar múltiples habitaciones a la vez.");
+                            seleccionando=false;
                         }
                         else{
                             celdaInicial.setLocation(column, row);
