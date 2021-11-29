@@ -4,16 +4,15 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
-import javax.swing.RowSorter.SortKey;
 import javax.swing.border.LineBorder;
 import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +34,7 @@ public class ResultPaneServicios extends JPanel {
 	private Long cant_paginas = 1L;
 	private Integer cant_filas = 4;
 	private TableRowSorter<TableModel> sorter;
+	private Map<Integer,Integer> cantidadSeteada;
 	
 	public ResultPaneServicios() {
 		setBackground(Color.WHITE);
@@ -66,15 +66,17 @@ public class ResultPaneServicios extends JPanel {
 		sorter = new TableRowSorter<TableModel>(jtable_contenido);
 		jtable_resultados.setRowSorter(sorter);
 		objetos_en_tabla = new ArrayList<ServicioDTO>();
+		cantidadSeteada = new HashMap<Integer,Integer>();
 	}
 
-	public void agregarFila(String consumo, Double precioUnitario, Integer unidadesConsumidas){
-		jtable_contenido.addRow(new Object[]{consumo, String.format("%.2f", precioUnitario), unidadesConsumidas, unidadesConsumidas});
+	public void agregarFila(String consumo, Double precioUnitario, Integer unidadesConsumidas, Integer unidadesAFacturar){
+		jtable_contenido.addRow(new Object[]{consumo, String.format("%.2f", precioUnitario), unidadesConsumidas, unidadesAFacturar});
 		jtable_resultados.getJspinnersMaxList().add(unidadesConsumidas);
 	}
 
 	public void agregarFila(ServicioDTO s){
-		agregarFila(s.getDescripcion(), s.getPrecioUnitario(), s.getCantidad());
+		if(cantidadSeteada.get(s.getIdServicio()) == null) cantidadSeteada.put(s.getIdServicio(),s.getCantidad());
+		agregarFila(s.getDescripcion(), s.getPrecioUnitario(), s.getCantidad() - s.getCantidadPagada(), cantidadSeteada.get(s.getIdServicio()));
 		objetos_en_tabla.add(s);
 	}
 	
@@ -85,7 +87,10 @@ public class ResultPaneServicios extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(pagina_actual >= cant_paginas) return;
-
+				
+				for(int i=0; i<jtable_resultados.getRowCount(); i++){
+					cantidadSeteada.put(objetos_en_tabla.get(i).getIdServicio(),(Integer) jtable_contenido.getValueAt(i, 3));
+				}
 				setPaginaActual(++pagina_actual);
 				tableFillerMethod.run();
 				
@@ -97,6 +102,9 @@ public class ResultPaneServicios extends JPanel {
 				
 				if(pagina_actual.equals(1)) return;
 				
+				for(int i=0; i<jtable_resultados.getRowCount(); i++){
+					cantidadSeteada.put(objetos_en_tabla.get(i).getIdServicio(),(Integer) jtable_contenido.getValueAt(i, 3));
+				}
 				setPaginaActual(--pagina_actual);
 				tableFillerMethod.run();
 			}
