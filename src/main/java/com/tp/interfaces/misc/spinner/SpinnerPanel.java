@@ -2,7 +2,7 @@ package com.tp.interfaces.misc.spinner;
 
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.JSpinner.DefaultEditor;
 
 import java.awt.Dimension;
 
@@ -19,6 +19,7 @@ public class SpinnerPanel extends JPanel{
     public SpinnerPanel() {
         super();
         setOpaque(true);
+        ((DefaultEditor) spinner.getEditor()).getTextField().setEditable(false);
         add(spinner);
     }
 }

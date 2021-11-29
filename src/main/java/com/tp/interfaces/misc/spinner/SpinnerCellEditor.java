@@ -1,10 +1,7 @@
 package com.tp.interfaces.misc.spinner;
 
 import java.awt.Component;
-
-import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;

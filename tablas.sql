@@ -153475,7 +153475,8 @@ INSERT INTO tpdds.direccion(piso,calle,dpto,nro_calle,codigo_postal,id_ciudad) V
 (1,'CORRIENTES','B1',5552,'BS3200',322),
 (null,'SAN MARTÍN','',3202,'3000',3641),
 (12,'AV. LEANDRO ALEM','D13',512,'3000',3641),
-(12,'AV. LEANDRO ALEM','D13',512,'3000',3641);
+(12,'AV. LEANDRO ALEM','D13',512,'3000',3641),
+(12,'AV. LEANDRO MALE','D13',512,'3000',3641);
 
 INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,nacionalidad,telefono,fecha_nacimiento,id_posicion_iva,id_direccion,id_tipo_documento) VALUES 
 ('PEPITO PICA','PIEDRA','52522525','TÉCNICO ESPECIALISTA EN REFRIGERACIÓN DE MATERIALES DE CONSTRUCCIÓN','PPP@GMAIL.COM','22-52522525-6',11,'3425151798','2001-05-04',2,1,1),
@@ -153494,6 +153495,9 @@ INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,n
 ('ELVER','DUGO','AA678263','JUEZ','DUGUITO@GMAIL.COM',null,1,'771234567','2001-01-01',1,14,4),
 ('ELENA','NITO','15637822','CONTADOR','PEQUE@GMAIL.COM',null,80,'6372846253','1994-02-01',1,15,1),
 ('ELMER','CURIO','32462839','INGENIERO NUCLEAR','PLUTONIO@GMAIL.COM',null,11,'3426302009','1970-01-11',1,16,1);
+
+INSERT INTO tpdds.responsable_pago_tercero(cuit,razon_social,telefono,id_direccion) VALUES
+('11-11111111-1','LOS POLOS HERMANOS','3425151789',17);
 
 INSERT INTO tpdds.conserje(nombre,apellido,usuario,contrasenia) VALUES
 ('María','Chucena','MCHUC1','PASSWORD');

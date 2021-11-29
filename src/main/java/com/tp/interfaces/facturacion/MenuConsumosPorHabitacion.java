@@ -1,14 +1,17 @@
 package com.tp.interfaces.facturacion;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.dto.ServicioDTO;
-import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorServicios;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.spinner.*;
@@ -28,8 +31,11 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 	private JLabel lbl_nom_resp;
 	private JLabel lbl_subtotal_tag;
 	private JLabel lbl_subtotal;
+	private Double subtotal;
 	private JLabel lbl_iva;
 	private JLabel lbl_total;
+	private Double total;
+	private Double iva;
 	private JLabel lbl_iva_tag;
 	private JLabel lbl_total_tag;
 	private ResponsablePagoTerceroDTO responsable;
@@ -72,7 +78,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		lbl_nom_resp.setBounds(150, 121, 506, 14);
 		add(lbl_nom_resp);
 		
-		lbl_subtotal_tag = new JLabel("Subtotal:");
+		lbl_subtotal_tag = new JLabel("");
 		lbl_subtotal_tag.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_subtotal_tag.setBounds(419, 351, 104, 14);
 		add(lbl_subtotal_tag);
@@ -92,7 +98,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		lbl_total.setBounds(533, 395, 98, 14);
 		add(lbl_total);
 		
-		lbl_iva_tag = new JLabel("IVA(21%)");
+		lbl_iva_tag = new JLabel("");
 		lbl_iva_tag.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_iva_tag.setBounds(419, 371, 104, 14);
 		add(lbl_iva_tag);
@@ -102,20 +108,19 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		lbl_total_tag.setBounds(419, 395, 104, 14);
 		add(lbl_total_tag);
 		
+		agregarActionListeners();
 	}
 
 	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero, HabitacionDTO hab){
 		this(ventana_contenedora,encabezado,hab);
 		this.responsable_pasajero = responsable_pasajero;
 		inicializarCampos();
-		rp_servicios.agregarColumnas(List.of("Consumos","Precio Unitario","Unidades Consumidas","Unidades a Facturar"), List.of(0,1,2,3));
 		llenarTabla();
 	}
 	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable, HabitacionDTO hab){
 		this(ventana_contenedora,encabezado,hab);
 		this.responsable = responsable;
 		inicializarCampos();
-		rp_servicios.agregarColumnas(List.of("Consumos","Precio Unitario","Unidades Consumidas","Unidades a Facturar"), List.of(0,1,2,3));
 		llenarTabla();
 	}
 
@@ -127,19 +132,29 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 			lbl_nom_resp.setText(responsable.getRazonSocial());
 		}
 
+		if (responsable != null || (responsable_pasajero!=null && responsable_pasajero.getPosicionIVA().getPosicion().equals("R.I."))){
+			lbl_iva_tag.setText("IVA(21%):");
+			lbl_subtotal_tag.setText("Subtotal:");
+		}
+
+		rp_servicios.agregarColumnas(List.of("Consumos","Precio Unitario","Unidades Consumidas","Unidades a Facturar"), List.of(0,1,2,3));
 		rp_servicios.setCantPaginas((long) Math.ceil(GestorServicios.getCantServiciosNoFacturadosByHabitacion(habitacion)/(double)rp_servicios.getCantidadFilas()));
+		rp_servicios.setRowObjects(GestorServicios.getServiciosNoFacturadosByHabitacion(habitacion));
+		for (ServicioDTO s : rp_servicios.getRowObjects()){
+			rp_servicios.getMapCantidadSeteada().put(s.getIdServicio(),s.getCantidad()-s.getCantidadPagada());
+		}
+		actualizarMontos();
 	}
 
 	private void llenarTabla(){
 
 		rp_servicios.limpiarTabla();
 
-		List<ServicioDTO> servicios = GestorServicios.getServiciosNoFacturadosByHabitacion(habitacion,
-																						(rp_servicios.getPaginaActual()-1)*rp_servicios.getCantidadFilas(),
-																						rp_servicios.getCantidadFilas());
+		List<ServicioDTO> servicios = rp_servicios.getRowObjects();
+		int inic = (rp_servicios.getPaginaActual()-1)* rp_servicios.getCantidadFilas();
 
-		for(ServicioDTO s: servicios){
-			rp_servicios.agregarFila(s);
+		for(int i = inic; i<servicios.size() && i<inic+rp_servicios.getCantidadFilas(); i++){
+			rp_servicios.agregarFila(servicios.get(i));
 		}
 		
 		//si o si debe hacerse despues de agregar las filas :(
@@ -152,5 +167,51 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 	@Override
 	public void setDefaultTab() {
 		jb_siguiente.requestFocus();
+	}
+
+	public void actualizarMontos(){
+		subtotal = 0d;
+		rp_servicios.getRowObjects().stream()
+									.map(s -> s.getPrecioUnitario()*rp_servicios.getMapCantidadSeteada().get(s.getIdServicio()))
+									.forEach(val -> subtotal+=val);
+		total = subtotal*1.21;
+		iva = subtotal*0.21;
+
+		lbl_total.setText(String.format("%.2f", total));
+		if (responsable != null || (responsable_pasajero!=null && responsable_pasajero.getPosicionIVA().getPosicion().equals("R.I."))){
+			lbl_subtotal.setText(String.format("%.2f", subtotal));
+			lbl_iva.setText(String.format("%.2f", iva));
+		}
+	}
+
+	public void agregarActionListeners(){
+		rp_servicios.getTable().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evt){
+				int col = rp_servicios.getTable().getSelectedColumn();
+				int row = rp_servicios.getTable().getSelectedRow();
+				if(col!=3 || row == -1) return;
+
+				int i = (rp_servicios.getPaginaActual()-1)* rp_servicios.getCantidadFilas();
+				Integer value = (Integer) rp_servicios.getTable().getValueAt(row, 3);
+				Integer max = rp_servicios.getTable().getJspinnersMaxList().get(row);
+				if(value<0){
+					value=0;
+				}
+				else if(value>max){
+					value=max;
+				}
+				rp_servicios.getMapCantidadSeteada().put(rp_servicios.getRowObjects().get(i+row).getIdServicio(),value);
+
+				actualizarMontos();
+			}
+		});
+
+		jb_cancelar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				//TODO
+			}
+			
+		});
 	}
 }

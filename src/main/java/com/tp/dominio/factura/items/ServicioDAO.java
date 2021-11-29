@@ -6,7 +6,7 @@ import com.tp.dto.ServicioDTO;
 
 public interface ServicioDAO {
 
-    List<Servicio> getServiciosNoFacturadosByIdHabitacion(Integer idHabitacion, Integer li, Integer cant);
+    List<Servicio> getServiciosNoFacturadosByIdHabitacion(Integer idHabitacion);
 
     Long getCountServiciosNoFacturadosByIdHabitacion(Integer idHabitacion);
 

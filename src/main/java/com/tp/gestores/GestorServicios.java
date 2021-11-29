@@ -10,9 +10,9 @@ import com.tp.dto.HabitacionDTO;
 import com.tp.dto.ServicioDTO;
 
 public class GestorServicios {
-    public static List<ServicioDTO> getServiciosNoFacturadosByHabitacion(HabitacionDTO habitacionDto, Integer li, Integer cant) {
+    public static List<ServicioDTO> getServiciosNoFacturadosByHabitacion(HabitacionDTO habitacionDto) {
         ServicioDAO sDao = new ServicioSqlDAO();
-        List<Servicio> servicios = sDao.getServiciosNoFacturadosByIdHabitacion(habitacionDto.getIdHabitacion(),li,cant);
+        List<Servicio> servicios = sDao.getServiciosNoFacturadosByIdHabitacion(habitacionDto.getIdHabitacion());
         List<ServicioDTO> serviciosDTO = new ArrayList<ServicioDTO>();
         for(Servicio s : servicios){
             serviciosDTO.add(new ServicioDTO(s.getIdServicio(), s.getDescripcion(), s.getPrecioUnitario(), s.getCantidad(), s.getCantidadPagada()));

@@ -75,9 +75,7 @@ public class ResultPaneServicios extends JPanel {
 	}
 
 	public void agregarFila(ServicioDTO s){
-		if(cantidadSeteada.get(s.getIdServicio()) == null) cantidadSeteada.put(s.getIdServicio(),s.getCantidad());
 		agregarFila(s.getDescripcion(), s.getPrecioUnitario(), s.getCantidad() - s.getCantidadPagada(), cantidadSeteada.get(s.getIdServicio()));
-		objetos_en_tabla.add(s);
 	}
 	
 	public ResultPaneServicios(Runnable tableFillerMethod){
@@ -88,9 +86,6 @@ public class ResultPaneServicios extends JPanel {
 				
 				if(pagina_actual >= cant_paginas) return;
 				
-				for(int i=0; i<jtable_resultados.getRowCount(); i++){
-					cantidadSeteada.put(objetos_en_tabla.get(i).getIdServicio(),(Integer) jtable_contenido.getValueAt(i, 3));
-				}
 				setPaginaActual(++pagina_actual);
 				tableFillerMethod.run();
 				
@@ -101,10 +96,7 @@ public class ResultPaneServicios extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(pagina_actual.equals(1)) return;
-				
-				for(int i=0; i<jtable_resultados.getRowCount(); i++){
-					cantidadSeteada.put(objetos_en_tabla.get(i).getIdServicio(),(Integer) jtable_contenido.getValueAt(i, 3));
-				}
+			
 				setPaginaActual(--pagina_actual);
 				tableFillerMethod.run();
 			}
@@ -167,14 +159,21 @@ public class ResultPaneServicios extends JPanel {
 		return objetos_en_tabla;
 	}
 
+	public void setRowObjects(List<ServicioDTO> objetos) {
+		objetos_en_tabla = objetos;
+	}
+
 	public Integer getCantidadFilas(){
 		return cant_filas;
 	}
 
     public void limpiarTabla() {
 		jtable_contenido.setRowCount(0);
-		objetos_en_tabla.clear();
 		jtable_resultados.getJspinnersMaxList().clear();
     }
+
+	public Map<Integer,Integer> getMapCantidadSeteada() {
+		return cantidadSeteada;
+	}
 	
 }

@@ -10,15 +10,13 @@ import org.hibernate.Session;
 public class ServicioSqlDAO implements ServicioDAO {
 
     @Override
-    public List<Servicio> getServiciosNoFacturadosByIdHabitacion(Integer idHabitacion, Integer li, Integer cant) {
+    public List<Servicio> getServiciosNoFacturadosByIdHabitacion(Integer idHabitacion) {
         List<Servicio> resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		TypedQuery<Servicio> hqlQuery = session.createQuery("SELECT s FROM Habitacion h JOIN h.servicios s WHERE h.idHabitacion = :id AND s.cantidadPagada < s.cantidad ORDER BY s.descripcion ASC");
 		hqlQuery.setParameter("id", idHabitacion);
-		hqlQuery.setMaxResults(cant);
-		hqlQuery.setFirstResult(li);
 
 		resultado = hqlQuery.getResultList();
 		session.close();
