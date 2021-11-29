@@ -8,6 +8,8 @@ import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.dto.ServicioDTO;
+import com.tp.gestores.GestorHabitaciones;
+import com.tp.gestores.GestorServicios;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.spinner.*;
 import com.tp.interfaces.SeteableTab;
@@ -45,7 +47,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		
 		JLabel lbl_nom_resp_tag = new JLabel("Nombre Responsable:");
 		lbl_nom_resp_tag.setHorizontalAlignment(SwingConstants.LEFT);
-		lbl_nom_resp_tag.setBounds(10, 121, 110, 14);
+		lbl_nom_resp_tag.setBounds(10, 121, 130, 14);
 		add(lbl_nom_resp_tag);
 		
 		encabezado = new Encabezado();
@@ -61,13 +63,13 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		jb_cancelar.setBounds(81, 420, 100, 30);
 		add(jb_cancelar);
 		
-		rp_servicios = new ResultPaneServicios();
+		rp_servicios = new ResultPaneServicios(this::llenarTabla);
 		rp_servicios.setBounds(10, 156, 620, 184);
 		add(rp_servicios);
 		
 		lbl_nom_resp = new JLabel("");
 		lbl_nom_resp.setHorizontalAlignment(SwingConstants.LEFT);
-		lbl_nom_resp.setBounds(124, 121, 506, 14);
+		lbl_nom_resp.setBounds(150, 121, 506, 14);
 		add(lbl_nom_resp);
 		
 		lbl_subtotal_tag = new JLabel("Subtotal:");
@@ -124,18 +126,21 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		else{
 			lbl_nom_resp.setText(responsable.getRazonSocial());
 		}
+
+		rp_servicios.setCantPaginas((long) Math.ceil(GestorServicios.getCantServiciosNoFacturadosByHabitacion(habitacion)/(double)rp_servicios.getCantidadFilas()));
 	}
 
 	private void llenarTabla(){
-		//List<ServicioDTO> servicios = GestorHabitaciones.getServiciosNoFacturadosByHabitacion(habitacion);
 
-		rp_servicios.agregarFila("SANDIA",30.02,300);
-		rp_servicios.agregarFila("MILANESA",120.0,6);
-		rp_servicios.agregarFila("COCOS",10.50,20);
+		rp_servicios.limpiarTabla();
 
-		/*for(ServicioDTO s: servicios){
+		List<ServicioDTO> servicios = GestorServicios.getServiciosNoFacturadosByHabitacion(habitacion,
+																						(rp_servicios.getPaginaActual()-1)*rp_servicios.getCantidadFilas(),
+																						rp_servicios.getCantidadFilas());
+
+		for(ServicioDTO s: servicios){
 			rp_servicios.agregarFila(s);
-		}*/
+		}
 		
 		//si o si debe hacerse despues de agregar las filas :(
 		rp_servicios.getTable().getColumnModel().getColumn(3).setCellRenderer(new SpinnerCellRenderer());

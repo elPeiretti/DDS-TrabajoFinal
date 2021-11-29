@@ -153534,7 +153534,7 @@ INSERT INTO tpdds.habitacion(id_habitacion,estado,numero,id_tipo_habitacion) VAL
 (17,'LIBRE','C01',3),
 (18,'LIBRE','D00',4),
 (19,'LIBRE','D01',4),
-(20,'LIBRE','D02',4),
+(20,'OCUPADA','D02',4),
 (21,'LIBRE','D03',4),
 (22,'LIBRE','D04',4),
 (23,'LIBRE','D05',4),
@@ -153560,14 +153560,22 @@ INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero
 ('2022-10-20','2022-12-30',27,2),
 ('2022-11-08','2022-11-11',5,5),
 ('2022-11-08','2022-11-15',15,4),
-('2022-10-25','2022-10-29',14,3);
+('2022-10-25','2022-10-29',14,3),
+('2022-06-10',CURRENT_DATE,20,10); -- para que se pueda probar el menu Facturar
 
 INSERT INTO tpdds.acompaniante(id_ocupacion,id_pasajero) VALUES
 (2,6),(1,7),(1,9),(1,8);
 
-
-
-
+INSERT INTO tpdds.servicio(precio_unitario, cantidad_pagada, descripcion, cantidad, fecha_realizacion, id_habitacion) VALUES
+(20.50,0,'LAVADO',2,'2022-06-5',20),
+(300,0,'SAUNA',2,'2022-06-5',20),
+(300,0,'SAUNA',2,'2022-07-5',20),
+(320,0,'SAUNA',2,'2022-08-5',20),
+(7.30,0,'CERVEZA BAR',17,'2022-08-9',20),
+(7.30,0,'CERVEZA BAR',11,'2022-08-10',20),
+(12,0,'SNACK BAR',2,'2022-08-10',20),
+(330,0,'SAUNA',1,'2022-10-5',20),
+(1100,0,'LAVADO Y PLANCHADO',1,'2022-11-29',20);
 
 
 

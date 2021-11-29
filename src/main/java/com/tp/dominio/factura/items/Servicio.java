@@ -21,4 +21,37 @@ public class Servicio {
 	private String descripcion;
 	@Column (name = "cantidad_pagada")
 	private Integer cantidadPagada;
+	
+	public Integer getIdServicio() {
+		return idServicio;
+	}
+	public void setIdServicio(Integer idServicio) {
+		this.idServicio = idServicio;
+	}
+	public Double getPrecioUnitario() {
+		return precioUnitario;
+	}
+	public void setPrecioUnitario(Double precioUnitario) {
+		this.precioUnitario = precioUnitario;
+	}
+	public Integer getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public Integer getCantidadPagada() {
+		return cantidadPagada;
+	}
+	public void setCantidadPagada(Integer cantidadPagada) {
+		this.cantidadPagada = cantidadPagada;
+	}
+
+	
 }

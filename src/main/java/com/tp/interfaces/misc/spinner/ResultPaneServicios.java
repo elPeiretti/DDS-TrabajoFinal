@@ -85,8 +85,8 @@ public class ResultPaneServicios extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(pagina_actual >= cant_paginas) return;
-				
-				pagina_actual++;
+
+				setPaginaActual(++pagina_actual);
 				tableFillerMethod.run();
 				
 			}
@@ -97,7 +97,7 @@ public class ResultPaneServicios extends JPanel {
 				
 				if(pagina_actual.equals(1)) return;
 				
-				pagina_actual--;
+				setPaginaActual(--pagina_actual);
 				tableFillerMethod.run();
 			}
 		});
@@ -162,5 +162,11 @@ public class ResultPaneServicios extends JPanel {
 	public Integer getCantidadFilas(){
 		return cant_filas;
 	}
+
+    public void limpiarTabla() {
+		jtable_contenido.setRowCount(0);
+		objetos_en_tabla.clear();
+		jtable_resultados.getJspinnersMaxList().clear();
+    }
 	
 }
