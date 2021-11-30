@@ -252,7 +252,6 @@ public class GestorHabitaciones {
 		Habitacion hab = getHabitacionWithCostoVigenteEn(ocupacion_actual.getHabitacion().getIdHabitacion(),ocupacion_actual.getFechaIngreso());
 		Servicio estadia = GestorServicios.generarServicioEstadia(hab,ocupacion_actual);
 		hab.addServicio(estadia);
-		System.out.println(hora_salida);
 		LocalTime localTimeSalida = LocalTime.parse(hora_salida, DateTimeFormatter.ofPattern("HH:mm"));
 		if(localTimeSalida.isAfter(LocalTime.of(11, 0)) && localTimeSalida.isBefore(LocalTime.of(18, 0))) {
 			Servicio recargo = GestorServicios.generarServicioRecargo(hab,ocupacion_actual);
