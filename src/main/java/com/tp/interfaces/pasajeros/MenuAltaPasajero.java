@@ -534,7 +534,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 												jtf_numero_documento.getText(), dc_nacimiento.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
 												((PaisDTO) jcb_nacionalidad.getSelectedItem()).getIdPais(),
 												jtf_email.getText(), jtf_telefono.getText(), jtf_ocupacion.getText(),
-												(TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem(), ((PosicionIVADTO)jcb_factura.getSelectedItem()).getIdPosicionIVA(),
+												(TipoDocumentoDTO) jcb_tipo_documento.getSelectedItem(), (PosicionIVADTO) jcb_factura.getSelectedItem(),
 												direc);
 
 				try {			

@@ -68,7 +68,12 @@ public class GestorPasajeros {
 			TipoDocumento auxTipoDocumento = p.getTipoDocumento();
 			Direccion auxDir = p.getDireccion();
 			DireccionDTO auxDirDto = new DireccionDTO(auxDir.getIdDireccion(), auxDir.getCodigoPostal(), auxDir.getCalle(), auxDir.getNroCalle(), auxDir.getPiso(), auxDir.getNroDepartamento(), auxDir.getCiudad().getIdCiudad(), auxDir.getProvincia().getIdProvincia(), auxDir.getCiudad().getPais().getIdPais());
-			PasajeroDTO auxPas = new PasajeroDTO(p.getIdPasajero(), p.getNombres(), p.getApellido(), p.getCuit(), p.getNroDocumento(), p.getNacimiento(), p.getNacionalidad().getIdPais(), p.getEmail(), p.getTelefono(), p.getOcupacion(), new TipoDocumentoDTO(auxTipoDocumento.getIdTipoDocumento(), auxTipoDocumento.getTipo()),p.getPosicionIVA().getIdPosicionIVA(), auxDirDto);
+			PasajeroDTO auxPas = new PasajeroDTO(p.getIdPasajero(), p.getNombres(), p.getApellido(), p.getCuit(),
+								p.getNroDocumento(), p.getNacimiento(), p.getNacionalidad().getIdPais(), p.getEmail(),
+								p.getTelefono(), p.getOcupacion(), 
+								new TipoDocumentoDTO(auxTipoDocumento.getIdTipoDocumento(), auxTipoDocumento.getTipo()),
+								new PosicionIVADTO(p.getPosicionIVA().getIdPosicionIVA(),p.getPosicionIVA().getPosicion()),
+								auxDirDto);
 			resultado.add(auxPas);
 		}
 		
@@ -122,7 +127,7 @@ public class GestorPasajeros {
 		Ciudad ciudad = new CiudadSqlDAO().getById(p.getDireccionDTO().getIdCiudad());
 		direc.setCiudad(ciudad);
 		Pais nacionalidad = new PaisSqlDAO().getById(p.getNacionalidad());
-		PosicionIVA pIva = new PosicionIVASqlDAO().getById(p.getIdPosicionIVA());
+		PosicionIVA pIva = new PosicionIVASqlDAO().getById(p.getPosicionIVA().getIdPosicionIVA());
 
 		if (ciudad.getPais().equals(nacionalidad)) {
 			nacionalidad = ciudad.getPais();
@@ -208,6 +213,26 @@ public class GestorPasajeros {
 		
 		return pasajeroDAO.getCountPasajerosAdultosByCriteria(criterios);
 	}
+
+    public static List<PasajeroDTO> getPasajerosQueNoEstenOcupandoBy(BusqPasajeroDTO criterios_actuales, int li, int cant) {
+        PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		List<Pasajero> pasajeros = pasajeroDAO.getPasajerosQueNoEstenOcupandoByCriteria(criterios_actuales, li, cant);
+		
+		return convertToPasajeroDTO(pasajeros);
+    }
+
+    public static double getCountPasajerosQueNoEstenOcupandoBy(BusqPasajeroDTO criterios_actuales) {
+        PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		return pasajeroDAO.getCountPasajerosQueNoEstenOcupandoByCriteria(criterios_actuales);
+    }
+
+    public static Pasajero getPasajeroById(Integer idPasajero) {
+        PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		return pasajeroDAO.getPasajeroById(idPasajero);
+    }
 	
 	
 	

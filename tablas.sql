@@ -153475,7 +153475,8 @@ INSERT INTO tpdds.direccion(piso,calle,dpto,nro_calle,codigo_postal,id_ciudad) V
 (1,'CORRIENTES','B1',5552,'BS3200',322),
 (null,'SAN MARTÍN','',3202,'3000',3641),
 (12,'AV. LEANDRO ALEM','D13',512,'3000',3641),
-(12,'AV. LEANDRO ALEM','D13',512,'3000',3641);
+(12,'AV. LEANDRO ALEM','D13',512,'3000',3641),
+(12,'AV. LEANDRO MALE','D13',512,'3000',3641);
 
 INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,nacionalidad,telefono,fecha_nacimiento,id_posicion_iva,id_direccion,id_tipo_documento) VALUES 
 ('PEPITO PICA','PIEDRA','52522525','TÉCNICO ESPECIALISTA EN REFRIGERACIÓN DE MATERIALES DE CONSTRUCCIÓN','PPP@GMAIL.COM','22-52522525-6',11,'3425151798','2001-05-04',2,1,1),
@@ -153494,6 +153495,9 @@ INSERT INTO tpdds.pasajero(nombres,apellido,nro_documento,ocupacion,email,cuit,n
 ('ELVER','DUGO','AA678263','JUEZ','DUGUITO@GMAIL.COM',null,1,'771234567','2001-01-01',1,14,4),
 ('ELENA','NITO','15637822','CONTADOR','PEQUE@GMAIL.COM',null,80,'6372846253','1994-02-01',1,15,1),
 ('ELMER','CURIO','32462839','INGENIERO NUCLEAR','PLUTONIO@GMAIL.COM',null,11,'3426302009','1970-01-11',1,16,1);
+
+INSERT INTO tpdds.responsable_pago_tercero(cuit,razon_social,telefono,id_direccion) VALUES
+('11-11111111-1','LOS POLOS HERMANOS','3425151789',17);
 
 INSERT INTO tpdds.conserje(nombre,apellido,usuario,contrasenia) VALUES
 ('María','Chucena','MCHUC1','PASSWORD');
@@ -153528,13 +153532,13 @@ INSERT INTO tpdds.habitacion(id_habitacion,estado,numero,id_tipo_habitacion) VAL
 (11,'LIBRE','B02',2),
 (12,'LIBRE','B03',2),
 (13,'LIBRE','B04',2),
-(14,'LIBRE','B05',2),
+(14,'MANTENIMIENTO','B05',2),
 (15,'LIBRE','B06',2),
 (16,'LIBRE','C00',3),
 (17,'LIBRE','C01',3),
 (18,'LIBRE','D00',4),
 (19,'LIBRE','D01',4),
-(20,'LIBRE','D02',4),
+(20,'OCUPADA','D02',4),
 (21,'LIBRE','D03',4),
 (22,'LIBRE','D04',4),
 (23,'LIBRE','D05',4),
@@ -153554,20 +153558,29 @@ INSERT INTO tpdds.reserva(id_responsable_reserva, id_habitacion, fecha_ingreso, 
 (2,2,'2022-12-01','2022-12-08','VIGENTE'),
 (2,3,'2022-12-01','2022-12-08','VIGENTE'),
 (1,2,'2022-10-20','2022-11-30','VIGENTE'),
-(2,5,'2022-11-12','2022-12-02','VIGENTE');
+(2,5,'2022-11-12','2022-12-02','VIGENTE'),
+(3,14,'2022-10-02','2022-10-24','VIGENTE');
 
 INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero_responsable) VALUES
 ('2022-10-20','2022-12-30',27,2),
 ('2022-11-08','2022-11-11',5,5),
 ('2022-11-08','2022-11-15',15,4),
-('2022-10-25','2022-10-29',14,3);
+('2022-10-25','2022-10-29',14,3),
+('2021-06-10',CURRENT_DATE,20,10); -- para que se pueda probar el menu Facturar
 
 INSERT INTO tpdds.acompaniante(id_ocupacion,id_pasajero) VALUES
 (2,6),(1,7),(1,9),(1,8);
 
-
-
-
+INSERT INTO tpdds.servicio(precio_unitario, cantidad_pagada, descripcion, cantidad, fecha_realizacion, id_habitacion) VALUES
+(20.50,0,'LAVADO',2,'2022-06-5',20),
+(300,0,'SAUNA',2,'2022-06-5',20),
+(300,0,'SAUNA',2,'2022-07-5',20),
+(320,0,'SAUNA',2,'2022-08-5',20),
+(7.30,0,'CERVEZA BAR',17,'2022-08-9',20),
+(7.30,0,'CERVEZA BAR',11,'2022-08-10',20),
+(12,0,'SNACK BAR',2,'2022-08-10',20),
+(330,0,'SAUNA',1,'2022-10-5',20),
+(1100,0,'LAVADO Y PLANCHADO',1,'2022-11-29',20);
 
 
 

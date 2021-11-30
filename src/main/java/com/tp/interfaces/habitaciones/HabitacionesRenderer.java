@@ -12,9 +12,10 @@ import org.hibernate.boot.model.relational.InitCommand;
 
 public class HabitacionesRenderer extends DefaultTableCellRenderer{
 
-    Color color_RESERVADA = Color.YELLOW;
-    Color color_OCUPADA = Color.RED;
-    Color color_SELECCIONADA = Color.BLUE;
+    Color color_RESERVADA = new Color(255,255,128);;
+    Color color_OCUPADA = new Color(255,128,128);;
+    Color color_SELECCIONADA = new Color(0,128,255);;
+    Color color_MANTENIMIENTO = new Color(255,153,0);
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
         column++;
@@ -44,6 +45,10 @@ public class HabitacionesRenderer extends DefaultTableCellRenderer{
                 }
                 case "OCUPADA":{
                     setBackground(color_OCUPADA);
+                    break;
+                }
+                case "MANTENIMIENTO":{
+                    setBackground(color_MANTENIMIENTO);
                     break;
                 }
                 default:{

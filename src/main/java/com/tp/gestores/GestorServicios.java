@@ -1,14 +1,43 @@
 package com.tp.gestores;
 
+public class GestorServicios {
+
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import com.tp.dominio.factura.items.Servicio;
+import com.tp.dominio.factura.items.ServicioDAO;
+import com.tp.dominio.factura.items.ServicioSqlDAO;
+import com.tp.dto.HabitacionDTO;
+import com.tp.dto.ServicioDTO;
 import com.tp.dominio.factura.items.Servicio;
 import com.tp.dominio.habitacion.Habitacion;
 import com.tp.dto.OcupacionDTO;
 
 public class GestorServicios {
 	private String warning;//dejo esto para recordar que hay que revisar el calculo de la duracion de la estadia
+    public static List<ServicioDTO> getServiciosNoFacturadosByHabitacion(HabitacionDTO habitacionDto) {
+        ServicioDAO sDao = new ServicioSqlDAO();
+        List<Servicio> servicios = sDao.getServiciosNoFacturadosByIdHabitacion(habitacionDto.getIdHabitacion());
+        List<ServicioDTO> serviciosDTO = new ArrayList<ServicioDTO>();
+        for(Servicio s : servicios){
+            serviciosDTO.add(new ServicioDTO(s.getIdServicio(), s.getDescripcion(), s.getPrecioUnitario(), s.getCantidad(), s.getCantidadPagada()));
+        }
+		return serviciosDTO;
+    }
+
+    public static Long getCantServiciosNoFacturadosByHabitacion(HabitacionDTO habitacionDto) {
+        ServicioDAO sDao = new ServicioSqlDAO();
+        return sDao.getCountServiciosNoFacturadosByIdHabitacion(habitacionDto.getIdHabitacion());
+    }
+
+    public static Servicio getServicioById(Integer idServicio) {
+        ServicioDAO sDao = new ServicioSqlDAO();
+        return sDao.getServicioById(idServicio);
+    }
+
 	public static Servicio generarServicioEstadia(Habitacion hab, OcupacionDTO ocupacion_actual) {
 		Servicio estadia = new Servicio();
 		estadia.setCantidad(1);

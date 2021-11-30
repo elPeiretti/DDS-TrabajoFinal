@@ -1,13 +1,13 @@
-package com.tp.interfaces.misc;
+package com.tp.interfaces.misc.spinner;
 
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.JSpinner.DefaultEditor;
 
 import java.awt.Dimension;
 
 public class SpinnerPanel extends JPanel{
-    protected boolean seteado = false;
+
     protected JSpinner spinner = new JSpinner() {
         @Override
         public Dimension getPreferredSize() {
@@ -19,6 +19,7 @@ public class SpinnerPanel extends JPanel{
     public SpinnerPanel() {
         super();
         setOpaque(true);
+        ((DefaultEditor) spinner.getEditor()).getTextField().setEditable(false);
         add(spinner);
     }
 }

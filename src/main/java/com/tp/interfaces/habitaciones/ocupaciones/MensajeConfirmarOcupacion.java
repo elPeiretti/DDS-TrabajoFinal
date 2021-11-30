@@ -6,7 +6,6 @@ import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.gestores.GestorHabitaciones;
-import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;

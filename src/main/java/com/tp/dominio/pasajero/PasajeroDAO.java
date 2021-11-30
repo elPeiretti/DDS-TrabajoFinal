@@ -20,8 +20,7 @@ public interface PasajeroDAO {
 	
 	public Pasajero getPasajeroById(Integer idPasajero);
 	public List<Pasajero> getPasajerosById(List<Integer> idPasajeros);
-	
-	
-	
+    public List<Pasajero> getPasajerosQueNoEstenOcupandoByCriteria(BusqPasajeroDTO criterios_actuales, int li,int cant);
+	public Long getCountPasajerosQueNoEstenOcupandoByCriteria(BusqPasajeroDTO criterios_actuales);
 	
 }

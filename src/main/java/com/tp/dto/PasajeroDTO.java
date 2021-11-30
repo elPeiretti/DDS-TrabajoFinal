@@ -3,17 +3,6 @@ package com.tp.dto;
 import java.time.LocalDate;
 import java.util.Vector;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.tp.dominio.direccion.Direccion;
-import com.tp.dominio.pasajero.PosicionIVA;
-import com.tp.dominio.pasajero.TipoDocumento;
-
-
-
 public class PasajeroDTO {
 	private Integer idPasajero;
 	private String nombres;
@@ -26,12 +15,12 @@ public class PasajeroDTO {
 	private String telefono;
 	private String ocupacion;
 	private TipoDocumentoDTO tipoDocumentoDTO;
-	private Integer idPosicionIVA;
+	private PosicionIVADTO posicionIVA;
 	private DireccionDTO direccionDTO; 
 	
 	public PasajeroDTO(Integer idPasajero, String nombre, String apellido, String cuit, String nroDocumento,
 			LocalDate fechaDeNacimiento, Integer nacionalidad, String email, String telefono, String ocupacion,
-			TipoDocumentoDTO tipoDocumentoDTO, Integer idPosicionIVA, DireccionDTO direccionDTO) {
+			TipoDocumentoDTO tipoDocumentoDTO, PosicionIVADTO posicionIVA, DireccionDTO direccionDTO) {
 		super();
 		this.idPasajero = idPasajero;
 		this.nombres = nombre;
@@ -44,7 +33,7 @@ public class PasajeroDTO {
 		this.telefono = telefono;
 		this.ocupacion = ocupacion;
 		this.tipoDocumentoDTO = tipoDocumentoDTO;
-		this.idPosicionIVA = idPosicionIVA;
+		this.posicionIVA = posicionIVA;
 		this.direccionDTO = direccionDTO;
 	}
 	
@@ -115,12 +104,14 @@ public class PasajeroDTO {
 	public void setTipoDocumentoDTO(TipoDocumentoDTO tipoDocumentoDTO) {
 		this.tipoDocumentoDTO = tipoDocumentoDTO;
 	}
-	public Integer getIdPosicionIVA() {
-		return idPosicionIVA;
+	
+	public PosicionIVADTO getPosicionIVA() {
+		return posicionIVA;
 	}
-	public void setIdPosicionIVA(Integer idPosicionIVA) {
-		this.idPosicionIVA = idPosicionIVA;
+	public void setPosicionIVA(PosicionIVADTO posicionIVA) {
+		this.posicionIVA = posicionIVA;
 	}
+
 	public DireccionDTO getDireccionDTO() {
 		return direccionDTO;
 	}

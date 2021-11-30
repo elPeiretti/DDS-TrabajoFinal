@@ -21,6 +21,7 @@ public class Servicio {
 	private String descripcion;
 	@Column (name = "cantidad_pagada")
 	private Integer cantidadPagada;
+	
 	public Integer getIdServicio() {
 		return idServicio;
 	}
@@ -57,4 +58,9 @@ public class Servicio {
 	public void setCantidadPagada(Integer cantidadPagada) {
 		this.cantidadPagada = cantidadPagada;
 	}
+    public void aumentarCantidadPagada(Integer cantidad) {
+		this.cantidadPagada+=cantidad;
+    }
+
+	
 }

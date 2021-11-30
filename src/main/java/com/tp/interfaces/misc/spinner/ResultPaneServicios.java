@@ -1,67 +1,46 @@
-package com.tp.interfaces.misc;
+package com.tp.interfaces.misc.spinner;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
-import javax.swing.RowSorter.SortKey;
 import javax.swing.border.LineBorder;
 import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class ResultPaneServicios<E> extends JPanel {
+import com.tp.dto.ServicioDTO;
 
-	private JTable jtable_resultados;
+public class ResultPaneServicios extends JPanel {
+
+	private SpinnerTable jtable_resultados;
 	private JLabel lbl_paginas;
 	private JButton btn_prev;
 	private JButton btn_next;
-	private List<E> objetos_en_tabla;
+	private List<ServicioDTO> objetos_en_tabla;
 	private DefaultTableModel jtable_contenido;
 	private JScrollPane jsp_tabla;
 	private Integer pagina_actual = 1;
 	private Long cant_paginas = 1L;
-	private Integer cant_filas = 8;
+	private Integer cant_filas = 4;
 	private TableRowSorter<TableModel> sorter;
+	private Map<Integer,Integer> cantidadSeteada;
 	
 	public ResultPaneServicios() {
 		setBackground(Color.WHITE);
 		setLayout(null);
 		
-		jtable_resultados = new JTable() {
-			public Class getColumnClass(int column) {
-                switch (column) {
-                    case 4:
-                        return Boolean.class;
-                    default:
-                        return Object.class;
-                }
-            }
-            @Override
-            public void setValueAt(Object aValue, int row, int column) {
-                super.setValueAt(aValue, row, column);
-
-            }
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-
-                if (column == 3)
-                    return true;
-
-                return super.isCellEditable(row, column);
-            }
-		};
+		jtable_resultados = new SpinnerTable();
 		
 		jsp_tabla = new JScrollPane(jtable_resultados);
 		jsp_tabla.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -81,14 +60,22 @@ public class ResultPaneServicios<E> extends JPanel {
 		btn_next.setBounds(358, 154, 50, 20);
 		add(btn_next);
 		
-		jtable_contenido = new DefaultTableModel(){
-           		
-		};
+		jtable_contenido = new DefaultTableModel();
 
 		jtable_resultados.setModel(jtable_contenido);
 		sorter = new TableRowSorter<TableModel>(jtable_contenido);
 		jtable_resultados.setRowSorter(sorter);
-		objetos_en_tabla = new ArrayList<E>();
+		objetos_en_tabla = new ArrayList<ServicioDTO>();
+		cantidadSeteada = new HashMap<Integer,Integer>();
+	}
+
+	public void agregarFila(String consumo, Double precioUnitario, Integer unidadesConsumidas, Integer unidadesAFacturar){
+		jtable_contenido.addRow(new Object[]{consumo, String.format("%.2f", precioUnitario), unidadesConsumidas, unidadesAFacturar});
+		jtable_resultados.getJspinnersMaxList().add(unidadesConsumidas);
+	}
+
+	public void agregarFila(ServicioDTO s){
+		agregarFila(s.getDescripcion(), s.getPrecioUnitario(), s.getCantidad() - s.getCantidadPagada(), cantidadSeteada.get(s.getIdServicio()));
 	}
 	
 	public ResultPaneServicios(Runnable tableFillerMethod){
@@ -99,7 +86,7 @@ public class ResultPaneServicios<E> extends JPanel {
 				
 				if(pagina_actual >= cant_paginas) return;
 				
-				pagina_actual++;
+				setPaginaActual(++pagina_actual);
 				tableFillerMethod.run();
 				
 			}
@@ -109,8 +96,8 @@ public class ResultPaneServicios<E> extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(pagina_actual.equals(1)) return;
-				
-				pagina_actual--;
+			
+				setPaginaActual(--pagina_actual);
 				tableFillerMethod.run();
 			}
 		});
@@ -120,7 +107,6 @@ public class ResultPaneServicios<E> extends JPanel {
 		nombres.forEach(n -> jtable_contenido.addColumn(n));
 		if(noOrdenables == null) return;
 		noOrdenables.forEach(n -> sorter.setSortable(n,false));
-		sorter.setSortKeys(List.of(new SortKey(0,SortOrder.ASCENDING)));
 	}
 	
 	public void agregarRowListener(RowSorterListener listener) {
@@ -153,7 +139,7 @@ public class ResultPaneServicios<E> extends JPanel {
 		this.jtable_contenido = jtable_contenido;
 	}
 	
-	public JTable getTable() {
+	public SpinnerTable getTable() {
 		return jtable_resultados;
 	}
 
@@ -169,12 +155,25 @@ public class ResultPaneServicios<E> extends JPanel {
 		return btn_next;
 	}
 
-	public List<E> getRowObjects() {
+	public List<ServicioDTO> getRowObjects() {
 		return objetos_en_tabla;
+	}
+
+	public void setRowObjects(List<ServicioDTO> objetos) {
+		objetos_en_tabla = objetos;
 	}
 
 	public Integer getCantidadFilas(){
 		return cant_filas;
+	}
+
+    public void limpiarTabla() {
+		jtable_contenido.setRowCount(0);
+		jtable_resultados.getJspinnersMaxList().clear();
+    }
+
+	public Map<Integer,Integer> getMapCantidadSeteada() {
+		return cantidadSeteada;
 	}
 	
 }
