@@ -227,6 +227,12 @@ public class GestorPasajeros {
 		
 		return pasajeroDAO.getCountPasajerosQueNoEstenOcupandoByCriteria(criterios_actuales);
     }
+
+    public static Pasajero getPasajeroById(Integer idPasajero) {
+        PasajeroDAO pasajeroDAO = new PasajeroSqlDAO();
+		
+		return pasajeroDAO.getPasajeroById(idPasajero);
+    }
 	
 	
 	

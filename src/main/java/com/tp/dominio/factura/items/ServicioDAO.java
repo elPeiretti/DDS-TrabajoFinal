@@ -10,4 +10,6 @@ public interface ServicioDAO {
 
     Long getCountServiciosNoFacturadosByIdHabitacion(Integer idHabitacion);
 
+    Servicio getServicioById(Integer idServicio);
+
 }

@@ -52,6 +52,9 @@ public class Servicio {
 	public void setCantidadPagada(Integer cantidadPagada) {
 		this.cantidadPagada = cantidadPagada;
 	}
+    public void aumentarCantidadPagada(Integer cantidad) {
+		this.cantidadPagada+=cantidad;
+    }
 
 	
 }

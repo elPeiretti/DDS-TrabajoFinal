@@ -6,6 +6,7 @@ import javax.persistence.TypedQuery;
 import com.tp.hibernate.HibernateUtil;
 
 import org.hibernate.Session;
+import org.hibernate.hql.spi.id.inline.IdsClauseBuilder;
 
 public class ServicioSqlDAO implements ServicioDAO {
 
@@ -32,6 +33,25 @@ public class ServicioSqlDAO implements ServicioDAO {
 		TypedQuery<Long> hqlQuery = session.createQuery("SELECT COUNT(s) FROM Habitacion h JOIN h.servicios s WHERE h.idHabitacion = :id AND s.cantidadPagada < s.cantidad");
 		hqlQuery.setParameter("id", idHabitacion);
 		
+		resultado = hqlQuery.getSingleResult();
+		
+		session.close();
+		
+		return resultado;
+	}
+
+	@Override
+	public Servicio getServicioById(Integer idServicio) {
+		Servicio resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		String sqlStatement = "SELECT s FROM Servicio s WHERE s.idServicio = :id ";
+	
+		TypedQuery<Servicio> hqlQuery = session.createQuery(sqlStatement);
+		
+		hqlQuery.setParameter("id", idServicio);
+			
 		resultado = hqlQuery.getSingleResult();
 		
 		session.close();

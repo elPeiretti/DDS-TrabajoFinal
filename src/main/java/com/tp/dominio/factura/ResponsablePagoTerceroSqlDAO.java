@@ -24,4 +24,23 @@ public class ResponsablePagoTerceroSqlDAO implements ResponsablePagoTerceroDAO {
         session.close();
         return resultado;
     }
+
+    @Override
+    public ResponsablePagoTercero getResponsableTerceroById(Integer idResponsable) {
+        ResponsablePagoTercero resultado;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		String sqlStatement = "SELECT r FROM ResponsablePagoTercero r WHERE r.idResponsable = :id ";
+	
+		TypedQuery<ResponsablePagoTercero> hqlQuery = session.createQuery(sqlStatement);
+		
+		hqlQuery.setParameter("id", idResponsable);
+			
+		resultado = hqlQuery.getSingleResult();
+		
+		session.close();
+		
+		return resultado;
+    }
 }

@@ -24,4 +24,9 @@ public class GestorServicios {
         ServicioDAO sDao = new ServicioSqlDAO();
         return sDao.getCountServiciosNoFacturadosByIdHabitacion(habitacionDto.getIdHabitacion());
     }
+
+    public static Servicio getServicioById(Integer idServicio) {
+        ServicioDAO sDao = new ServicioSqlDAO();
+        return sDao.getServicioById(idServicio);
+    }
 }

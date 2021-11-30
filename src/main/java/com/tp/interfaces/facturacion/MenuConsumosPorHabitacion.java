@@ -1,21 +1,35 @@
 package com.tp.interfaces.facturacion;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+
+import com.tp.dominio.factura.TipoFactura;
+import com.tp.dto.FacturaDTO;
+import com.tp.dto.FacturarDTO;
 import com.tp.dto.HabitacionDTO;
+import com.tp.dto.ItemFacturaDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.dto.ServicioDTO;
+import com.tp.excepciones.FacturaSinItemsException;
+import com.tp.gestores.GestorFacturas;
 import com.tp.gestores.GestorServicios;
 import com.tp.interfaces.misc.Encabezado;
+import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.spinner.*;
+import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
+import com.tp.interfaces.VentanaPrincipal;
 
 public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 
@@ -209,9 +223,52 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 
 		jb_cancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				//TODO
+				int opt = Mensaje.mensajeConfirmacion("¿Está seguro que desea cancelar la creación de la factura?");
+				if(opt == 1){
+					((VentanaPrincipal) ventana_contenedora).cambiarPanel(new MenuFacturar(ventana_contenedora, encabezado),
+															 MenuFacturar.x_bound, MenuFacturar.y_bound, MenuFacturar.titulo);
+				}
 			}
 			
+		});
+
+		jb_siguiente.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				FacturaDTO factura = crearFacturaDTO();
+				
+				try {
+					GestorFacturas.generarFactura(factura);
+				} catch (FacturaSinItemsException exc) {
+					Mensaje.mensajeInformacion("La factura debe contener al menos un item.");
+					return;
+				}
+
+				//aqui debe ir la logica si tiene que volver al facturar o al menu principal
+				Mensaje.mensajeInformacion("Se ha completado la facturación de la habitación "+habitacion.getNumero()+" exitosamente.");
+				((VentanaPrincipal) ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora, encabezado),
+													MenuPrincipal.x_bound, MenuPrincipal.y_bound, MenuPrincipal.titulo);										
+			}
+
+			private FacturaDTO crearFacturaDTO(){
+				List<ItemFacturaDTO> items_factura = new ArrayList<ItemFacturaDTO>();
+				List<ServicioDTO> servicios = rp_servicios.getRowObjects();
+				Map<Integer,Integer> cantidades = rp_servicios.getMapCantidadSeteada();
+				
+				for(int i=0; i<servicios.size(); i++){
+					Integer cantidadAFacturar = cantidades.get(servicios.get(i).getIdServicio());
+					if (cantidadAFacturar==0)
+						continue;
+
+					items_factura.add( new ItemFacturaDTO(cantidadAFacturar,servicios.get(i)) );
+				}
+
+				TipoFactura tipo_factura = (responsable != null || (responsable_pasajero != null && responsable_pasajero.getPosicionIVA().getPosicion().equals("R.I.")))?
+											 TipoFactura.A:TipoFactura.B;
+				
+
+				return new FacturaDTO(tipo_factura,total,LocalDate.now(),iva,items_factura,responsable_pasajero,responsable);
+			}
 		});
 	}
 }
