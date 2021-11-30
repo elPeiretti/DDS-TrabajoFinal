@@ -16,6 +16,7 @@ public class CiudadSqlDAO implements CiudadDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Ciudad> hqlQuery = session.createQuery("SELECT c FROM Ciudad c WHERE c.provincia.idProvincia = :id");
 		
 		hqlQuery.setParameter("id", idProvincia);
@@ -29,6 +30,7 @@ public class CiudadSqlDAO implements CiudadDAO {
 	@Override
 	public Ciudad getById(Integer idCiudad) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
+		@SuppressWarnings("unchecked")
 		TypedQuery<Ciudad> hqlQuery = session.createQuery("SELECT c FROM Ciudad c WHERE c.idCiudad = :id");
 		
 		hqlQuery.setParameter("id", idCiudad);

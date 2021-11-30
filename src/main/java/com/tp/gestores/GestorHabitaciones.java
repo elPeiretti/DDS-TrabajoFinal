@@ -4,19 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.swing.SortOrder;
 
 import com.tp.dominio.factura.items.Servicio;
-import com.tp.dominio.factura.items.ServicioDAO;
 import com.tp.dominio.habitacion.EstadoHabitacion;
 import com.tp.dominio.habitacion.Habitacion;
 import com.tp.dominio.habitacion.HabitacionDAO;
@@ -31,19 +28,18 @@ import com.tp.dominio.reserva.EstadoReserva;
 import com.tp.dominio.reserva.Reserva;
 import com.tp.dominio.reserva.ReservaDAO;
 import com.tp.dominio.reserva.ReservaSqlDAO;
-import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.FacturarDTO;
 import com.tp.dto.FechaDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.ReservaDTO;
-import com.tp.dto.ServicioDTO;
 import com.tp.dto.TipoHabitacionDTO;
 import com.tp.excepciones.HabitacionNoExistenteException;
 import com.tp.excepciones.HabitacionNoOcupadaException;
 import com.tp.excepciones.HabitacionSinOcupacionesException;
-import com.tp.interfaces.misc.Mensaje;
+import com.tp.excepciones.NuevaHabitacionException;
+import com.tp.excepciones.NuevaOcupacionException;
 
 public class GestorHabitaciones {
 
@@ -155,7 +151,7 @@ public class GestorHabitaciones {
 		return hDto;
     }
     
-    public static void ocuparHabitacion(OcupacionDTO ocupacionDto) {
+    public static void ocuparHabitacion(OcupacionDTO ocupacionDto) throws NuevaOcupacionException {
     	
     	HabitacionDAO habitacionDao = new HabitacionSqlDAO();
     	PasajeroDAO pasajeroDao = new PasajeroSqlDAO();
@@ -207,9 +203,11 @@ public class GestorHabitaciones {
     	listaReservas.stream().forEach(r -> r.setEstado(EstadoReserva.CANCELADA));
     	
     	listaReservas.stream().forEach(r -> r.setHabitacion(ocupacion.getHabitacion()));
-    	
-    	ocupacionDao.insertarOcupacionyCancelarReservas(ocupacion, listaReservas);
-    	
+    	try {
+    		ocupacionDao.insertarOcupacionyCancelarReservas(ocupacion, listaReservas);
+    	}catch(NuevaOcupacionException e) {
+			throw e;
+    	}
     }
 
 	public static OcupacionDTO buscarUltimaOcupacion(String numero) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, HabitacionNoOcupadaException {
@@ -248,7 +246,7 @@ public class GestorHabitaciones {
 		habDTO.setNumero(habitacion.getNumero());
 		return habDTO;
 	}
-	public static void calcularEstadia(String hora_salida, OcupacionDTO ocupacion_actual) {
+	public static void calcularEstadia(String hora_salida, OcupacionDTO ocupacion_actual) throws NuevaHabitacionException {
 		Habitacion hab = getHabitacionWithCostoVigenteEn(ocupacion_actual.getHabitacion().getIdHabitacion(),ocupacion_actual.getFechaIngreso());
 		Servicio estadia = GestorServicios.generarServicioEstadia(hab,ocupacion_actual);
 		hab.addServicio(estadia);
@@ -258,7 +256,12 @@ public class GestorHabitaciones {
 			hab.addServicio(recargo);
 		}
 		hab.setEstado(EstadoHabitacion.LIBRE);//teoricamente en un mundo ideal deberia verificar que no haya reservas?
-		new HabitacionSqlDAO().insertarHabitacion(hab);
+		try {
+			new HabitacionSqlDAO().insertarHabitacion(hab);
+		}catch(NuevaHabitacionException e) {
+			throw e;
+		}
+		
 	}
 	private static Habitacion getHabitacionWithCostoVigenteEn(Integer idHabitacion,LocalDate fechaEgreso) {
 		Habitacion hab = new HabitacionSqlDAO().getHabitacionByIdWithCostoVigenteEn(idHabitacion, fechaEgreso);

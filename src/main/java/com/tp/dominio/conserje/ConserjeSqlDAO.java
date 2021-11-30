@@ -15,6 +15,7 @@ public class ConserjeSqlDAO implements ConserjeDAO {
 		
 		String sqlStatement = "SELECT c FROM Conserje c WHERE c.usuario = :usuario AND c.contrasenia = :pass ";
 
+		@SuppressWarnings("unchecked")
 		TypedQuery<Conserje> hqlQuery = session.createQuery(sqlStatement);
         hqlQuery.setParameter("usuario", usuario);
         hqlQuery.setParameter("pass", pass);		

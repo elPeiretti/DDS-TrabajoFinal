@@ -28,6 +28,10 @@ import java.util.Vector;
 
 public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3713679018825896719L;
 	public static String titulo = "Buscar Acompañantes";
 	public static int x_bound = 660;
 	public static int y_bound = 720;
@@ -133,8 +137,6 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	}
 	
 	public void agregarActionListeners() {
-		MenuBuscarAcompaniantes contexto = this;
-		
 		
 		rp_pasajeros_busqueda.getTable().addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {

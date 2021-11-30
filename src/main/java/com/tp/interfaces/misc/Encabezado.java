@@ -14,6 +14,10 @@ import java.awt.Color;
 
 public class Encabezado extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8459157952069426260L;
 	private BufferedImage logo;
 	private JLabel lbl_logo;
 	public JLabel lbl_conserje;

@@ -11,7 +11,12 @@ import java.awt.event.*;
 import java.util.EventObject;
 
 public class SpinnerCellEditor extends SpinnerPanel implements TableCellEditor {
-    public SpinnerCellEditor() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1645954546223081L;
+
+	public SpinnerCellEditor() {
         super();
         spinner.addChangeListener(new ChangeListener() {
 

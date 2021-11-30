@@ -10,12 +10,10 @@ import com.tp.dominio.factura.items.ServicioDAO;
 import com.tp.dominio.factura.items.ServicioSqlDAO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.ServicioDTO;
-import com.tp.dominio.factura.items.Servicio;
 import com.tp.dominio.habitacion.Habitacion;
 import com.tp.dto.OcupacionDTO;
 
 public class GestorServicios {
-	private String warning;//dejo esto para recordar que hay que revisar el calculo de la duracion de la estadia
     public static List<ServicioDTO> getServiciosNoFacturadosByHabitacion(HabitacionDTO habitacionDto) {
         ServicioDAO sDao = new ServicioSqlDAO();
         List<Servicio> servicios = sDao.getServiciosNoFacturadosByIdHabitacion(habitacionDto.getIdHabitacion());

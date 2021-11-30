@@ -23,6 +23,10 @@ import com.tp.dto.ServicioDTO;
 
 public class ResultPaneServicios extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4743751834094883312L;
 	private SpinnerTable jtable_resultados;
 	private JLabel lbl_paginas;
 	private JButton btn_prev;

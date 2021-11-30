@@ -3,7 +3,6 @@ package com.tp.interfaces.misc;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.RowSorter;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.JLabel;
@@ -22,6 +21,10 @@ import javax.swing.table.TableRowSorter;
 
 public class ResultPane<E> extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6009243138852942810L;
 	private JTable jtable_resultados;
 	private JLabel lbl_paginas;
 	private JButton btn_prev;
@@ -59,6 +62,11 @@ public class ResultPane<E> extends JPanel {
 		add(btn_next);
 		
 		jtable_contenido = new DefaultTableModel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5813570273940013198L;
+
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}

@@ -15,7 +15,6 @@ import java.time.LocalDate;
 
 import com.tp.dominio.factura.TipoFactura;
 import com.tp.dto.FacturaDTO;
-import com.tp.dto.FacturarDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.ItemFacturaDTO;
 import com.tp.dto.PasajeroDTO;
@@ -33,6 +32,10 @@ import com.tp.interfaces.VentanaPrincipal;
 
 public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2588722793200749158L;
 	public static String titulo = "Facturar";
 	public static int x_bound = 660;
 	public static int y_bound = 500;

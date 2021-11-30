@@ -5,19 +5,16 @@ import javax.swing.RowSorter.SortKey;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
 
-import com.tp.dominio.pasajero.Pasajero;
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.TipoDocumentoDTO;
 import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.MenuPrincipal;
-import com.tp.interfaces.facturacion.MenuFacturar;
 import com.tp.interfaces.misc.*;
 import com.tp.interfaces.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +22,10 @@ import java.util.Vector;
 
 public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9061527609162888514L;
 	public static String titulo = "Gestionar Pasajero";
 	public static int x_bound = 660;
 	public static int y_bound = 500;

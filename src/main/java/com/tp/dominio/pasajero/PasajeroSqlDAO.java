@@ -1,7 +1,6 @@
 package com.tp.dominio.pasajero;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import javax.swing.SortOrder;
@@ -10,8 +9,8 @@ import org.hibernate.*;
 
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.PasajeroDTO;
+import com.tp.excepciones.NuevoPasajeroException;
 import com.tp.hibernate.HibernateUtil;
-import com.tp.interfaces.misc.Mensaje;
 
 public class PasajeroSqlDAO implements PasajeroDAO {
 
@@ -62,6 +61,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		}
 		sqlStatement += orderBy;
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
 		if(criterios.getNombres() != null) {
@@ -115,6 +115,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 			sqlStatement += "AND p.nroDocumento = :documento ";
 		}
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
 		
 		String aux;
@@ -160,6 +161,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 			sqlStatement += "AND p.nroDocumento = :documento ";
 		}
 	
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
 		String aux;
@@ -181,7 +183,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		return resultado;
 	}
 
-    public void insertarPasajero(Pasajero pasajero) {
+    public void insertarPasajero(Pasajero pasajero) throws NuevoPasajeroException {
 		Transaction tx = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         
@@ -194,7 +196,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
         	if (tx!=null) 
         		tx.rollback();
         	e.printStackTrace();
-			Mensaje.mensajeError(new String[]{"No se ha podido cargar el pasajero en la base de datos."});
+        	throw new NuevoPasajeroException();
         }
         finally {
         	session.close();
@@ -251,6 +253,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		}
 		sqlStatement += orderBy;
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
 		if(criterios.getNombres() != null) {
@@ -308,6 +311,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		
 		sqlStatement += "AND p.idPasajero != :id_responsable ";
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
 		
 		String aux;
@@ -385,6 +389,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		}
 		sqlStatement += orderBy;
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		hqlQuery.setParameter("hoy", LocalDate.now());
 		
@@ -441,6 +446,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		
 		sqlStatement += "AND  (:hoy - p.fechaDeNacimiento)>= 365*18 ";
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
 		hqlQuery.setParameter("hoy", LocalDate.now());
 		
@@ -480,6 +486,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE p.idPasajero = :id ";
 		
 	
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
 		hqlQuery.setParameter("id", idPasajero);
@@ -499,6 +506,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		
 		String sqlStatement = "SELECT p FROM Pasajero p JOIN p.tipoDocumento td WHERE p.idPasajero IN :id ";
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
 		hqlQuery.setParameter("id", idPasajeros);
@@ -559,6 +567,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		}
 		sqlStatement += orderBy;
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pasajero> hqlQuery = session.createQuery(sqlStatement);
 		
 		hqlQuery.setParameter("hoy", LocalDate.now());
@@ -613,6 +622,7 @@ public class PasajeroSqlDAO implements PasajeroDAO {
 		
 		sqlStatement += "AND p NOT IN (SELECT p2 FROM Ocupacion o2 JOIN o2.acompaniantes p2 WHERE o2.fechaEgreso >= :hoy)";
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Long> hqlQuery = session.createQuery(sqlStatement);
 		
 		hqlQuery.setParameter("hoy", LocalDate.now());

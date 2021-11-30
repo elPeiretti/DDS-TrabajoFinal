@@ -1,7 +1,6 @@
 package com.tp.dominio.factura.cancelacion;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.*;

@@ -1,6 +1,5 @@
 package com.tp.dominio.ocupacion;
 
-import java.time.Instant;
 import java.util.LinkedList;
 import java.time.LocalDate;
 import java.util.List;

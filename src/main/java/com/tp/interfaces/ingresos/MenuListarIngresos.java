@@ -12,11 +12,17 @@ import com.tp.interfaces.misc.TabOrder;
 
 public class MenuListarIngresos extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1662236293627813143L;
 	public static String titulo = "Listar Ingresos";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
 
+	@SuppressWarnings("unused")
 	private JFrame ventana_contenedora;
+	@SuppressWarnings("unused")
 	private JPanel encabezado;
 	private JLabel lbl_desde;
 	private JButton jb_imp_salir;
@@ -24,6 +30,7 @@ public class MenuListarIngresos extends JPanel {
 	private JDateChooser dc_desde;
 	private JDateChooser dc_hasta;
 	
+	@SuppressWarnings("rawtypes")
 	public MenuListarIngresos(JFrame ventana_contenedora, Encabezado encabezado) {
 
 		this.ventana_contenedora = ventana_contenedora;

@@ -1,4 +1,4 @@
-﻿package com.tp.interfaces.habitaciones;
+package com.tp.interfaces.habitaciones;
 
 import java.awt.Color;
 
@@ -8,11 +8,13 @@ import java.awt.Point;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.hibernate.boot.model.relational.InitCommand;
-
 public class HabitacionesRenderer extends DefaultTableCellRenderer{
 
-    Color color_RESERVADA = new Color(255,255,128);;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3441189786021680448L;
+	Color color_RESERVADA = new Color(255,255,128);;
     Color color_OCUPADA = new Color(255,128,128);;
     Color color_SELECCIONADA = new Color(0,128,255);;
     Color color_MANTENIMIENTO = new Color(255,153,0);

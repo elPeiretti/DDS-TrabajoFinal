@@ -8,16 +8,18 @@ import javax.imageio.ImageIO;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.swing.*;
-import javax.swing.text.*;
 import java.awt.event.*;
 import com.tp.dto.ConserjeDTO;
 import com.tp.gestores.GestorLogin;
 import com.tp.interfaces.misc.*;
 import java.awt.*;
-import java.text.ParseException;
 
 public class MenuAutenticacion extends JPanel implements SeteableTab{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8739154481499777098L;
 	public static String titulo = "Autenticación";
 	public static int x_bound = 660;
 	public static int y_bound = 500;

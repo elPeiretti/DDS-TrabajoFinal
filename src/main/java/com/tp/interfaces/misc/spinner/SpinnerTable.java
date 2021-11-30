@@ -7,13 +7,18 @@ import javax.swing.JTable;
 
 public class SpinnerTable extends JTable{
     
-    private List<Integer> max_jspinner = new ArrayList<Integer>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8237770086997305403L;
+	private List<Integer> max_jspinner = new ArrayList<Integer>();
 
     public List<Integer> getJspinnersMaxList(){
         return max_jspinner;
     }
 
-    public Class getColumnClass(int column) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Class getColumnClass(int column) {
         switch (column) {
             case 4:
                 return Boolean.class;

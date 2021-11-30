@@ -7,7 +7,6 @@ import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 
-import com.tp.dominio.pasajero.Pasajero;
 import com.tp.hibernate.HibernateUtil;
 
 public class ReservaSqlDAO implements ReservaDAO {
@@ -20,6 +19,7 @@ public class ReservaSqlDAO implements ReservaDAO {
 		String sqlStatement = "SELECT r FROM Reserva r WHERE r.estado != :estado AND ((r.fechaIngreso BETWEEN :fecha_desde AND :fecha_hasta) "
 				+ "OR (r.fechaEgreso BETWEEN :fecha_desde AND :fecha_hasta) OR (:fecha_desde > r.fechaIngreso AND :fecha_hasta < r.fechaEgreso))";	
 
+		@SuppressWarnings("unchecked")
 		TypedQuery<Reserva> hqlQuery = session.createQuery(sqlStatement); 
 		
 		hqlQuery.setParameter("fecha_desde", fecha_desde);
@@ -39,6 +39,7 @@ public class ReservaSqlDAO implements ReservaDAO {
 		String sqlStatement = "SELECT r FROM Reserva r WHERE r.habitacion.numero = :numero AND r.estado != :estado AND ((r.fechaIngreso BETWEEN :fecha_desde AND :fecha_hasta) "
 				+ "OR (r.fechaEgreso BETWEEN :fecha_desde AND :fecha_hasta) OR (:fecha_desde > r.fechaIngreso AND :fecha_hasta < r.fechaEgreso))";	
 
+		@SuppressWarnings("unchecked")
 		TypedQuery<Reserva> hqlQuery = session.createQuery(sqlStatement); 
 		
 		hqlQuery.setParameter("numero", numeroHabitacion);

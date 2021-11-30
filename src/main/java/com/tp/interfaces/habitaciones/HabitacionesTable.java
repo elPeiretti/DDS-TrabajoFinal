@@ -1,12 +1,6 @@
-﻿package com.tp.interfaces.habitaciones;
-
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+package com.tp.interfaces.habitaciones;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,18 +8,13 @@ import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-
-import org.hibernate.mapping.Table;
 
 public class HabitacionesTable implements ChangeListener, PropertyChangeListener{
 
     private JTable jtable_habitaciones;
 	private JTable jtable_fechas;
 	private JScrollPane jspane_tabla;
-	private List selectedCells;
 
     public HabitacionesTable (JScrollPane scrollPane){
         

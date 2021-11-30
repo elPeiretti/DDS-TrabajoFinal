@@ -6,6 +6,7 @@ import com.toedter.calendar.JDateChooser;
 import com.tp.dto.*;
 import com.tp.excepciones.CamposInvalidosException;
 import com.tp.excepciones.DocumentoExistenteException;
+import com.tp.excepciones.NuevoPasajeroException;
 import com.tp.gestores.GestorGeografico;
 import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.misc.*;
@@ -25,6 +26,10 @@ import java.util.stream.Collectors;
 
 public class MenuAltaPasajero extends JPanel implements SeteableTab{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9057393943646040068L;
 	public static String titulo = "Alta Pasajero";
 	public static int x_bound = 660;
 	public static int y_bound = 650;
@@ -560,6 +565,8 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 						catch(DocumentoExistenteException exc2){} // nunca va a ser lanzada
 						catch(CamposInvalidosException exc3){
 							Mensaje.mensajeError(exc3.errores.toArray(new String[]{}));
+						}catch(NuevoPasajeroException exc4){
+							Mensaje.mensajeError(new String[] {"Hubo un error al registrar un nuevo pasajero."});
 						}
 						
 						int opt2 = Mensaje.mensajeConfirmacion("El pasajero "+p.getNombres()+", "+p.getApellido()+" ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro?",
@@ -576,6 +583,8 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 					else{
 						jcb_tipo_documento.requestFocus();
 					}
+				} catch (NuevoPasajeroException exc) {
+					Mensaje.mensajeError(new String[]{"Hubo un error al registrar un nuevo pasajero"});
 				}
 				
 			}

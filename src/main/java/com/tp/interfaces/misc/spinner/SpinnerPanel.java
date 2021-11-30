@@ -8,8 +8,17 @@ import java.awt.Dimension;
 
 public class SpinnerPanel extends JPanel{
 
-    protected JSpinner spinner = new JSpinner() {
-        @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5033264129881734036L;
+	protected JSpinner spinner = new JSpinner() {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 2959743319020480973L;
+
+		@Override
         public Dimension getPreferredSize() {
             Dimension d = super.getPreferredSize();
             return new Dimension(40, d.height);

@@ -1,13 +1,8 @@
-﻿package com.tp.interfaces.habitaciones;
+package com.tp.interfaces.habitaciones;
 
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -17,7 +12,11 @@ import com.tp.interfaces.misc.columngroup.GroupableTableHeader;
 
 public class PintableTable extends JTable{
 
-    private boolean seleccionando;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6833561922562096298L;
+	private boolean seleccionando;
     private Point celdaInicial;
     private Point celdaFinal; 
 

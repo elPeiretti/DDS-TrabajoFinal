@@ -10,9 +10,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.tp.dominio.pasajero.TipoDocumento;
+import com.tp.excepciones.NuevaHabitacionException;
 import com.tp.hibernate.HibernateUtil;
-import com.tp.interfaces.misc.Mensaje;
 
 public class HabitacionSqlDAO implements HabitacionDAO {
 
@@ -23,6 +22,7 @@ public class HabitacionSqlDAO implements HabitacionDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h ");
 		resultado = hqlQuery.getResultList();
 		
@@ -39,6 +39,7 @@ public class HabitacionSqlDAO implements HabitacionDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h WHERE h.numero = :numero");
 		hqlQuery.setParameter("numero", numero);
 		r = hqlQuery.getResultList();
@@ -48,7 +49,7 @@ public class HabitacionSqlDAO implements HabitacionDAO {
 	}
 
 	@Override
-	public void insertarHabitacion(Habitacion hab) {
+	public void insertarHabitacion(Habitacion hab) throws NuevaHabitacionException {
 		Transaction tx = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         
@@ -61,7 +62,8 @@ public class HabitacionSqlDAO implements HabitacionDAO {
         	if (tx!=null) 
         		tx.rollback();
         	e.printStackTrace();
-			Mensaje.mensajeError(new String[]{"No se ha podido cargar el pasajero en la base de datos."});
+        	throw new NuevaHabitacionException();
+
         }
         finally {
         	session.close();
@@ -75,6 +77,7 @@ public class HabitacionSqlDAO implements HabitacionDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Habitacion> hqlQuery = session.createQuery("SELECT h FROM Habitacion h JOIN FETCH h.tipo t JOIN FETCH t.costo c WHERE h.idHabitacion = :id "
 				+ "AND ((:fecha BETWEEN c.fechaInicioVigencia AND c.fechaFinVigencia) "
 				+ "OR (c.fechaFinVigencia IS NULL AND :fecha >= c.fechaInicioVigencia))");

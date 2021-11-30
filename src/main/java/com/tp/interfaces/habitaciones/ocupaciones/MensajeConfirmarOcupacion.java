@@ -5,6 +5,7 @@ import javax.swing.*;
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.OcupacionDTO;
 import com.tp.dto.PasajeroDTO;
+import com.tp.excepciones.NuevaOcupacionException;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
@@ -21,6 +22,10 @@ import java.util.Vector;
 
 public class MensajeConfirmarOcupacion extends JPanel implements SeteableTab {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2288976139522990459L;
 	public static String titulo = "Confirmar Ocupacion";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
@@ -88,11 +93,21 @@ public class MensajeConfirmarOcupacion extends JPanel implements SeteableTab {
 				int opcion = Mensaje.mensajeConfirmacionOcupacion();
 				
 				if(opcion == 0) {
-					GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
+					try {
+						GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
+					}catch(NuevaOcupacionException x) {
+						Mensaje.mensajeError(new String[]{"Hubo un error al registrar la ocupación"});
+						return;
+					}
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),
 							MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);
 				} else if(opcion == 1) {
-					GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
+					try {
+						GestorHabitaciones.ocuparHabitacion(nuevaOcupacion);
+					}catch(NuevaOcupacionException x) {
+						Mensaje.mensajeError(new String[]{"Hubo un error al registrar la ocupación"});
+						return;
+					}
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
 							MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
 				} else if(opcion == 2) {

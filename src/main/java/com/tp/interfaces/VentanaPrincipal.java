@@ -10,6 +10,10 @@ import java.time.format.DateTimeFormatter;
 
 public class VentanaPrincipal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5763464764371231784L;
 	private Encabezado encabezado;
 
 	/**

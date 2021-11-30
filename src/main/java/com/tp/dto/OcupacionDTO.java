@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.tp.dominio.pasajero.Pasajero;
-
-
 public class OcupacionDTO {
 	private Integer idOcupacion;
 

@@ -5,7 +5,12 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class SpinnerCellRenderer extends SpinnerPanel implements TableCellRenderer {
-    public SpinnerCellRenderer() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4029070467949009807L;
+
+	public SpinnerCellRenderer() {
         super();
     }
 

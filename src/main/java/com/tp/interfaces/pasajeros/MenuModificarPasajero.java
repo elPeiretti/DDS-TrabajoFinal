@@ -8,14 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.swing.*;
 
-import com.toedter.calendar.JDateChooser;
 import com.tp.dominio.direccion.Direccion;
-import com.tp.dominio.geo.Ciudad;
-import com.tp.dominio.geo.Pais;
-import com.tp.dominio.geo.Provincia;
 import com.tp.dominio.pasajero.Pasajero;
-import com.tp.dominio.pasajero.PosicionIVA;
-import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.dto.PasajeroDTO;
 import com.tp.interfaces.VentanaPrincipal;
 import com.tp.interfaces.misc.Encabezado;
@@ -23,9 +17,15 @@ import com.tp.interfaces.misc.Mensaje;
 
 public class MenuModificarPasajero extends MenuAltaPasajero {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4094365438405978885L;
+
 	public static String titulo = "Modificar Pasajero";
 
 	private JButton jb_borrar;
+	@SuppressWarnings("unused")
 	private PasajeroDTO pasajero;
 	
 	public MenuModificarPasajero(JFrame ventana_contenedora, Encabezado encabezado, MenuBusquedaPasajero estado_anterior, PasajeroDTO pasajero) {

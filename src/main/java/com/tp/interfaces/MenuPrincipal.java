@@ -27,6 +27,10 @@ import java.awt.event.ActionEvent;
 
 public class MenuPrincipal extends JPanel implements SeteableTab{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3111229752677918492L;
 	public static String titulo = "Menú Principal";
 	public static int x_bound = 660;
 	public static int y_bound = 500;

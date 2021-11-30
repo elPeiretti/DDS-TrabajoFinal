@@ -22,6 +22,10 @@ import javax.swing.table.TableRowSorter;
 
 public class ResultPaneAcompaniantes<E> extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -434640732594870399L;
 	private JTable jtable_resultados;
 	private JLabel lbl_paginas;
 	private JButton btn_prev;
@@ -39,6 +43,12 @@ public class ResultPaneAcompaniantes<E> extends JPanel {
 		setLayout(null);
 		
 		jtable_resultados = new JTable() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -7495260620475200509L;
+
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int column) {
                 switch (column) {
                     case 4:
@@ -68,6 +78,11 @@ public class ResultPaneAcompaniantes<E> extends JPanel {
 		add(btn_next);
 		
 		jtable_contenido = new DefaultTableModel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4959317085830906692L;
+
 			public boolean isCellEditable(int row, int column){
 				return false;
 				//return true;

@@ -12,10 +12,15 @@ import com.tp.interfaces.misc.TabOrder;
 
 public class MenuBusquedaFactura extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -992712718617522380L;
 	public static String titulo = "Registrar Pago";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
 
+	@SuppressWarnings("unused")
 	private JFrame ventana_contenedora;
 	private JTextField jtf_num_hab;
 	private JLabel lbl_num_hab;
@@ -25,6 +30,7 @@ public class MenuBusquedaFactura extends JPanel {
 	private JButton jb_cancelar;
 	private JPanel rp_facturas;
 	
+	@SuppressWarnings("rawtypes")
 	public MenuBusquedaFactura(JFrame ventana_contenedora) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;

@@ -2,6 +2,7 @@ package com.tp.interfaces.habitaciones.reservas;
 
 import javax.swing.*;
 
+import com.tp.dto.ReservaDTO;
 import com.tp.interfaces.misc.*;
 import java.awt.Color;
 import java.awt.Font;
@@ -9,10 +10,15 @@ import java.util.List;
 
 public class MenuConfirmarReserva extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5538032252893802363L;
 	public static String titulo = "Confirmar Reserva";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
 
+	@SuppressWarnings("unused")
 	private JFrame ventana_contenedora;
 	private JPanel encabezado;
 	private JLabel lbl_reserva_nombre;
@@ -86,7 +92,7 @@ public class MenuConfirmarReserva extends JPanel {
 		add(jtf_nombres);
 		
 		
-		rp_reservas = new ResultPane();
+		rp_reservas = new ResultPane<ReservaDTO>();
 		rp_reservas.setBounds(10, 240, 620, 180);
 		add(rp_reservas);
 		

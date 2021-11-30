@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import javax.persistence.*;
 
 import com.tp.dominio.habitacion.Habitacion;
-import com.tp.dominio.pasajero.Pasajero;
 
 @Entity
 @Table(name = "tpdds.reserva")

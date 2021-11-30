@@ -1,9 +1,14 @@
-﻿package com.tp.interfaces.habitaciones;
+package com.tp.interfaces.habitaciones;
 
 import javax.swing.table.DefaultTableModel;
 
 public class HabitacionesTableModel extends DefaultTableModel{
-    public HabitacionesTableModel(){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4471712428274003782L;
+
+	public HabitacionesTableModel(){
         super();
     }
 

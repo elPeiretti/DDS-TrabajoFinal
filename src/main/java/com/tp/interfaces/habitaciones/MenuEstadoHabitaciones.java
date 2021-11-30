@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -30,15 +28,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import com.tp.interfaces.*;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6469104100050406245L;
 	public static String titulo = "Estado Habitaciones";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
@@ -171,6 +170,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		dc_fecha_desde.getDateEditor().getUiComponent().addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {}
 			
+			@SuppressWarnings("deprecation")
 			public void focusLost(FocusEvent e) {
 				Date desde = dc_fecha_desde.getDate();
 				Date hasta = dc_fecha_hasta.getDate();
@@ -211,6 +211,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		});
 		
 		dc_fecha_desde.addPropertyChangeListener(new PropertyChangeListener() {
+			@SuppressWarnings("deprecation")
 			public void propertyChange(PropertyChangeEvent e) {
 				Date desde = dc_fecha_desde.getDate();
 				Date hasta = dc_fecha_hasta.getDate();
@@ -240,7 +241,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
 		dc_fecha_hasta.getDateEditor().getUiComponent().addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {}
-			
+			@SuppressWarnings("deprecation")
 			public void focusLost(FocusEvent e) {
 				Date desde = dc_fecha_desde.getDate();
 				Date hasta = dc_fecha_hasta.getDate();
@@ -280,6 +281,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		});
 		
 		dc_fecha_hasta.addPropertyChangeListener(new PropertyChangeListener() {
+			@SuppressWarnings("deprecation")
 			public void propertyChange(PropertyChangeEvent e) {
 				Date desde = dc_fecha_desde.getDate();
 				Date hasta = dc_fecha_hasta.getDate();

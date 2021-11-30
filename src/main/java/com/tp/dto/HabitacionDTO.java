@@ -1,10 +1,8 @@
 package com.tp.dto;
 
 import com.tp.dominio.habitacion.EstadoHabitacion;
-import com.tp.dominio.habitacion.Habitacion;
-import com.tp.dominio.habitacion.TipoHabitacion;
 
-public class HabitacionDTO implements Comparable{
+public class HabitacionDTO implements Comparable<HabitacionDTO>{
 
 	private String numero;	
 	private EstadoHabitacion estado;
@@ -40,11 +38,11 @@ public class HabitacionDTO implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		if(this.tipoHabitacion.compareTo( ((HabitacionDTO) o).tipoHabitacion)==0){
-			return this.numero.compareTo( ((HabitacionDTO) o).numero);
+	public int compareTo(HabitacionDTO o) {
+		if(this.tipoHabitacion.compareTo( o.tipoHabitacion)==0){
+			return this.numero.compareTo( o.numero);
 		}
-		return this.tipoHabitacion.compareTo( ((HabitacionDTO) o).tipoHabitacion);
+		return this.tipoHabitacion.compareTo( o.tipoHabitacion);
 	}
 
 	public String getTipoHabitacion(){
@@ -66,5 +64,4 @@ public class HabitacionDTO implements Comparable{
 	public void setIdHabitacion(Integer id) {
 		idHabitacion = id;
 	}
-	
 }

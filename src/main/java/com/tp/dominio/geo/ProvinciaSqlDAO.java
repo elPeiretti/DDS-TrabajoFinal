@@ -16,6 +16,7 @@ public class ProvinciaSqlDAO implements ProvinciaDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Provincia> hqlQuery = session.createQuery("SELECT p FROM Provincia p WHERE p.pais.idPais = :id");
 		
 		hqlQuery.setParameter("id", idPais);

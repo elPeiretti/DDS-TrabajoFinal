@@ -6,7 +6,6 @@ import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 
-import com.tp.dominio.pasajero.TipoDocumento;
 import com.tp.hibernate.HibernateUtil;
 
 public class PaisSqlDAO implements PaisDAO {
@@ -18,6 +17,7 @@ public class PaisSqlDAO implements PaisDAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pais> hqlQuery = session.createQuery("SELECT p FROM Pais p");
 		resultado = hqlQuery.getResultList();
 		
@@ -30,6 +30,7 @@ public class PaisSqlDAO implements PaisDAO {
 	@Override
 	public Pais getById(Integer nacionalidad) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
+		@SuppressWarnings("unchecked")
 		TypedQuery<Pais> hqlQuery = session.createQuery("SELECT p FROM Pais p WHERE p.idPais = :id");
 
 		hqlQuery.setParameter("id", nacionalidad);

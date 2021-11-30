@@ -1,9 +1,6 @@
 package com.tp.dominio.habitacion;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-
 import javax.persistence.*;
 
 @Entity

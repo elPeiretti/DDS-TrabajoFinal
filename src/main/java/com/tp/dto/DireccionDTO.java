@@ -1,7 +1,5 @@
 package com.tp.dto;
 
-import com.tp.dominio.geo.Ciudad;
-
 public class DireccionDTO {
 	private Integer idDireccion;
 	private String codigoPostal;

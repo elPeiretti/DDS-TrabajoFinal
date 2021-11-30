@@ -14,12 +14,18 @@ import com.tp.interfaces.misc.TabOrder;
 
 public class MenuRegistrarPago extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7782651949132883191L;
 	public static String titulo = "Registrar Pago";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
 
+	@SuppressWarnings("unused")
 	private JFrame ventana_contenedora;
 	private JTextField tf_nro_factura;
+	@SuppressWarnings("unused")
 	private JPanel encabezado;
 	private JButton jb_agregar_pago;
 	private JButton jb_siguiente;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.PasajeroDTO;
+import com.tp.excepciones.NuevoPasajeroException;
 
 public interface PasajeroDAO {
 
@@ -16,7 +17,7 @@ public interface PasajeroDAO {
 	public Long getCountPasajerosByCriteria(BusqPasajeroDTO criterios, PasajeroDTO responsable);
 	public Long getCountPasajerosAdultosByCriteria(BusqPasajeroDTO criterios);
 	
-	public void insertarPasajero(Pasajero pasajero);
+	public void insertarPasajero(Pasajero pasajero) throws NuevoPasajeroException;
 	
 	public Pasajero getPasajeroById(Integer idPasajero);
 	public List<Pasajero> getPasajerosById(List<Integer> idPasajeros);

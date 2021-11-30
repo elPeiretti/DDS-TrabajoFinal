@@ -1,7 +1,5 @@
 package com.tp.dto;
 
-import java.time.LocalDate;
-
 import javax.swing.SortOrder;
 
 public class BusqPasajeroDTO {

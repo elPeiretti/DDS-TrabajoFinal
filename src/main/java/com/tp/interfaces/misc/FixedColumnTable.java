@@ -1,4 +1,4 @@
-﻿package com.tp.interfaces.misc;
+package com.tp.interfaces.misc;
 
 import java.beans.*;
 import javax.swing.*;
@@ -41,7 +41,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 		//  Use the existing table to create a new table sharing
 		//  the DataModel and ListSelectionModel
 
-		int totalColumns = main.getColumnCount();
+		//int totalColumns = main.getColumnCount();
 
 		fixed = new JTable();
 		fixed.setAutoCreateColumnsFromModel( false );

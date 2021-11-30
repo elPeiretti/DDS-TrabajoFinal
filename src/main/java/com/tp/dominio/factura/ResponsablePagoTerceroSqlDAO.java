@@ -16,7 +16,8 @@ public class ResponsablePagoTerceroSqlDAO implements ResponsablePagoTerceroDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         String sqlStatement = "SELECT r FROM ResponsablePagoTercero r WHERE r.cuit = :cuit";    
 
-        TypedQuery<ResponsablePagoTercero> hqlQuery = session.createQuery(sqlStatement); 
+        @SuppressWarnings("unchecked")
+		TypedQuery<ResponsablePagoTercero> hqlQuery = session.createQuery(sqlStatement); 
         
         hqlQuery.setParameter("cuit", cuit);
         List<ResponsablePagoTercero> aux = hqlQuery.getResultList();
@@ -33,6 +34,7 @@ public class ResponsablePagoTerceroSqlDAO implements ResponsablePagoTerceroDAO {
 		
 		String sqlStatement = "SELECT r FROM ResponsablePagoTercero r WHERE r.idResponsable = :id ";
 	
+		@SuppressWarnings("unchecked")
 		TypedQuery<ResponsablePagoTercero> hqlQuery = session.createQuery(sqlStatement);
 		
 		hqlQuery.setParameter("id", idResponsable);

@@ -17,6 +17,7 @@ public class PosicionIVASqlDAO implements PosicionIVADAO {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
+		@SuppressWarnings("unchecked")
 		TypedQuery<PosicionIVA> hqlQuery = session.createQuery("SELECT p FROM PosicionIVA p");
 		
 		resultado = hqlQuery.getResultList();
@@ -28,6 +29,7 @@ public class PosicionIVASqlDAO implements PosicionIVADAO {
 
     public PosicionIVA getById(Integer idPosicionIVA) {
         Session session = HibernateUtil.getSessionFactory().openSession();
+		@SuppressWarnings("unchecked")
 		TypedQuery<PosicionIVA> hqlQuery = session.createQuery("SELECT p FROM PosicionIVA p WHERE p.idPosicionIVA = :id");
 
 		hqlQuery.setParameter("id", idPosicionIVA);

@@ -2,8 +2,6 @@ package com.tp.dominio.pasajero;
 
 import javax.persistence.*;
 
-import com.tp.dominio.geo.Pais;
-
 @Entity
 @Table(name = "tpdds.posicion_iva")
 

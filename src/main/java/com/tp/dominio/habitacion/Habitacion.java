@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.hibernate.Hibernate;
-
 import com.tp.dominio.factura.items.Servicio;
 import com.tp.dominio.reserva.Reserva;
 

@@ -1,12 +1,9 @@
 package com.tp.gestores;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.tp.dominio.direccion.Direccion;
-import com.tp.dominio.direccion.DireccionSqlDAO;
 import com.tp.dominio.geo.Ciudad;
 import com.tp.dominio.geo.CiudadSqlDAO;
 import com.tp.dominio.geo.Pais;
@@ -19,6 +16,7 @@ import com.tp.dto.PosicionIVADTO;
 import com.tp.dto.TipoDocumentoDTO;
 import com.tp.excepciones.CamposInvalidosException;
 import com.tp.excepciones.DocumentoExistenteException;
+import com.tp.excepciones.NuevoPasajeroException;
 
 public class GestorPasajeros {
 
@@ -109,7 +107,7 @@ public class GestorPasajeros {
 		return resultado; 
 	}
 
-    public static void darAltaPasajero(PasajeroDTO p, boolean validarDocumento, boolean cuit_obligatorio) throws DocumentoExistenteException, CamposInvalidosException {
+    public static void darAltaPasajero(PasajeroDTO p, boolean validarDocumento, boolean cuit_obligatorio) throws DocumentoExistenteException, CamposInvalidosException, NuevoPasajeroException {
 		boolean documentoExistente = false;
 		
 		validarCampos(p, cuit_obligatorio);
@@ -136,8 +134,12 @@ public class GestorPasajeros {
 		pasajero.setNacionalidad(nacionalidad);
 		pasajero.setTipoDocumento(td);
 		pasajero.setDireccion(direc);
+		try {
+			new PasajeroSqlDAO().insertarPasajero(pasajero);
+		}catch(NuevoPasajeroException e) {
+			throw e;
+		}
 		
-		new PasajeroSqlDAO().insertarPasajero(pasajero);
 	}
 
 	private static boolean existeDocumento(PasajeroDTO p) {

@@ -8,17 +8,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.util.stream.Collectors;
 
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
@@ -28,36 +24,31 @@ import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
 import javax.swing.text.MaskFormatter;
 
-import com.tp.dominio.factura.ResponsablePagoTercero;
-import com.tp.dto.BusqPasajeroDTO;
 import com.tp.dto.FacturarDTO;
-import com.tp.dto.OcupacionDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
 import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.excepciones.HabitacionNoExistenteException;
 import com.tp.excepciones.HabitacionNoOcupadaException;
 import com.tp.excepciones.HabitacionSinOcupacionesException;
+import com.tp.excepciones.NuevaHabitacionException;
 import com.tp.gestores.GestorFacturas;
 import com.tp.gestores.GestorHabitaciones;
-import com.tp.gestores.GestorPasajeros;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
 import com.tp.interfaces.VentanaPrincipal;
-import com.tp.interfaces.habitaciones.ocupaciones.MenuBuscarResponsable;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.EnterActionAssigner;
 import com.tp.interfaces.misc.JTextFieldLimit;
 import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.ResultPane;
 import com.tp.interfaces.misc.TabOrder;
-import com.tp.interfaces.pasajeros.MenuAltaPasajero;
-import com.tp.interfaces.pasajeros.MenuModificarPasajero;
-
-import net.bytebuddy.asm.Advice.Local;
-
 public class MenuFacturar extends JPanel implements SeteableTab {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3727707501754797021L;
 	public static String titulo = "Facturar";
 	public static int x_bound = 655;
 	public static int y_bound = 595;
@@ -122,7 +113,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		jb_cancelar.setBounds(81, 513, 100, 30);
 		add(jb_cancelar);
 		
-		rp_pasajeros = new ResultPane();
+		rp_pasajeros = new ResultPane<PasajeroDTO>();
 		rp_pasajeros.setBounds(10, 230, 620, 180);
 		rp_pasajeros.getNextBtn().setVisible(false);
 		rp_pasajeros.getPrevBtn().setVisible(false);
@@ -360,8 +351,6 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 					return;
 				}				
 
-				JPanel m=null;
-				String nom=null;
 				if(cuit_activo) {
 					ResponsablePagoTerceroDTO resp = criterios_actuales.getResponsable();
 					if(resp == null) {
@@ -427,7 +416,12 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private void cambiarPantalla(HabitacionDTO hDto,int fila) {
 		JPanel m;
 		criterios_actuales.setHoraSalida(jftf_salida.getText());
-		GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
+		try {
+			GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
+		}catch(NuevaHabitacionException e) {
+			Mensaje.mensajeError(new String[]{"Hubo un error al generar el servicio de estadía."});
+			return;
+		}
 		if(fila == -2) {
 			m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable(),hDto);
 		}else {

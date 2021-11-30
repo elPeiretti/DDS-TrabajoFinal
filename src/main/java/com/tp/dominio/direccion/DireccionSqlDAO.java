@@ -4,13 +4,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.tp.excepciones.InsertDireccionException;
 import com.tp.hibernate.HibernateUtil;
-import com.tp.interfaces.misc.Mensaje;
 
 public class DireccionSqlDAO implements DireccionDAO {
 
 	@Override
-	public void insertarDireccion(Direccion direccion) {
+	public void insertarDireccion(Direccion direccion) throws InsertDireccionException {
 		Transaction tx = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         
@@ -23,7 +23,7 @@ public class DireccionSqlDAO implements DireccionDAO {
         	if (tx!=null) 
         		tx.rollback();
         	e.printStackTrace();
-			Mensaje.mensajeError(new String[]{"No se ha podido cargar la dirección en la base de datos."});
+        	throw new InsertDireccionException();
         }
         finally {
         	session.close();

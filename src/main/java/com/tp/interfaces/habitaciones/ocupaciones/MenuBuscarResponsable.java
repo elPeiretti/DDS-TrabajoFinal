@@ -30,6 +30,10 @@ import com.tp.interfaces.misc.TabOrder;
 
 public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4141703144992965284L;
 	public static String titulo = "Buscar Pasajero Responsable";
 	public static int x_bound = 660;
 	public static int y_bound = 500;
@@ -152,7 +156,6 @@ public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 	}
 	
 	public void agregarActionListeners() {
-		MenuBuscarResponsable contexto = this;
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = rp_pasajeros.getTable().getSelectedRow();
