@@ -3,6 +3,7 @@ package com.tp.interfaces.habitaciones.ocupaciones;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,6 +158,7 @@ public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 				int fila = rp_pasajeros.getTable().getSelectedRow();
 				if(fila != -1) {
 					nuevaOcupacion.setResponsable(rp_pasajeros.getRowObjects().get(fila));
+					nuevaOcupacion.setAcompaniantes(new ArrayList<PasajeroDTO>());
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarAcompaniantes(ventana_contenedora, encabezado, nuevaOcupacion),
 																		MenuBuscarAcompaniantes.x_bound,MenuBuscarAcompaniantes.y_bound,MenuBuscarAcompaniantes.titulo);
 				}				
