@@ -321,9 +321,11 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				criterios_actuales.setIdHabitacion(jtf_num_hab.getText());
 				try{
 					criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(criterios_actuales.getIdHabitacion()));
-					if(criterios_actuales.getOcupacion().getFechaEgreso() != LocalDate.now()) {
+					if(!LocalDate.now().equals(criterios_actuales.getOcupacion().getFechaEgreso())) {
 						if(Mensaje.mensajeConfirmacion("La ocupación de esta habitación termina el " + criterios_actuales.getOcupacion().getFechaEgreso() + 
 								". Desea continuar?", "Atención!", new String[]{"Sí","No"}) == 0) llenarTabla();
+					}else {
+						llenarTabla();
 					}
 				}
 				catch(HabitacionNoExistenteException exc){
@@ -360,33 +362,24 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 				JPanel m=null;
 				String nom=null;
-				if(cuit_activo){
-
-					if(criterios_actuales.getResponsable() == null){
+				if(cuit_activo) {
+					ResponsablePagoTerceroDTO resp = criterios_actuales.getResponsable();
+					if(resp == null) {
 						Mensaje.mensajeInformacion("AQUI DEBERIA EJECUTARSE CU14");
+						return;
+					}else {
+						cambiarPantalla(hDto,-2);
 					}
-					else{
-						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable(),hDto);
-						nom = MenuConsumosPorHabitacion.titulo;
-					}
-					
 				}
 				else{ // debe seleccionar de la tabla
 					int fila = rp_pasajeros.getTable().getSelectedRow();
 					if(fila != -1) {
-						m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,rp_pasajeros.getRowObjects().get(fila),hDto);
-						nom = MenuConsumosPorHabitacion.titulo;
+						cambiarPantalla(hDto,fila);
 					}
 					else{
 						Mensaje.mensajeInformacion("Debe seleccionar un responsable para poder facturar.");
 					}
 				}
-				if(m!=null) {
-					criterios_actuales.setHoraSalida(jftf_salida.getText());
-					GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,nom);
-				}
-					
 			}
 		});
 		
@@ -431,7 +424,18 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 		});
 	}
-
+	private void cambiarPantalla(HabitacionDTO hDto,int fila) {
+		JPanel m;
+		criterios_actuales.setHoraSalida(jftf_salida.getText());
+		GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
+		if(fila == -2) {
+			m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable(),hDto);
+		}else {
+			m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,rp_pasajeros.getRowObjects().get(fila),hDto);
+		}
+		String nom = MenuConsumosPorHabitacion.titulo;
+		((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,nom);
+	}
 	private void llenarTabla() {
 		rp_pasajeros.getContenido().setRowCount(0);
 		rp_pasajeros.getRowObjects().clear();
