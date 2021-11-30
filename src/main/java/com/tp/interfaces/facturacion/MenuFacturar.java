@@ -124,6 +124,9 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		
 		rp_pasajeros = new ResultPane();
 		rp_pasajeros.setBounds(10, 230, 620, 180);
+		rp_pasajeros.getNextBtn().setVisible(false);
+		rp_pasajeros.getPrevBtn().setVisible(false);
+		rp_pasajeros.getPageNumbers().setVisible(false);
 		add(rp_pasajeros);
 		
 		jftf_salida = new JFormattedTextField();
@@ -318,7 +321,10 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				criterios_actuales.setIdHabitacion(jtf_num_hab.getText());
 				try{
 					criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(criterios_actuales.getIdHabitacion()));
-					llenarTabla();
+					if(criterios_actuales.getOcupacion().getFechaEgreso() != LocalDate.now()) {
+						if(Mensaje.mensajeConfirmacion("La ocupación de esta habitación termina el " + criterios_actuales.getOcupacion().getFechaEgreso() + 
+								". Desea continuar?", "Atención!", new String[]{"Sí","No"}) == 0) llenarTabla();
+					}
 				}
 				catch(HabitacionNoExistenteException exc){
 					Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");

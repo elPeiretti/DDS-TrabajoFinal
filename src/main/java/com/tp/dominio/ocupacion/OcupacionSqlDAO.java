@@ -43,7 +43,7 @@ public class OcupacionSqlDAO implements OcupacionDAO {
 		Ocupacion resultado;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		String sqlStatement = "SELECT o FROM Ocupacion o WHERE o.habitacion.numero = :numero AND o.fechaEgreso = "
+		String sqlStatement = "SELECT o FROM Ocupacion o JOIN FETCH o.acompaniantes WHERE o.habitacion.numero = :numero AND o.fechaEgreso = "
 				+ "(SELECT MAX(oc.fechaEgreso) FROM Ocupacion oc WHERE oc.habitacion.numero = :numero)";
 
 		TypedQuery<Ocupacion> hqlQuery = session.createQuery(sqlStatement); 

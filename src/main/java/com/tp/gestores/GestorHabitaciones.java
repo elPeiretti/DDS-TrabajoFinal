@@ -251,7 +251,6 @@ public class GestorHabitaciones {
 	public static void calcularEstadia(String hora_salida, OcupacionDTO ocupacion_actual) {
 		Habitacion hab = getHabitacionWithCostoVigenteEn(ocupacion_actual.getHabitacion().getIdHabitacion(),ocupacion_actual.getFechaIngreso());
 		Servicio estadia = GestorServicios.generarServicioEstadia(hab,ocupacion_actual);
-		//new HabitacionSqlDAO().cargarServicios(hab);
 		hab.addServicio(estadia);
 		System.out.println(hora_salida);
 		LocalTime localTimeSalida = LocalTime.parse(hora_salida, DateTimeFormatter.ofPattern("HH:mm"));
@@ -259,12 +258,9 @@ public class GestorHabitaciones {
 			Servicio recargo = GestorServicios.generarServicioRecargo(hab,ocupacion_actual);
 			hab.addServicio(recargo);
 		}
-		actualizarHabitacion(hab);
-	}
-	private static void actualizarHabitacion(Habitacion hab) {
+		hab.setEstado(EstadoHabitacion.LIBRE);//teoricamente en un mundo ideal deberia verificar que no haya reservas?
 		new HabitacionSqlDAO().insertarHabitacion(hab);
 	}
-
 	private static Habitacion getHabitacionWithCostoVigenteEn(Integer idHabitacion,LocalDate fechaEgreso) {
 		Habitacion hab = new HabitacionSqlDAO().getHabitacionByIdWithCostoVigenteEn(idHabitacion, fechaEgreso);
 		return hab;

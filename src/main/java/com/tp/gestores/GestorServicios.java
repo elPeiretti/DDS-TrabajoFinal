@@ -1,7 +1,5 @@
 package com.tp.gestores;
 
-public class GestorServicios {
-
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;

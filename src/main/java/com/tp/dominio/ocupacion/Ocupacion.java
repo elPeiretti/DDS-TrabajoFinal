@@ -29,7 +29,7 @@ public class Ocupacion {
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_pasajero_responsable", referencedColumnName = "id_pasajero")
 	private Pasajero responsable;
-	@ManyToMany (cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "tpdds.acompaniante",
 			joinColumns =  @JoinColumn(name = "id_ocupacion", referencedColumnName = "id_ocupacion"),
