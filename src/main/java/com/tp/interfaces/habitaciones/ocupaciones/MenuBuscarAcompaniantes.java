@@ -202,7 +202,12 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		});
 		
 		jb_siguiente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {			
+			public void actionPerformed(ActionEvent e) {
+				if(rp_pasajeros_agregados.getRowObjects().size()==0){
+					Mensaje.mensajeInformacion("Debe seleccionar al menos un pasajero.");
+					return;
+				}			
+
 				nuevaOcupacion.setAcompaniantes(rp_pasajeros_agregados.getRowObjects());
 				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MensajeConfirmarOcupacion(ventana_contenedora,encabezado,nuevaOcupacion),MensajeConfirmarOcupacion.x_bound,MensajeConfirmarOcupacion.y_bound,MensajeConfirmarOcupacion.titulo);
 			}
