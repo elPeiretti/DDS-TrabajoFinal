@@ -15,4 +15,6 @@ public interface OcupacionDAO {
 	public Ocupacion getUltimaOcupacion(String habitacion);
 	public Ocupacion getOcupacionById(Integer idOcupacion);
 
+    public void insertarOcupacion(Ocupacion ocup);
+
 }

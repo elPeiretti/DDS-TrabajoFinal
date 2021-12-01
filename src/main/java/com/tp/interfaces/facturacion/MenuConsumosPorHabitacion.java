@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
 import com.tp.dominio.factura.TipoFactura;
+import com.tp.dominio.habitacion.EstadoHabitacion;
 import com.tp.dto.FacturaDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.ItemFacturaDTO;
@@ -23,6 +24,7 @@ import com.tp.dto.ResponsablePagoTerceroDTO;
 import com.tp.dto.ServicioDTO;
 import com.tp.excepciones.FacturaSinItemsException;
 import com.tp.gestores.GestorFacturas;
+import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorServicios;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.Mensaje;
@@ -59,14 +61,16 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 	private ResponsablePagoTerceroDTO responsable;
 	private PasajeroDTO responsable_pasajero;
 	private HabitacionDTO habitacion;
+	private MenuFacturar menu_facturar_previo;
 	
 	
-	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, HabitacionDTO hab){
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, HabitacionDTO hab, MenuFacturar contexto){
 	
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		this.encabezado = encabezado;
 		this.habitacion = hab;
+		this.menu_facturar_previo = contexto;
 		setLayout(null);
 		
 		JLabel lbl_nom_resp_tag = new JLabel("Nombre Responsable:");
@@ -129,14 +133,14 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		agregarActionListeners();
 	}
 
-	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero, HabitacionDTO hab){
-		this(ventana_contenedora,encabezado,hab);
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero, HabitacionDTO hab, MenuFacturar contexto){
+		this(ventana_contenedora,encabezado,hab,contexto);
 		this.responsable_pasajero = responsable_pasajero;
 		inicializarCampos();
 		llenarTabla();
 	}
-	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable, HabitacionDTO hab){
-		this(ventana_contenedora,encabezado,hab);
+	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, ResponsablePagoTerceroDTO responsable, HabitacionDTO hab, MenuFacturar contexto){
+		this(ventana_contenedora,encabezado,hab,contexto);
 		this.responsable = responsable;
 		inicializarCampos();
 		llenarTabla();
@@ -233,7 +237,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Está seguro que desea cancelar la creación de la factura?");
 				if(opt == 1){
-					((VentanaPrincipal) ventana_contenedora).cambiarPanel(new MenuFacturar(ventana_contenedora, encabezado),
+					((VentanaPrincipal) ventana_contenedora).cambiarPanel(menu_facturar_previo,
 															 MenuFacturar.x_bound, MenuFacturar.y_bound, MenuFacturar.titulo);
 				}
 			}
@@ -252,10 +256,19 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 					return;
 				}
 
-				//aqui debe ir la logica si tiene que volver al facturar o al menu principal
-				Mensaje.mensajeInformacion("Se ha completado la facturación de la habitación "+habitacion.getNumero()+" exitosamente.");
-				((VentanaPrincipal) ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora, encabezado),
-													MenuPrincipal.x_bound, MenuPrincipal.y_bound, MenuPrincipal.titulo);										
+				Mensaje.mensajeInformacion("Se ha creado la factura de la habitación "+habitacion.getNumero()+" exitosamente.");
+
+				if(GestorServicios.getCantServiciosNoFacturadosByHabitacion(habitacion)==0){
+					GestorHabitaciones.liberarHabitacion(habitacion);
+					Mensaje.mensajeInformacion("Se ha completado la facturación de la habitación "+habitacion.getNumero()+" exitosamente.");
+					((VentanaPrincipal) ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora, encabezado),
+														MenuPrincipal.x_bound, MenuPrincipal.y_bound, MenuPrincipal.titulo);
+				}
+				else{
+					((VentanaPrincipal) ventana_contenedora).cambiarPanel(menu_facturar_previo,MenuFacturar.x_bound,
+																		MenuFacturar.y_bound,MenuFacturar.titulo);
+				}
+														
 			}
 
 			private FacturaDTO crearFacturaDTO(){

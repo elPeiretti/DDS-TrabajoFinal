@@ -81,11 +81,13 @@ public class PintableTable extends JTable{
                             break;
                         }
                     }
-                    if(ok){
-                        celdaFinal.setLocation(column, row);
-                        if(celdaFinal.y<celdaInicial.y){
-                            celdaFinal.y=celdaInicial.y;
-                            celdaInicial.y=row;
+                    if(ok){ 
+                        if(row<celdaInicial.y){ // selecciono una fecha anterior a la actual como celdaFinal
+                            Mensaje.mensajeInformacion("No se puede ocupar una habitación en el pasado.");
+                            celdaInicial.setLocation(-1,-1);                            
+                        }
+                        else{
+                            celdaFinal.setLocation(column, row);
                         }
                         seleccionando = false;
                     }

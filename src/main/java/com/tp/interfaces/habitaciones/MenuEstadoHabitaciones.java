@@ -109,7 +109,6 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		
 		dc_fecha_desde = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		dc_fecha_desde.setBounds(212, 142, 100, 20);
-		dc_fecha_desde.setMinSelectableDate(new Date());
 		dc_fecha_desde.setDate(new Date());
 		add(dc_fecha_desde);
 		
@@ -183,11 +182,6 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						lbl_error_fecha_desde.setText("Este campo no puede estar vacío.");
 					else lbl_error_fecha_desde.setText("La fecha posee un formato invalido.");
 					campos_validos.put("fecha desde", false); 
-				} 
-				else if (desde.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(hoy.toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
-					lbl_error_fecha_desde.setText("La fecha no puede ser anterior a la actual.");
-					dc_fecha_hasta.setMinSelectableDate(new Date());
-					campos_validos.put("fecha desde", false); 
 				}
 				else {
 					campos_validos.put("fecha desde", true);
@@ -257,10 +251,6 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					else lbl_error_fecha_hasta.setText("La fecha posee un formato invalido.");
 					campos_validos.put("fecha hasta", false); 
 				} 
-				else if (hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(hoy.toInstant().truncatedTo(ChronoUnit.DAYS))<0) {
-					lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la actual.");
-					campos_validos.put("fecha hasta", false); 
-				}
 				else if (campos_validos.get("fecha desde") && hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(desde.toInstant().truncatedTo(ChronoUnit.DAYS))<0){
 					lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");
 					campos_validos.put("fecha hasta", false);

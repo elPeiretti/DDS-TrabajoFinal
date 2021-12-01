@@ -40,6 +40,7 @@ import com.tp.excepciones.HabitacionNoOcupadaException;
 import com.tp.excepciones.HabitacionSinOcupacionesException;
 import com.tp.excepciones.NuevaHabitacionException;
 import com.tp.excepciones.NuevaOcupacionException;
+import com.tp.excepciones.OcupacionNoCheckoutableException;
 
 public class GestorHabitaciones {
 
@@ -210,7 +211,7 @@ public class GestorHabitaciones {
     	}
     }
 
-	public static OcupacionDTO buscarUltimaOcupacion(String numero) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, HabitacionNoOcupadaException {
+	public static OcupacionDTO buscarUltimaOcupacion(String numero) throws HabitacionNoExistenteException, HabitacionSinOcupacionesException, OcupacionNoCheckoutableException {
 		HabitacionDAO habitacionDAO = new HabitacionSqlDAO();
 		
 		if(habitacionDAO.getHabitacionByNumero(numero) == null){
@@ -222,9 +223,15 @@ public class GestorHabitaciones {
 		if(oc == null) {
 			throw new HabitacionSinOcupacionesException();
 		}
-		if(oc.getHabitacion().getEstado() != EstadoHabitacion.OCUPADA) {
-			throw new HabitacionNoOcupadaException();
+
+		LocalDate fecha_checkout = oc.getFechaEgreso().plusDays(1);
+		LocalDate fecha_ingreso = oc.getFechaIngreso();
+		LocalDate hoy = LocalDate.now();
+
+		if(!(hoy.isAfter(fecha_ingreso.minusDays(1)) && hoy.isBefore(fecha_checkout.plusDays(1)))){
+			throw new OcupacionNoCheckoutableException();
 		}
+		
 		return convertToOcupacionDTO(oc);
 	}
 
@@ -251,11 +258,11 @@ public class GestorHabitaciones {
 		Servicio estadia = GestorServicios.generarServicioEstadia(hab,ocupacion_actual);
 		hab.addServicio(estadia);
 		LocalTime localTimeSalida = LocalTime.parse(hora_salida, DateTimeFormatter.ofPattern("HH:mm"));
-		if(localTimeSalida.isAfter(LocalTime.of(11, 0)) && localTimeSalida.isBefore(LocalTime.of(18, 0))) {
-			Servicio recargo = GestorServicios.generarServicioRecargo(hab,ocupacion_actual);
+		if(localTimeSalida.isAfter(LocalTime.of(11, 0))) {
+			Servicio recargo = GestorServicios.generarServicioRecargo(hab,ocupacion_actual,localTimeSalida);
 			hab.addServicio(recargo);
 		}
-		hab.setEstado(EstadoHabitacion.LIBRE);//teoricamente en un mundo ideal deberia verificar que no haya reservas?
+		
 		try {
 			new HabitacionSqlDAO().insertarHabitacion(hab);
 		}catch(NuevaHabitacionException e) {
@@ -266,6 +273,29 @@ public class GestorHabitaciones {
 	private static Habitacion getHabitacionWithCostoVigenteEn(Integer idHabitacion,LocalDate fechaEgreso) {
 		Habitacion hab = new HabitacionSqlDAO().getHabitacionByIdWithCostoVigenteEn(idHabitacion, fechaEgreso);
 		return hab;
+	}
+
+	public static void liberarHabitacion(HabitacionDTO habitacion) {
+		OcupacionDAO oDao = new OcupacionSqlDAO();
+		Ocupacion ocup = oDao.getUltimaOcupacion(habitacion.getNumero());
+
+		LocalDate fecha_checkout = ocup.getFechaEgreso().plusDays(1);
+		LocalDate hoy = LocalDate.now();
+
+		if(hoy.isBefore(fecha_checkout)){
+			ocup.setFechaEgreso(hoy.minusDays(1).isBefore(ocup.getFechaIngreso())? ocup.getFechaIngreso() : hoy.minusDays(1));
+		}
+
+		ReservaDAO rDao = new ReservaSqlDAO();
+		if(rDao.getReservasInRange(hoy, hoy, habitacion.getNumero()).size()!=0){
+			ocup.getHabitacion().setEstado(EstadoHabitacion.RESERVADA);
+		}
+		else{
+			ocup.getHabitacion().setEstado(EstadoHabitacion.LIBRE);
+		}
+
+		oDao.insertarOcupacion(ocup);
+		
 	}
 	
 }

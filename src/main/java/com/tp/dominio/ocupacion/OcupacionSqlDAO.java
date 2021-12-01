@@ -88,4 +88,24 @@ public class OcupacionSqlDAO implements OcupacionDAO {
 		session.close();
 		return resultado;
 	}
+
+	@Override
+	public void insertarOcupacion(Ocupacion ocup){
+		Transaction tx = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+        	tx = session.beginTransaction();
+        	session.saveOrUpdate(ocup);
+        	tx.commit();
+        }
+        catch(HibernateException e) {
+        	if (tx!=null) 
+        		tx.rollback();
+        	e.printStackTrace();
+        }
+        finally {
+        	session.close();
+        }
+	}
 }

@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.event.DocumentEvent;
@@ -23,7 +22,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
 import javax.swing.text.MaskFormatter;
-
 import com.tp.dto.FacturarDTO;
 import com.tp.dto.HabitacionDTO;
 import com.tp.dto.PasajeroDTO;
@@ -32,6 +30,7 @@ import com.tp.excepciones.HabitacionNoExistenteException;
 import com.tp.excepciones.HabitacionNoOcupadaException;
 import com.tp.excepciones.HabitacionSinOcupacionesException;
 import com.tp.excepciones.NuevaHabitacionException;
+import com.tp.excepciones.OcupacionNoCheckoutableException;
 import com.tp.gestores.GestorFacturas;
 import com.tp.gestores.GestorHabitaciones;
 import com.tp.interfaces.MenuPrincipal;
@@ -45,9 +44,6 @@ import com.tp.interfaces.misc.ResultPane;
 import com.tp.interfaces.misc.TabOrder;
 public class MenuFacturar extends JPanel implements SeteableTab {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3727707501754797021L;
 	public static String titulo = "Facturar";
 	public static int x_bound = 655;
@@ -75,6 +71,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private JLabel lbl_cuit;
 	private JLabel lbl_raz_social_tag;
 	private FacturarDTO criterios_actuales;
+	private boolean estadiaCalculada;
 	
 	public MenuFacturar(JFrame ventana_contenedora, Encabezado encabezado)  {
 		setBackground(Color.WHITE);
@@ -84,6 +81,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		this.campos_validos = new HashMap<String,Boolean>();
 		cuit_activo = false;
 		tabla_vacia = true;
+		estadiaCalculada = false;
 		
 		lbl_num_hab = new JLabel("<html>Número de<br/>Habitación <font color='red'>(*)</font>: </html>");
 		lbl_num_hab.setHorizontalAlignment(SwingConstants.LEFT);
@@ -312,23 +310,18 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				criterios_actuales.setIdHabitacion(jtf_num_hab.getText());
 				try{
 					criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(criterios_actuales.getIdHabitacion()));
-					if(!LocalDate.now().equals(criterios_actuales.getOcupacion().getFechaEgreso())) {
-						if(Mensaje.mensajeConfirmacion("La ocupación de esta habitación termina el " + criterios_actuales.getOcupacion().getFechaEgreso() + 
-								". Desea continuar?", "Atención!", new String[]{"Sí","No"}) == 0) llenarTabla();
-					}else {
-						llenarTabla();
-					}
+					llenarTabla();
 				}
 				catch(HabitacionNoExistenteException exc){
 					Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
 					rp_pasajeros.limpiarTabla();
 				}
+				catch(OcupacionNoCheckoutableException exc){
+					Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones actuales.");
+					return;
+				}
 				catch(HabitacionSinOcupacionesException exc){
 					Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones.");
-					rp_pasajeros.limpiarTabla();
-				}
-				catch(HabitacionNoOcupadaException exc){
-					Mensaje.mensajeInformacion("La habitación seleccionada no se encuentra ocupada.");
 					rp_pasajeros.limpiarTabla();
 				}
 
@@ -352,6 +345,8 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 				}				
 
 				if(cuit_activo) {
+					if(!validarCuit()) return;
+
 					ResponsablePagoTerceroDTO resp = criterios_actuales.getResponsable();
 					if(resp == null) {
 						Mensaje.mensajeInformacion("AQUI DEBERIA EJECUTARSE CU14");
@@ -416,19 +411,44 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private void cambiarPantalla(HabitacionDTO hDto,int fila) {
 		JPanel m;
 		criterios_actuales.setHoraSalida(jftf_salida.getText());
+		if(!estadiaCalculada && !LocalDate.now().equals(criterios_actuales.getOcupacion().getFechaEgreso().plusDays(1))) 
+			if(Mensaje.mensajeConfirmacion("La ocupación de esta habitación termina el " + criterios_actuales.getOcupacion().getFechaEgreso().plusDays(1) + 
+					". Desea continuar?", "Atención!", new String[]{"Sí","No"}) == 1) return;
 		try {
-			GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
-		}catch(NuevaHabitacionException e) {
+			criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(hDto.getNumero()));
+			if(!estadiaCalculada)
+				GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
+		}
+		catch(HabitacionNoExistenteException exc){
+			Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
+			return;
+		}
+		catch(HabitacionSinOcupacionesException exc){
+			Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones.");
+			return;
+		}
+		catch(OcupacionNoCheckoutableException exc){
+			Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones actuales.");
+			return;
+		}
+		catch(NuevaHabitacionException e) {
 			Mensaje.mensajeError(new String[]{"Hubo un error al generar el servicio de estadía."});
 			return;
 		}
+
 		if(fila == -2) {
-			m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable(),hDto);
+			m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,criterios_actuales.getResponsable(),hDto,this);
 		}else {
-			m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,rp_pasajeros.getRowObjects().get(fila),hDto);
+			m = new MenuConsumosPorHabitacion(ventana_contenedora,encabezado,rp_pasajeros.getRowObjects().get(fila),hDto,this);
 		}
-		String nom = MenuConsumosPorHabitacion.titulo;
-		((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,nom);
+
+		// deshabilitar habitacion y hora de salida
+		jtf_num_hab.setEnabled(false);
+		jftf_salida.setEnabled(false);
+		jb_cancelar.setEnabled(false);
+		estadiaCalculada = true;
+
+		((VentanaPrincipal)ventana_contenedora).cambiarPanel(m,MenuConsumosPorHabitacion.x_bound,MenuConsumosPorHabitacion.y_bound,MenuConsumosPorHabitacion.titulo);
 	}
 	private void llenarTabla() {
 		rp_pasajeros.getContenido().setRowCount(0);
