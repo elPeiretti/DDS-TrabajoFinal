@@ -6,15 +6,14 @@ import javax.swing.table.JTableHeader;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.tp.interfaces.misc.Mensaje;
 import com.tp.interfaces.misc.columngroup.GroupableTableHeader;
 
 public class PintableTable extends JTable{
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -6833561922562096298L;
 	private boolean seleccionando;
     private Point celdaInicial;
@@ -47,7 +46,7 @@ public class PintableTable extends JTable{
                 }
 
                 if(!seleccionando){
-                    if(row != 0){
+                    if(!LocalDate.parse((String)jtable_habitaciones_contenido.getValueAt(row, 0),DateTimeFormatter.ofPattern("dd/MM/yyyy")).equals(LocalDate.now())){
                         Mensaje.mensajeInformacion("La fecha de inicio de la ocupación debe ser hoy.");
                         return;
                     }
@@ -57,7 +56,7 @@ public class PintableTable extends JTable{
                 }
                 else{
                     if(column != celdaInicial.x){
-                        if(row != 0){
+                        if(!LocalDate.parse((String)jtable_habitaciones_contenido.getValueAt(row, 0),DateTimeFormatter.ofPattern("dd/MM/yyyy")).equals(LocalDate.now())){
                             Mensaje.mensajeInformacion("No se pueden ocupar múltiples habitaciones a la vez.");
                             seleccionando=false;
                         }
@@ -111,6 +110,12 @@ public class PintableTable extends JTable{
         return celdaFinal;
     }
 
+    public void limpiarCeldasSeleccionadas(){
+        celdaInicial.setLocation(-1, -1);
+        celdaFinal.setLocation(-1, -1);
+        seleccionando=false;
+    }
+
     @Override
     protected JTableHeader createDefaultTableHeader() {
         return new GroupableTableHeader(columnModel);
@@ -125,31 +130,4 @@ public class PintableTable extends JTable{
         return seleccionando;
     }
 
-   /* @Override
-    public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
-        Component c = super.prepareRenderer(renderer, row, column);
-
-        if(getSelectedRow() == row && getSelectedColumn() == column){
-            if(c.getBackground().equals(Color.RED))
-                return c;
-            
-            if(!seleccionando){
-                seleccionando = true;
-                celdaInicial.setLocation(column, row);
-                c.setBackground(Color.BLUE);
-            }
-            else{
-                if(column != celdaInicial.x)
-                    return c;
-                celdaFinal.setLocation(column, row);
-                if(celdaFinal.y<celdaInicial.y){
-                    celdaFinal.y=celdaInicial.y;
-                    celdaInicial.y=column;
-                }
-                seleccionando = false;
-            }
-            
-        }
-        return c;
-    }*/
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -175,6 +176,10 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		}
 		
 		//si o si debe hacerse despues de agregar las filas :(
+		DefaultTableCellRenderer render_centrado = new DefaultTableCellRenderer();
+		render_centrado.setHorizontalAlignment(SwingConstants.CENTER);
+		rp_servicios.getTable().getColumnModel().getColumn(1).setCellRenderer(render_centrado);
+		rp_servicios.getTable().getColumnModel().getColumn(2).setCellRenderer(render_centrado);
 		rp_servicios.getTable().getColumnModel().getColumn(3).setCellRenderer(new SpinnerCellRenderer());
 		rp_servicios.getTable().getColumnModel().getColumn(3).setCellEditor(new SpinnerCellEditor());
 		rp_servicios.getTable().setRowHeight(30);

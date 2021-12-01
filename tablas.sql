@@ -153509,13 +153509,13 @@ INSERT INTO tpdds.tipo_habitacion(id_tipo_habitacion,nombre,capacidad) VALUES
 (4,'SUPERIOR FAMILY PLAN',5),
 (5,'SUITE',2);
 
-INSERT INTO tpdds.costo_por_noche(fecha_inicio_vigencia,fecha_fin_vigencia,costo,id_tipo_habitacion) VALUES
-('2021-11-13','2021-12-13',30.50,1), 
-('2021-11-13','2021-12-13',50.50,2), 
-('2021-11-13','2021-12-13',70.50,3),
-('2021-11-13','2021-12-13',87.4, 4),
-('2021-11-13','2021-12-13',120.2,5),
-('2021-06-13','2021-11-12',30.50,1);
+-- no seteo fecha_fin_vigencia para que queden en null.
+INSERT INTO tpdds.costo_por_noche(fecha_inicio_vigencia,costo,id_tipo_habitacion) VALUES
+('2021-01-01',30.50,1), 
+('2021-01-01',50.50,2), 
+('2021-01-01',70.50,3),
+('2021-01-01',87.4, 4),
+('2021-01-01',120.2,5);
 
 
 INSERT INTO tpdds.habitacion(id_habitacion,estado,numero,id_tipo_habitacion) VALUES 

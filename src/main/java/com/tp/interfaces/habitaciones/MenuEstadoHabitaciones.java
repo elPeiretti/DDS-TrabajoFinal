@@ -110,7 +110,6 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		dc_fecha_desde = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		dc_fecha_desde.setBounds(212, 142, 100, 20);
 		dc_fecha_desde.setMinSelectableDate(new Date());
-		dc_fecha_desde.setEnabled(false);
 		dc_fecha_desde.setDate(new Date());
 		add(dc_fecha_desde);
 		
@@ -202,6 +201,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 						prev_desde = desde;
 						prev_hasta = hasta;
+						((PintableTable) jtable_habitaciones).limpiarCeldasSeleccionadas();
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						llenarTabla(l);
 					}
@@ -231,6 +231,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 							if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 							prev_desde = desde;
 							prev_hasta = hasta;
+							((PintableTable) jtable_habitaciones).limpiarCeldasSeleccionadas();
 							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 							llenarTabla(l);
 						}
@@ -272,6 +273,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 						prev_desde = desde;
 						prev_hasta = hasta;
+						((PintableTable) jtable_habitaciones).limpiarCeldasSeleccionadas();
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						llenarTabla(l);
 					}
@@ -296,6 +298,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 						prev_desde = desde;
 						prev_hasta = hasta;
+						((PintableTable) jtable_habitaciones).limpiarCeldasSeleccionadas();
 						List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						llenarTabla(l);
 					}
@@ -337,6 +340,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 			TableColumn columna = cm.getColumn(i);
 			ColumnGroup grupo = grupos_columnas.get((String)columna.getHeaderValue());
 			grupo.add(columna);
+			columna.setPreferredWidth(110);
 			i++;
 		}
 
