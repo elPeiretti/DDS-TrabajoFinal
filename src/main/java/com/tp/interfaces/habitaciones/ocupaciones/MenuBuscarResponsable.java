@@ -55,12 +55,14 @@ public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 	private BusqPasajeroDTO criterios_actuales;
 	private Map<Integer,BusqPasajeroDTO.columnaOrden> indice_columnas;
 	private OcupacionDTO nuevaOcupacion;
+	private MenuEstadoHabitaciones estadoAnterior;
 	
-	public MenuBuscarResponsable(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion) {
+	public MenuBuscarResponsable(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion, MenuEstadoHabitaciones estadoAnterior) {
 		setBackground(Color.WHITE);
 		setSize(x_bound, y_bound);
 		this.ventana_contenedora = ventana_contenedora;
 		this.nuevaOcupacion = nuevaOcupacion;
+		this.estadoAnterior = estadoAnterior;
 		setLayout(null);
 		
 		this.encabezado = encabezado;	
@@ -156,13 +158,15 @@ public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 	}
 	
 	public void agregarActionListeners() {
+		MenuBuscarResponsable contexto = this;
+		
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = rp_pasajeros.getTable().getSelectedRow();
 				if(fila != -1) {
 					nuevaOcupacion.setResponsable(rp_pasajeros.getRowObjects().get(fila));
 					nuevaOcupacion.setAcompaniantes(new ArrayList<PasajeroDTO>());
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarAcompaniantes(ventana_contenedora, encabezado, nuevaOcupacion),
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarAcompaniantes(ventana_contenedora, encabezado, nuevaOcupacion, contexto),
 																		MenuBuscarAcompaniantes.x_bound,MenuBuscarAcompaniantes.y_bound,MenuBuscarAcompaniantes.titulo);
 				}				
 			}
@@ -170,7 +174,8 @@ public class MenuBuscarResponsable extends JPanel implements SeteableTab {
 		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
+				estadoAnterior.add(encabezado);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(estadoAnterior,
 																	MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
 			}
 		});

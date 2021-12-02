@@ -28,6 +28,7 @@ import com.tp.gestores.GestorHabitaciones;
 import com.tp.gestores.GestorServicios;
 import com.tp.interfaces.misc.Encabezado;
 import com.tp.interfaces.misc.Mensaje;
+import com.tp.interfaces.misc.TabOrder;
 import com.tp.interfaces.misc.spinner.*;
 import com.tp.interfaces.MenuPrincipal;
 import com.tp.interfaces.SeteableTab;
@@ -78,7 +79,6 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		lbl_nom_resp_tag.setBounds(10, 121, 130, 14);
 		add(lbl_nom_resp_tag);
 		
-		encabezado = new Encabezado();
 		encabezado.setSize(640, 110);
 		encabezado.setLocation(0, 0);
 		add(encabezado);
@@ -131,6 +131,17 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 		add(lbl_total_tag);
 		
 		agregarActionListeners();
+		agregarTabOrder();
+	}
+	
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				rp_servicios.getPrevBtn(),
+				rp_servicios.getNextBtn(),
+				jb_siguiente,
+				jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
 	}
 
 	public MenuConsumosPorHabitacion(JFrame ventana_contenedora, Encabezado encabezado, PasajeroDTO responsable_pasajero, HabitacionDTO hab, MenuFacturar contexto){
@@ -192,7 +203,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 
 	@Override
 	public void setDefaultTab() {
-		jb_siguiente.requestFocus();
+		rp_servicios.getPrevBtn().requestFocus();
 	}
 
 	public void actualizarMontos(){
@@ -237,6 +248,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 			public void actionPerformed(ActionEvent e) {
 				int opt = Mensaje.mensajeConfirmacion("¿Está seguro que desea cancelar la creación de la factura?");
 				if(opt == 1){
+					menu_facturar_previo.add(encabezado);
 					((VentanaPrincipal) ventana_contenedora).cambiarPanel(menu_facturar_previo,
 															 MenuFacturar.x_bound, MenuFacturar.y_bound, MenuFacturar.titulo);
 				}
@@ -265,6 +277,7 @@ public class MenuConsumosPorHabitacion extends JPanel implements SeteableTab{
 														MenuPrincipal.x_bound, MenuPrincipal.y_bound, MenuPrincipal.titulo);
 				}
 				else{
+					menu_facturar_previo.add(encabezado);
 					((VentanaPrincipal) ventana_contenedora).cambiarPanel(menu_facturar_previo,MenuFacturar.x_bound,
 																		MenuFacturar.y_bound,MenuFacturar.titulo);
 				}

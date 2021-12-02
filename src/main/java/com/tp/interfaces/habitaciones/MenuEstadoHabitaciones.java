@@ -121,7 +121,18 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 		this.campos_validos = new HashMap<String,Boolean>();
 		this.inicializarMapa();
 		this.agregarActionListeners();
+		this.agregarTabOrder();
 	}
+	
+	private void agregarTabOrder() {
+		this.setFocusTraversalPolicy(new TabOrder(List.of(
+				dc_fecha_desde.getDateEditor().getUiComponent(),
+				dc_fecha_hasta.getDateEditor().getUiComponent(),
+				jb_siguiente,
+				jb_cancelar
+				)));
+		this.setFocusTraversalPolicyProvider(true);
+		}
 
 	private void inicializarMapa() {
 		campos_validos.put("fecha desde", true);
@@ -129,6 +140,8 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 	}
 
 	private void agregarActionListeners() {
+		MenuEstadoHabitaciones contexto = this;
+		
 		jb_siguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if( ((PintableTable)jtable_habitaciones).isSeleccionando() || ((PintableTable)jtable_habitaciones).getCeldaFinal().getX() == -1 ){
@@ -153,7 +166,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				ocupacion.setFechaEgreso(fechaFin);
 				ocupacion.getHabitacion().setNumero(numeroHabitacion);
 				
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,ocupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,ocupacion, contexto),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
 				
 			}
 			
@@ -216,6 +229,12 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 					campos_validos.put("fecha desde", true);
 					lbl_error_fecha_desde.setText("");
 					dc_fecha_hasta.setMinSelectableDate(dc_fecha_desde.getDate());
+					if(!campos_validos.get("fecha hasta")) {
+						if(hasta != null && hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(desde.toInstant().truncatedTo(ChronoUnit.DAYS))>=0) {
+						campos_validos.put("fecha hasta",true);
+						lbl_error_fecha_hasta.setText("");
+						}
+					}
 					if(campos_validos.get("fecha hasta")){
 						if(hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(desde.toInstant().truncatedTo(ChronoUnit.DAYS))<0){
 							campos_validos.put("fecha hasta",false);
@@ -229,11 +248,11 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 							List<FechaDTO> l = GestorHabitaciones.buscarEstadoHabitaciones(desde.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), hasta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 							llenarTabla(l);
 						}
-					}
+					} 
 				}
 			}
 		});
-
+		
 		dc_fecha_hasta.getDateEditor().getUiComponent().addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {}
 			@SuppressWarnings("deprecation")
@@ -281,10 +300,15 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 				if (hasta != null) hasta.setHours(0);
 
 				if("date".equals(e.getPropertyName())) {
-					campos_validos.put("fecha hasta", true);
-					lbl_error_fecha_hasta.setText("");
-					
 					if(campos_validos.get("fecha desde")){
+						if(hasta != null && hasta.toInstant().truncatedTo(ChronoUnit.DAYS).compareTo(desde.toInstant().truncatedTo(ChronoUnit.DAYS))>=0) {
+							campos_validos.put("fecha hasta", true);
+							lbl_error_fecha_hasta.setText("");
+						} else {
+							campos_validos.put("fecha hasta", false);
+							lbl_error_fecha_hasta.setText("La fecha no puede ser anterior a la fecha desde.");	
+							return;
+						}
 						if(desde.equals(prev_desde) && hasta.equals(prev_hasta)) return;
 						prev_desde = desde;
 						prev_hasta = hasta;
@@ -347,7 +371,7 @@ public class MenuEstadoHabitaciones extends JPanel implements SeteableTab {
 
 	@Override
 	public void setDefaultTab() {
-		dc_fecha_hasta.getDateEditor().getUiComponent().requestFocus();
+		dc_fecha_desde.getDateEditor().getUiComponent().requestFocus();
 	}
 	
 	

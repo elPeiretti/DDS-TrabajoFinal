@@ -85,7 +85,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		
 		lbl_num_hab = new JLabel("<html>Número de<br/>Habitación <font color='red'>(*)</font>: </html>");
 		lbl_num_hab.setHorizontalAlignment(SwingConstants.LEFT);
-		lbl_num_hab.setBounds(82, 133, 80, 30);
+		lbl_num_hab.setBounds(82, 133, 81, 30);
 		add(lbl_num_hab);
 		
 		jtf_num_hab = new JTextField();
@@ -167,8 +167,8 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		add(lbl_raz_social_tag);
 		
 		lbl_raz_social = new JLabel("");
-		lbl_raz_social.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbl_raz_social.setBounds(418, 467, 130, 14);
+		lbl_raz_social.setHorizontalAlignment(SwingConstants.LEFT);
+		lbl_raz_social.setBounds(410, 467, 200, 14);
 		lbl_raz_social.setEnabled(false);
 		add(lbl_raz_social);
 		
@@ -349,7 +349,7 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 
 					ResponsablePagoTerceroDTO resp = criterios_actuales.getResponsable();
 					if(resp == null) {
-						Mensaje.mensajeInformacion("AQUI DEBERIA EJECUTARSE CU14");
+						Mensaje.mensajeInformacion("AQUI DEBERIA EJECUTARSE CU03");
 						return;
 					}else {
 						cambiarPantalla(hDto,-2);
@@ -369,11 +369,14 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				/*
 				int opt = Mensaje.mensajeConfirmacion("¿Desea cancelar la facturación?");
 				if (opt == 1) { 
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),
 							 MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);
-				}
+				}*/
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuPrincipal(ventana_contenedora,encabezado),
+						 MenuPrincipal.x_bound,MenuPrincipal.y_bound,MenuPrincipal.titulo);
 			}
 		});
 
@@ -411,18 +414,19 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 	private void cambiarPantalla(HabitacionDTO hDto,int fila) {
 		JPanel m;
 		criterios_actuales.setHoraSalida(jftf_salida.getText());
-		if(!estadiaCalculada && !LocalDate.now().equals(criterios_actuales.getOcupacion().getFechaEgreso().plusDays(1))) 
-			if(Mensaje.mensajeConfirmacion("La ocupación de esta habitación termina el " + criterios_actuales.getOcupacion().getFechaEgreso().plusDays(1) + 
-					". Desea continuar?", "Atención!", new String[]{"Sí","No"}) == 1) return;
+		
 		try {
 			criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(hDto.getNumero()));
+			if(!estadiaCalculada && !LocalDate.now().equals(criterios_actuales.getOcupacion().getFechaEgreso().plusDays(1))) 
+				if(Mensaje.mensajeConfirmacion("La ocupación de esta habitación termina el " + criterios_actuales.getOcupacion().getFechaEgreso().plusDays(1) + 
+						". Desea continuar?", "Atención!", new String[]{"Sí","No"}) == 1) return;
 			if(!estadiaCalculada)
 				GestorHabitaciones.calcularEstadia(criterios_actuales.getHoraSalida(),criterios_actuales.getOcupacion());
 		}
 		catch(HabitacionNoExistenteException exc){
 			Mensaje.mensajeInformacion("La habitación seleccionada no existe en el sistema.");
 			return;
-		}
+		}	
 		catch(HabitacionSinOcupacionesException exc){
 			Mensaje.mensajeInformacion("La habitación seleccionada no posee ocupaciones.");
 			return;

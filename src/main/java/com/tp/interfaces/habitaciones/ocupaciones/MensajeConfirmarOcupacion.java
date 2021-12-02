@@ -40,15 +40,16 @@ public class MensajeConfirmarOcupacion extends JPanel implements SeteableTab {
 	private JLabel lbl_nombre_responsable_datos;
 	private JButton jb_continuar;
 	private ResultPane<PasajeroDTO> rp_acompaniantes;
+	private MenuBuscarAcompaniantes estadoAnterior;
 	
-	public MensajeConfirmarOcupacion(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion) {
+	public MensajeConfirmarOcupacion(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion, MenuBuscarAcompaniantes estadoAnterior) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		this.nuevaOcupacion = nuevaOcupacion;
 		this.encabezado = encabezado;
+		this.estadoAnterior = estadoAnterior;
 		setLayout(null);
 		
-		encabezado = new Encabezado();
 		encabezado.setBounds(0, 0, 640, 110);
 		add(encabezado);
 		
@@ -79,6 +80,10 @@ public class MensajeConfirmarOcupacion extends JPanel implements SeteableTab {
 		jb_continuar = new JButton("Continuar");
 		jb_continuar.setBounds(541, 400, 100, 30);
 		add(jb_continuar);
+		
+		rp_acompaniantes.getNextBtn().setVisible(false);
+		rp_acompaniantes.getPrevBtn().setVisible(false);
+		rp_acompaniantes.getPageNumbers().setVisible(false);
 		
 		this.inicializarCampos();
 		this.llenarTabla();
@@ -111,7 +116,8 @@ public class MensajeConfirmarOcupacion extends JPanel implements SeteableTab {
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuEstadoHabitaciones(ventana_contenedora,encabezado),
 							MenuEstadoHabitaciones.x_bound,MenuEstadoHabitaciones.y_bound,MenuEstadoHabitaciones.titulo);
 				} else if(opcion == 2) {
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarAcompaniantes(ventana_contenedora,encabezado,nuevaOcupacion),
+					estadoAnterior.add(encabezado);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(estadoAnterior,
 							MenuBuscarAcompaniantes.x_bound,MenuBuscarAcompaniantes.y_bound,MenuBuscarAcompaniantes.titulo);
 				}
 				

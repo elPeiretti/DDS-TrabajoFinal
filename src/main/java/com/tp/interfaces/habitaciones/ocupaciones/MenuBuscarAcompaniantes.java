@@ -54,12 +54,14 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	private OcupacionDTO nuevaOcupacion;
 	private Map<Integer,BusqPasajeroDTO.columnaOrden> indice_columnas;
 	private BusqPasajeroDTO criterios_actuales;
+	private MenuBuscarResponsable estadoAnterior;
 	
 	// setear ventana a 640x700
-	public MenuBuscarAcompaniantes(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion) {
+	public MenuBuscarAcompaniantes(JFrame ventana_contenedora, Encabezado encabezado, OcupacionDTO nuevaOcupacion, MenuBuscarResponsable estadoAnterior) {
 		setBackground(Color.WHITE);
 		this.ventana_contenedora = ventana_contenedora;
 		this.nuevaOcupacion = nuevaOcupacion;
+		this.estadoAnterior = estadoAnterior;
 		setLayout(null);
 		
 		this.encabezado = encabezado;
@@ -120,7 +122,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 		add(rp_pasajeros_agregados);
 		
 		jb_siguiente = new JButton("Siguiente");
-		jb_siguiente.setBounds(452, 636, 100, 30);
+		jb_siguiente.setBounds(452, 640, 100, 30);
 		add(jb_siguiente);
 		
 		jb_cancelar = new JButton("Cancelar");
@@ -138,7 +140,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 	}
 	
 	public void agregarActionListeners() {
-		
+		MenuBuscarAcompaniantes contexto = this;
 		rp_pasajeros_busqueda.getTable().addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
 				
@@ -211,13 +213,14 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 				}			
 
 				nuevaOcupacion.setAcompaniantes(rp_pasajeros_agregados.getRowObjects());
-				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MensajeConfirmarOcupacion(ventana_contenedora,encabezado,nuevaOcupacion),MensajeConfirmarOcupacion.x_bound,MensajeConfirmarOcupacion.y_bound,MensajeConfirmarOcupacion.titulo);
+				((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MensajeConfirmarOcupacion(ventana_contenedora,encabezado,nuevaOcupacion,contexto),MensajeConfirmarOcupacion.x_bound,MensajeConfirmarOcupacion.y_bound,MensajeConfirmarOcupacion.titulo);
 			}
 		});
 		
 		jb_cancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBuscarResponsable(ventana_contenedora,encabezado,nuevaOcupacion),MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
+					estadoAnterior.add(encabezado);
+					((VentanaPrincipal)ventana_contenedora).cambiarPanel(estadoAnterior,MenuBuscarResponsable.x_bound,MenuBuscarResponsable.y_bound,MenuBuscarResponsable.titulo);
 				}
 		});
 		
@@ -338,7 +341,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 				jb_cancelar
 				)));
 		this.setFocusTraversalPolicyProvider(true);
-		}
+	}
 	
 	@Override
 	public void setDefaultTab() {
