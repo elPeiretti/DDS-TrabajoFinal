@@ -168,7 +168,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 					rp_pasajeros_agregados.getRowObjects().add(rp_pasajeros_busqueda.getRowObjects().get(row));
 					rp_pasajeros_agregados.getContenido().addRow(v);
 					rp_pasajeros_agregados.sortRowObjects();
-					System.out.println(rp_pasajeros_agregados.getRowObjects().stream().map(p -> p.getApellido() + p.getNombres()).collect(Collectors.toList()));
+					
 				} else {
 					int removedRow = rp_pasajeros_agregados.getRowObjects().indexOf(rp_pasajeros_busqueda.getRowObjects().get(row));
 					if(removedRow == -1) return;
@@ -189,8 +189,7 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 				if(row == -1 || col == -1 || row == Integer.MAX_VALUE || col == Integer.MAX_VALUE) return;
 				
 				if(col != rp_pasajeros_agregados.getContenido().getColumnCount()-1) return;
-				System.out.println(row);	
-				System.out.println(rp_pasajeros_agregados.getRowObjects().get(row).getApellido());			
+					
 				int removeTick = rp_pasajeros_busqueda.getRowObjects().indexOf(rp_pasajeros_agregados.getRowObjects().get(row));
 				if(removeTick != -1) {
 					rp_pasajeros_busqueda.getContenido().setValueAt(false, removeTick, rp_pasajeros_busqueda.getContenido().getColumnCount()-1);
@@ -199,10 +198,6 @@ public class MenuBuscarAcompaniantes extends JPanel implements SeteableTab {
 					
 				rp_pasajeros_agregados.getContenido().removeRow(row);
 				rp_pasajeros_agregados.getRowObjects().remove(row);
-				System.out.println("FILAS TABLA:");
-				System.out.println(rp_pasajeros_agregados.getContenido());
-				System.out.println("OBJETOS:");
-				System.out.println(rp_pasajeros_agregados.getRowObjects().stream().map(p -> p.getApellido() + p.getNombres()).collect(Collectors.toList()));
 				
 				rp_pasajeros_agregados.getContenido().fireTableDataChanged();
 			}

@@ -247,7 +247,7 @@ public class ResultPaneAcompaniantes<E> extends JPanel {
 				}
 				break;
 		}
-			System.out.println(objetos_en_tabla.stream().map( p -> ((PasajeroDTO) p).getApellido() + ((PasajeroDTO) p).getNombres()).collect(Collectors.toList()));
+			
 			llenarTabla();
 	}
 
