@@ -153553,15 +153553,17 @@ INSERT INTO tpdds.habitacion(id_habitacion,estado,numero,id_tipo_habitacion) VAL
 INSERT INTO tpdds.responsable_reserva(nombre,apellido,telefono) VALUES
 ('ARMANDO','PAREDES','3425151789'), 
 ('SAN MARTIN','DE LOS ANDES','3426859273'),
-('BASTIAN','ELSE','2515152526');
+('BASTIAN','ELSE','2515152526'),
+('ROGERS','TOMAS','2515152526');
 
 INSERT INTO tpdds.reserva(id_responsable_reserva, id_habitacion, fecha_ingreso, fecha_egreso, estado) VALUES
-(1,1,'2022-12-06','2022-12-08','VIGENTE'),
-(2,2,'2022-12-01','2022-12-08','VIGENTE'),
-(2,3,'2022-12-01','2022-12-08','VIGENTE'),
-(1,2,'2022-10-20','2022-11-30','VIGENTE'),
-(2,5,'2022-11-12','2022-12-02','VIGENTE'),
-(3,14,'2022-10-02','2022-10-24','VIGENTE');
+(1,1,'2021-12-06','2021-12-08','VIGENTE'),
+(2,2,'2021-12-01','2021-12-08','VIGENTE'),
+(2,3,'2021-12-01','2021-12-08','VIGENTE'),
+(1,2,'2021-10-20','2021-11-30','VIGENTE'),
+(4,2,'2021-12-09','2021-12-11','VIGENTE'),
+(2,5,'2021-11-12','2021-12-02','VIGENTE'),
+(3,14,'2021-10-02','2021-10-24','VIGENTE');
 
 INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero_responsable) VALUES
 ('2022-10-20','2022-12-30',27,2),
