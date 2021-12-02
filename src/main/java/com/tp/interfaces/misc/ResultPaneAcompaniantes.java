@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,6 +21,10 @@ import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import com.tp.dto.BusqPasajeroDTO;
+import com.tp.dto.BusqPasajeroDTO.columnaOrden;
+import com.tp.dto.PasajeroDTO;
 
 public class ResultPaneAcompaniantes<E> extends JPanel {
 
@@ -37,10 +43,15 @@ public class ResultPaneAcompaniantes<E> extends JPanel {
 	private Long cant_paginas = 1L;
 	private Integer cant_filas = 8;
 	private TableRowSorter<TableModel> sorter;
+	private BusqPasajeroDTO.columnaOrden columnaOrden;
+	private SortOrder sortOrder;
 	
 	public ResultPaneAcompaniantes() {
 		setBackground(Color.WHITE);
 		setLayout(null);
+		
+		columnaOrden = BusqPasajeroDTO.columnaOrden.APELLIDO;
+		sortOrder = SortOrder.ASCENDING;
 		
 		jtable_resultados = new JTable() {
 			/**
@@ -178,6 +189,76 @@ public class ResultPaneAcompaniantes<E> extends JPanel {
 
 	public Integer getCantidadFilas(){
 		return cant_filas;
+	}
+
+	public void sortRowObjects(columnaOrden columnaOrden, SortOrder sortOrder) {
+		
+		this.columnaOrden = columnaOrden;
+		this.sortOrder = sortOrder;
+			
+		sortRowObjects();
+		
+	}
+	
+	public void sortRowObjects() {
+			switch(columnaOrden) {
+			case APELLIDO:
+				if(sortOrder == SortOrder.DESCENDING) {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getApellido().compareTo(((PasajeroDTO) e2).getApellido())*-1;
+					});
+				} else {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getApellido().compareTo(((PasajeroDTO) e2).getApellido());
+					});
+				}
+				break;
+			case NOMBRES:
+				if(sortOrder == SortOrder.DESCENDING) {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getNombres().compareTo(((PasajeroDTO) e2).getNombres())*-1;
+					});
+				} else {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getNombres().compareTo(((PasajeroDTO) e2).getNombres());
+					});
+				}
+				break;
+			case NRODOC:
+				if(sortOrder == SortOrder.DESCENDING) {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getNroDocumento().compareTo(((PasajeroDTO) e2).getNroDocumento())*-1;
+					});
+				} else {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getNroDocumento().compareTo(((PasajeroDTO) e2).getNroDocumento());
+					});
+				}
+				break;
+			case TIPODOC:
+				if(sortOrder == SortOrder.DESCENDING) {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getTipoDocumentoDTO().getTipo().compareTo(((PasajeroDTO) e2).getTipoDocumentoDTO().getTipo())*-1;
+					});
+				} else {
+					objetos_en_tabla.sort((e1, e2) -> {
+						return ((PasajeroDTO) e1).getTipoDocumentoDTO().getTipo().compareTo(((PasajeroDTO) e2).getTipoDocumentoDTO().getTipo());
+					});
+				}
+				break;
+		}
+			System.out.println(objetos_en_tabla.stream().map( p -> ((PasajeroDTO) p).getApellido() + ((PasajeroDTO) p).getNombres()).collect(Collectors.toList()));
+			llenarTabla();
+	}
+
+	private void llenarTabla() {
+		this.getContenido().setRowCount(0);
+		for(E p : objetos_en_tabla) {
+			Vector<Object> v = ((PasajeroDTO) p).asVector();
+			v.add(true);
+			
+			this.getContenido().addRow(v);
+		}
 	}
 	
 }
