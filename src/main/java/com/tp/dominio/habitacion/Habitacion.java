@@ -24,12 +24,10 @@ public class Habitacion {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name =  "id_habitacion")
 	private Integer idHabitacion;
-	@OneToMany (cascade = CascadeType.ALL)
-	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
+	@OneToMany (mappedBy = "habitacion", cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_habitacion", referencedColumnName = "id_habitacion")
-
 	private List<Servicio> servicios;
 	
 	public String getNumero() {
