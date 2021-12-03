@@ -3,7 +3,6 @@ package com.tp.interfaz.pantallas.habitaciones;
 
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
-import com.tp.interfaz.*;
 import com.tp.interfaz.dto.FechaDTO;
 import com.tp.interfaz.dto.HabitacionDTO;
 import com.tp.interfaz.dto.OcupacionDTO;

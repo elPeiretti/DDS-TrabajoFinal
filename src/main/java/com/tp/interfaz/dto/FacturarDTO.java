@@ -6,7 +6,7 @@ public class FacturarDTO {
 	public enum columnaOrden {NOMBRES,APELLIDO,NRODOC,TIPODOC}
 	private columnaOrden columna;
 	private SortOrder sortOrder;
-	private String idHabitacion;
+	private String numeroHabitacion;
 	private OcupacionDTO ocupacion;
 	private String horaSalida;
 	private ResponsablePagoTerceroDTO responsable;
@@ -47,10 +47,10 @@ public class FacturarDTO {
 	public void setResponsable(ResponsablePagoTerceroDTO responsable) {
 		this.responsable = responsable;
 	}
-	public String getIdHabitacion() {
-		return idHabitacion;
+	public String getNumeroHabitacion() {
+		return numeroHabitacion;
 	}
-	public void setIdHabitacion(String idHabitacion) {
-		this.idHabitacion = idHabitacion;
+	public void setNumeroHabitacion(String idHabitacion) {
+		this.numeroHabitacion = idHabitacion;
 	}
 }

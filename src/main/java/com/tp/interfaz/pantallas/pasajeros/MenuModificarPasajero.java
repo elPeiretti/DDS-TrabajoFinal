@@ -66,6 +66,7 @@ public class MenuModificarPasajero extends MenuAltaPasajero {
 				
 				try {
 					// llamar al gestor TODO
+					@SuppressWarnings("unused")
 					int opt = Mensaje.mensajeInformacion("La operación ha culminado con éxito.");
 					((VentanaPrincipal)ventana_contenedora).cambiarPanel(new MenuBusquedaPasajero(ventana_contenedora,encabezado),
 																		MenuBusquedaPasajero.x_bound,MenuBusquedaPasajero.y_bound,MenuBusquedaPasajero.titulo);

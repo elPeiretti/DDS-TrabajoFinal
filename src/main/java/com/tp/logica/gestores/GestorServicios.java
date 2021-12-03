@@ -45,7 +45,7 @@ public class GestorServicios {
 		return estadia;
 	}
 
-	public static Servicio generarServicioRecargo(Habitacion hab,OcupacionDTO ocupacion_actual, LocalTime hora_salida) {
+	public static Servicio generarServicioRecargo(Habitacion hab, LocalTime hora_salida) {
 		Servicio recargo = new Servicio();
 		recargo.setCantidad(1);
 		recargo.setCantidadPagada(0);

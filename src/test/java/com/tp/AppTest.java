@@ -50,7 +50,7 @@ public class AppTest
 		System.out.println(c_noche.toString());*/
 		
     }
-    
+    @SuppressWarnings("unused")
     private static void agregarHabitacionTipoHabitacionYCostoPorNoche() {
     	
     	CostoPorNoche c_noche = new CostoPorNoche(LocalDate.now(),LocalDate.now(),20.5);

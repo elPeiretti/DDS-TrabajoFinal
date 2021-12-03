@@ -10,7 +10,7 @@ import com.tp.interfaz.pantallas.misc.Encabezado;
 import com.tp.interfaz.pantallas.misc.JTextFieldLimit;
 import com.tp.interfaz.pantallas.misc.ResultPane;
 import com.tp.interfaz.pantallas.misc.TabOrder;
-
+@SuppressWarnings("all")
 public class MenuRegistrarPago extends JPanel {
 
 	/**

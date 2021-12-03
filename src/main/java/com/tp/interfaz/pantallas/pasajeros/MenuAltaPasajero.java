@@ -3,7 +3,6 @@ package com.tp.interfaz.pantallas.pasajeros;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import com.toedter.calendar.JDateChooser;
-import com.tp.interfaz.*;
 import com.tp.interfaz.dto.*;
 import com.tp.interfaz.pantallas.SeteableTab;
 import com.tp.interfaz.pantallas.VentanaPrincipal;
@@ -697,7 +696,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 					lbl_error_apellido.setText("Este campo no puede estar vacío.");
 					campos_validos.put("apellido", false);
 				}
-				else if(!data.matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) {
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+$")) {
 					lbl_error_apellido.setText("El apellido solo puede contener letras.");
 					campos_validos.put("apellido", false);
 				}
@@ -718,7 +717,7 @@ public class MenuAltaPasajero extends JPanel implements SeteableTab{
 					lbl_error_nombres.setText("Este campo no puede estar vacío.");
 					campos_validos.put("nombres", false);
 				}
-				else if(!data.matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) {
+				else if(!data.matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\\u00f1\\u00d1]+$")) {
 					lbl_error_nombres.setText("Los nombres solo pueden contener letras.");
 					campos_validos.put("nombres", false);
 				}

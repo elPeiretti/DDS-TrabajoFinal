@@ -17,7 +17,9 @@ import com.tp.logica.dominio.TipoDocumento;
 import com.tp.logica.excepciones.CamposInvalidosException;
 import com.tp.logica.excepciones.DocumentoExistenteException;
 import com.tp.logica.excepciones.NuevoPasajeroException;
+import com.tp.persistencia.dao.CiudadDAO;
 import com.tp.persistencia.dao.CiudadSqlDAO;
+import com.tp.persistencia.dao.PaisDAO;
 import com.tp.persistencia.dao.PaisSqlDAO;
 import com.tp.persistencia.dao.PasajeroDAO;
 import com.tp.persistencia.dao.PasajeroSqlDAO;
@@ -128,12 +130,16 @@ public class GestorPasajeros {
 		}
 
 		Pasajero pasajero = new Pasajero(p);
-		TipoDocumento td = new TipoDocumentoSqlDAO().getById(p.getTipoDocumentoDTO().getIdTipoDocumento());
+		TipoDocumentoDAO tdDao = new TipoDocumentoSqlDAO();
+		TipoDocumento td = tdDao.getById(p.getTipoDocumentoDTO().getIdTipoDocumento());
 		Direccion direc = new Direccion(p.getDireccionDTO());
-		Ciudad ciudad = new CiudadSqlDAO().getById(p.getDireccionDTO().getIdCiudad());
+		CiudadDAO ciudadDao = new CiudadSqlDAO();
+		Ciudad ciudad = ciudadDao.getById(p.getDireccionDTO().getIdCiudad());
 		direc.setCiudad(ciudad);
-		Pais nacionalidad = new PaisSqlDAO().getById(p.getNacionalidad());
-		PosicionIVA pIva = new PosicionIVASqlDAO().getById(p.getPosicionIVA().getIdPosicionIVA());
+		PaisDAO paisDao = new PaisSqlDAO();
+		Pais nacionalidad = paisDao.getById(p.getNacionalidad());
+		PosicionIVADAO pIvaDao = new PosicionIVASqlDAO();
+		PosicionIVA pIva = pIvaDao.getById(p.getPosicionIVA().getIdPosicionIVA());
 
 		if (ciudad.getPais().equals(nacionalidad)) {
 			nacionalidad = ciudad.getPais();
@@ -143,7 +149,8 @@ public class GestorPasajeros {
 		pasajero.setTipoDocumento(td);
 		pasajero.setDireccion(direc);
 		try {
-			new PasajeroSqlDAO().insertarPasajero(pasajero);
+			PasajeroDAO pasajeroDao = new PasajeroSqlDAO();
+			pasajeroDao.insertarPasajero(pasajero);
 		}catch(NuevoPasajeroException e) {
 			throw e;
 		}
@@ -165,12 +172,12 @@ public class GestorPasajeros {
 
 		if (pasajero.getApellido().isBlank())
 			errores.add("El campo apellido no puede estar vacío.");
-		else if(!pasajero.getApellido().matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
+		else if(!pasajero.getApellido().matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+$"))
 			errores.add("El campo apellido solo puede contener letras");
 
 		if (pasajero.getNombres().isBlank())
 			errores.add("El campo nombres no puede estar vacío.");
-		else if(!pasajero.getNombres().matches("^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$")) 
+		else if(!pasajero.getNombres().matches("^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+$")) 
 			errores.add("El campo nombres solo puede contener letras");
 
 		if(cuit_obligatorio && pasajero.getCuit() == null ) 

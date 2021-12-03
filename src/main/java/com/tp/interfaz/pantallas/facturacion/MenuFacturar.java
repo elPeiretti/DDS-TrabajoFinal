@@ -37,7 +37,6 @@ import com.tp.interfaz.pantallas.misc.Mensaje;
 import com.tp.interfaz.pantallas.misc.ResultPane;
 import com.tp.interfaz.pantallas.misc.TabOrder;
 import com.tp.logica.excepciones.HabitacionNoExistenteException;
-import com.tp.logica.excepciones.HabitacionNoOcupadaException;
 import com.tp.logica.excepciones.HabitacionSinOcupacionesException;
 import com.tp.logica.excepciones.NuevaHabitacionException;
 import com.tp.logica.excepciones.OcupacionNoCheckoutableException;
@@ -308,9 +307,9 @@ public class MenuFacturar extends JPanel implements SeteableTab {
 					indicarCamposIncompletos();
 					return;
 				}
-				criterios_actuales.setIdHabitacion(jtf_num_hab.getText());
+				criterios_actuales.setNumeroHabitacion(jtf_num_hab.getText());
 				try{
-					criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(criterios_actuales.getIdHabitacion()));
+					criterios_actuales.setOcupacion(GestorHabitaciones.buscarUltimaOcupacion(criterios_actuales.getNumeroHabitacion()));
 					llenarTabla();
 				}
 				catch(HabitacionNoExistenteException exc){

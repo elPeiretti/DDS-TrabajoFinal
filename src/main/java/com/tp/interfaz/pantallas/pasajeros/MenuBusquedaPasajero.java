@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
-
-import com.tp.interfaz.*;
 import com.tp.interfaz.dto.BusqPasajeroDTO;
 import com.tp.interfaz.dto.PasajeroDTO;
 import com.tp.interfaz.dto.TipoDocumentoDTO;
@@ -14,7 +12,6 @@ import com.tp.interfaz.pantallas.SeteableTab;
 import com.tp.interfaz.pantallas.VentanaPrincipal;
 import com.tp.interfaz.pantallas.misc.*;
 import com.tp.logica.gestores.GestorPasajeros;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -216,6 +213,11 @@ public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 		rp_pasajeros.setCantPaginas((long) Math.ceil(GestorPasajeros.getCountPasajerosBy(criterios_actuales)/8.0));
 		List<PasajeroDTO> lp = GestorPasajeros.getPasajerosBy(criterios_actuales, (rp_pasajeros.getPaginaActual()-1)*8, 8);
 		
+		actualizarListado(lp);
+		tabla_vacia = false;
+	}
+
+	private void actualizarListado(List<PasajeroDTO> lp){
 		for(PasajeroDTO p : lp) {
 			Vector<String> v = new Vector<String>();
 			v.add(p.getApellido());
@@ -225,7 +227,6 @@ public class MenuBusquedaPasajero extends JPanel implements SeteableTab{
 			rp_pasajeros.getContenido().addRow(v);
 			rp_pasajeros.getRowObjects().add(p);
 		}
-		tabla_vacia = false;
 	}
 
 	@Override

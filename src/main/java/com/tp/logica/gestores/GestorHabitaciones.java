@@ -159,10 +159,7 @@ public class GestorHabitaciones {
     	ReservaDAO reservaDao = new ReservaSqlDAO();
     	
     	Habitacion habitacion = habitacionDao.getHabitacionByNumero(ocupacionDto.getHabitacion().getNumero());
-    	
-    	if(ocupacionDto.getFechaIngreso().equals(LocalDate.now())) {
-    		habitacion.setEstado(EstadoHabitacion.OCUPADA);
-    	}
+    	habitacion.setEstado(EstadoHabitacion.OCUPADA);
     	
     	List<Integer> idPasajeros = ocupacionDto.getAcompaniantes().stream().map(p -> p.getIdPasajero()).collect(Collectors.toList());
     	idPasajeros.add(ocupacionDto.getResponsable().getIdPasajero());
@@ -179,6 +176,7 @@ public class GestorHabitaciones {
 			}
 		}
 
+		// lo de arriba hace lo mismo, pero permite ahorrarse el problema de tener multiples instancias de un mismo Pais, Provincia, Ciudad, PosicionIVA o TipoDocumento
     	//Pasajero responsable = pasajeroDao.getPasajeroById(ocupacionDto.getResponsable().getIdPasajero());
     	
     	//List<Pasajero> acompaniantes = pasajeroDao.getPasajerosById(ocupacionDto.getAcompaniantes().stream().map(p -> p.getIdPasajero()).collect(Collectors.toList()));
@@ -223,11 +221,12 @@ public class GestorHabitaciones {
 			throw new HabitacionSinOcupacionesException();
 		}
 
-		LocalDate fecha_checkout = oc.getFechaEgreso().plusDays(1);
+		/*LocalDate fecha_checkout = oc.getFechaEgreso().plusDays(1);
 		LocalDate fecha_ingreso = oc.getFechaIngreso();
 		LocalDate hoy = LocalDate.now();
 
-		if(!(hoy.isAfter(fecha_ingreso.minusDays(1)) && hoy.isBefore(fecha_checkout.plusDays(1)))){
+		if(!(hoy.isAfter(fecha_ingreso.minusDays(1)) && hoy.isBefore(fecha_checkout.plusDays(1)))){*/
+		if(!oc.getHabitacion().getEstado().equals(EstadoHabitacion.OCUPADA)){
 			throw new OcupacionNoCheckoutableException();
 		}
 		
@@ -253,12 +252,13 @@ public class GestorHabitaciones {
 		return habDTO;
 	}
 	public static void calcularEstadia(String hora_salida, OcupacionDTO ocupacion_actual) throws NuevaHabitacionException {
-		Habitacion hab = getHabitacionWithCostoVigenteEn(ocupacion_actual.getHabitacion().getIdHabitacion(),ocupacion_actual.getFechaIngreso());
+		HabitacionDAO habDao = new HabitacionSqlDAO();
+		Habitacion hab = habDao.getHabitacionByIdWithCostoVigenteEn(ocupacion_actual.getHabitacion().getIdHabitacion(),ocupacion_actual.getFechaIngreso());
 		Servicio estadia = GestorServicios.generarServicioEstadia(hab,ocupacion_actual);
 		hab.addServicio(estadia);
 		LocalTime localTimeSalida = LocalTime.parse(hora_salida, DateTimeFormatter.ofPattern("HH:mm"));
 		if(localTimeSalida.isAfter(LocalTime.of(11, 0))) {
-			Servicio recargo = GestorServicios.generarServicioRecargo(hab,ocupacion_actual,localTimeSalida);
+			Servicio recargo = GestorServicios.generarServicioRecargo(hab,localTimeSalida);
 			hab.addServicio(recargo);
 		}
 		
@@ -268,10 +268,6 @@ public class GestorHabitaciones {
 			throw e;
 		}
 		
-	}
-	private static Habitacion getHabitacionWithCostoVigenteEn(Integer idHabitacion,LocalDate fechaEgreso) {
-		Habitacion hab = new HabitacionSqlDAO().getHabitacionByIdWithCostoVigenteEn(idHabitacion, fechaEgreso);
-		return hab;
 	}
 
 	public static void liberarHabitacion(HabitacionDTO habitacion) {

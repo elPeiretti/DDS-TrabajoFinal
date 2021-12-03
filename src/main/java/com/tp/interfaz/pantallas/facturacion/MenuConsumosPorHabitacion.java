@@ -27,7 +27,6 @@ import com.tp.interfaz.pantallas.misc.Encabezado;
 import com.tp.interfaz.pantallas.misc.Mensaje;
 import com.tp.interfaz.pantallas.misc.TabOrder;
 import com.tp.interfaz.pantallas.misc.spinner.*;
-import com.tp.logica.dominio.EstadoHabitacion;
 import com.tp.logica.dominio.TipoFactura;
 import com.tp.logica.excepciones.FacturaSinItemsException;
 import com.tp.logica.gestores.GestorFacturas;
