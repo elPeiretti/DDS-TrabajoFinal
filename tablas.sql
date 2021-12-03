@@ -153554,12 +153554,15 @@ INSERT INTO tpdds.responsable_reserva(nombre,apellido,telefono) VALUES
 ('ARMANDO','PAREDES','3425151789'), 
 ('SAN MARTIN','DE LOS ANDES','3426859273'),
 ('BASTIAN','ELSE','2515152526'),
-('ROGERS','TOMAS','2515152526');
+('ROGERS','TOMAS','2515152526'),
+('LIONEL','MESSI','1234567891');
 
 INSERT INTO tpdds.reserva(id_responsable_reserva, id_habitacion, fecha_ingreso, fecha_egreso, estado) VALUES
 (1,1,'2021-12-06','2021-12-08','VIGENTE'),
 (2,2,'2021-12-01','2021-12-08','VIGENTE'),
 (2,3,'2021-12-01','2021-12-08','VIGENTE'),
+(5,4,'2021-12-02','2021-12-04','VIGENTE'),
+(4,4,'2021-12-05','2021-12-12','VIGENTE'),
 (1,2,'2021-10-20','2021-11-30','VIGENTE'),
 (4,2,'2021-12-09','2021-12-11','VIGENTE'),
 (2,5,'2021-11-12','2021-12-02','VIGENTE'),
@@ -153570,21 +153573,23 @@ INSERT INTO tpdds.ocupacion(fecha_ingreso,fecha_egreso,id_habitacion,id_pasajero
 ('2022-11-08','2022-11-11',5,5),
 ('2022-11-08','2022-11-15',15,4),
 ('2022-10-25','2022-10-29',14,3),
-('2021-06-10',CURRENT_DATE,20,10); -- para que se pueda probar el menu Facturar
+('2022-12-02','2022-12-09',25,1),
+('2021-06-10',CURRENT_DATE-1,20,10); -- para que se pueda probar el menu Facturar
 
 INSERT INTO tpdds.acompaniante(id_ocupacion,id_pasajero) VALUES
 (2,6),(1,7),(1,9),(1,8);
 
 INSERT INTO tpdds.servicio(precio_unitario, cantidad_pagada, descripcion, cantidad, fecha_realizacion, id_habitacion) VALUES
-(20.50,0,'LAVADO',2,'2022-06-5',20),
-(300,0,'SAUNA',2,'2022-06-5',20),
-(300,0,'SAUNA',2,'2022-07-5',20),
-(320,0,'SAUNA',2,'2022-08-5',20),
-(7.30,0,'CERVEZA BAR',17,'2022-08-9',20),
-(7.30,0,'CERVEZA BAR',11,'2022-08-10',20),
-(12,0,'SNACK BAR',2,'2022-08-10',20),
-(330,0,'SAUNA',1,'2022-10-5',20),
-(1100,0,'LAVADO Y PLANCHADO',1,'2022-11-29',20);
-
-
-
+(20.50,0,'LAVADO',2,'2021-06-5',20),
+(300,0,'SAUNA',2,'2021-06-5',20),
+(300,0,'SAUNA',2,'2021-07-5',20),
+(320,0,'SAUNA',2,'2021-08-5',20),
+(7.30,0,'CERVEZA BAR',17,'2021-08-9',20),
+(7.30,0,'CERVEZA BAR',11,'2021-08-10',20),
+(12,0,'SNACK BAR',2,'2021-08-10',20),
+(330,0,'SAUNA',1,'2021-10-5',20),
+(1100,0,'LAVADO Y PLANCHADO',1,'2021-11-29',20),
+(50,0,'LAVADO',2,'2021-12-02',25),
+(4200,0,'FERNET BAR',1,'2021-12-02',25),
+(300,0,'CERVEZA BAR',2,'2021-12-03',25),
+(250.50,0,'COCA BAR',5,'2021-12-03',25);
