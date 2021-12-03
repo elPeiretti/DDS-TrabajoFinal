@@ -263,7 +263,8 @@ public class GestorHabitaciones {
 		}
 		
 		try {
-			new HabitacionSqlDAO().insertarHabitacion(hab);
+			HabitacionDAO hDao = new HabitacionSqlDAO();
+			hDao.insertarHabitacion(hab);
 		}catch(NuevaHabitacionException e) {
 			throw e;
 		}

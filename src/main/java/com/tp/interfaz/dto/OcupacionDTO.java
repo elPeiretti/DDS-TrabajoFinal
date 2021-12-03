@@ -70,8 +70,9 @@ public class OcupacionDTO {
     }
 	public List<PasajeroDTO> getPasajeros() {
 		List<PasajeroDTO> lista = new LinkedList<PasajeroDTO>();
-		lista.add(responsable);
 		acompaniantes.stream().forEach(a -> lista.add(a));
+		if(!lista.contains(responsable))
+			lista.add(responsable);
 		return lista;
 	}
 }
