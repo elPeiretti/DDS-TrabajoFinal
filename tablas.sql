@@ -153545,9 +153545,9 @@ INSERT INTO tpdds.habitacion(id_habitacion,estado,numero,id_tipo_habitacion) VAL
 (22,'LIBRE','D04',4),
 (23,'LIBRE','D05',4),
 (24,'LIBRE','D06',4),
-(25,'LIBRE','D07',4),
+(25,'OCUPADA','D07',4),
 (26,'LIBRE','E00',5),
-(27,'LIBRE','E01',5);
+(27,'OCUPADA','E01',5);
  
 
 INSERT INTO tpdds.responsable_reserva(nombre,apellido,telefono) VALUES
